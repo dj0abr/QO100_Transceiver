@@ -1,0 +1,77 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30717.126
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libkmaudio", "libkmaudio.vcxproj", "{47EECFB7-1F9E-409C-B8AD-0A2BCCA9CB34}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		64bit|Any CPU = 64bit|Any CPU
+		64bit|Mixed Platforms = 64bit|Mixed Platforms
+		64bit|Win32 = 64bit|Win32
+		64bit|x64 = 64bit|x64
+		64bit|x86 = 64bit|x86
+		Debug|Any CPU = Debug|Any CPU
+		Debug|Mixed Platforms = Debug|Mixed Platforms
+		Debug|Win32 = Debug|Win32
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|Mixed Platforms = Release|Mixed Platforms
+		Release|Win32 = Release|Win32
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+		ReleaseMinDependency|Any CPU = ReleaseMinDependency|Any CPU
+		ReleaseMinDependency|Mixed Platforms = ReleaseMinDependency|Mixed Platforms
+		ReleaseMinDependency|Win32 = ReleaseMinDependency|Win32
+		ReleaseMinDependency|x64 = ReleaseMinDependency|x64
+		ReleaseMinDependency|x86 = ReleaseMinDependency|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{47EECFB7-1F9E-409C-B8AD-0A2BCCA9CB34}.64bit|Any CPU.ActiveCfg = Release|x64
+		{47EECFB7-1F9E-409C-B8AD-0A2BCCA9CB34}.64bit|Any CPU.Build.0 = Release|x64
+		{47EECFB7-1F9E-409C-B8AD-0A2BCCA9CB34}.64bit|Mixed Platforms.ActiveCfg = Release|Win32
+		{47EECFB7-1F9E-409C-B8AD-0A2BCCA9CB34}.64bit|Mixed Platforms.Build.0 = Release|Win32
+		{47EECFB7-1F9E-409C-B8AD-0A2BCCA9CB34}.64bit|Win32.ActiveCfg = Release|Win32
+		{47EECFB7-1F9E-409C-B8AD-0A2BCCA9CB34}.64bit|Win32.Build.0 = Release|Win32
+		{47EECFB7-1F9E-409C-B8AD-0A2BCCA9CB34}.64bit|x64.ActiveCfg = Release|x64
+		{47EECFB7-1F9E-409C-B8AD-0A2BCCA9CB34}.64bit|x64.Build.0 = Release|x64
+		{47EECFB7-1F9E-409C-B8AD-0A2BCCA9CB34}.64bit|x86.ActiveCfg = Release|Win32
+		{47EECFB7-1F9E-409C-B8AD-0A2BCCA9CB34}.64bit|x86.Build.0 = Release|Win32
+		{47EECFB7-1F9E-409C-B8AD-0A2BCCA9CB34}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{47EECFB7-1F9E-409C-B8AD-0A2BCCA9CB34}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
+		{47EECFB7-1F9E-409C-B8AD-0A2BCCA9CB34}.Debug|Mixed Platforms.Build.0 = Debug|Win32
+		{47EECFB7-1F9E-409C-B8AD-0A2BCCA9CB34}.Debug|Win32.ActiveCfg = Debug|Win32
+		{47EECFB7-1F9E-409C-B8AD-0A2BCCA9CB34}.Debug|Win32.Build.0 = Debug|Win32
+		{47EECFB7-1F9E-409C-B8AD-0A2BCCA9CB34}.Debug|x64.ActiveCfg = Debug|x64
+		{47EECFB7-1F9E-409C-B8AD-0A2BCCA9CB34}.Debug|x64.Build.0 = Debug|x64
+		{47EECFB7-1F9E-409C-B8AD-0A2BCCA9CB34}.Debug|x86.ActiveCfg = Debug|Win32
+		{47EECFB7-1F9E-409C-B8AD-0A2BCCA9CB34}.Debug|x86.Build.0 = Debug|Win32
+		{47EECFB7-1F9E-409C-B8AD-0A2BCCA9CB34}.Release|Any CPU.ActiveCfg = Release|Win32
+		{47EECFB7-1F9E-409C-B8AD-0A2BCCA9CB34}.Release|Mixed Platforms.ActiveCfg = Release|Win32
+		{47EECFB7-1F9E-409C-B8AD-0A2BCCA9CB34}.Release|Mixed Platforms.Build.0 = Release|Win32
+		{47EECFB7-1F9E-409C-B8AD-0A2BCCA9CB34}.Release|Win32.ActiveCfg = Release|Win32
+		{47EECFB7-1F9E-409C-B8AD-0A2BCCA9CB34}.Release|Win32.Build.0 = Release|Win32
+		{47EECFB7-1F9E-409C-B8AD-0A2BCCA9CB34}.Release|x64.ActiveCfg = Release|x64
+		{47EECFB7-1F9E-409C-B8AD-0A2BCCA9CB34}.Release|x64.Build.0 = Release|x64
+		{47EECFB7-1F9E-409C-B8AD-0A2BCCA9CB34}.Release|x86.ActiveCfg = Release|Win32
+		{47EECFB7-1F9E-409C-B8AD-0A2BCCA9CB34}.Release|x86.Build.0 = Release|Win32
+		{47EECFB7-1F9E-409C-B8AD-0A2BCCA9CB34}.ReleaseMinDependency|Any CPU.ActiveCfg = Release|x64
+		{47EECFB7-1F9E-409C-B8AD-0A2BCCA9CB34}.ReleaseMinDependency|Any CPU.Build.0 = Release|x64
+		{47EECFB7-1F9E-409C-B8AD-0A2BCCA9CB34}.ReleaseMinDependency|Mixed Platforms.ActiveCfg = Release|Win32
+		{47EECFB7-1F9E-409C-B8AD-0A2BCCA9CB34}.ReleaseMinDependency|Mixed Platforms.Build.0 = Release|Win32
+		{47EECFB7-1F9E-409C-B8AD-0A2BCCA9CB34}.ReleaseMinDependency|Win32.ActiveCfg = Release|Win32
+		{47EECFB7-1F9E-409C-B8AD-0A2BCCA9CB34}.ReleaseMinDependency|Win32.Build.0 = Release|Win32
+		{47EECFB7-1F9E-409C-B8AD-0A2BCCA9CB34}.ReleaseMinDependency|x64.ActiveCfg = Release|x64
+		{47EECFB7-1F9E-409C-B8AD-0A2BCCA9CB34}.ReleaseMinDependency|x64.Build.0 = Release|x64
+		{47EECFB7-1F9E-409C-B8AD-0A2BCCA9CB34}.ReleaseMinDependency|x86.ActiveCfg = Release|Win32
+		{47EECFB7-1F9E-409C-B8AD-0A2BCCA9CB34}.ReleaseMinDependency|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D885561A-FFA2-42EF-A790-D54EB24B2E82}
+	EndGlobalSection
+EndGlobal

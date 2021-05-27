@@ -4,6 +4,7 @@ QO-100 Software Transceiver using an Adalm-Pluto and an SBC (Raspberry, Odroid .
 This project is a fully functional software based transceiver for QO-100
 
 ! ATTENTION: this is work in progress. Do not use these files until this warning is removed !
+Status May,27 2021 ... RX is fully working
 
 ## Hardware requirements
 
@@ -48,10 +49,8 @@ replace "USB Advanced Audio Device Analog Stereo" with the name of your sound ca
 
 the software has two parts:
 qo100trx ... this is the part doing all the work, without the GUI
-and the GUI which not yet available.
+trxGui.exe ... the user interface
 
-To start the software run:  ./qo100trx
+To start the software driver run:  ./qo100trx
+To start the GUI open another terminal, go into the directory: .../trxGui/bin/Release/   and run:  mono  trxGui.exe
 
-watch the information on the screen to find any error messages.
-
-to be continued ...

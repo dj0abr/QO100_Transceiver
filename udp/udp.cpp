@@ -128,6 +128,10 @@ void sendUDP(char *destIP, int destPort, uint8_t *pdata, int len)
     servaddr.sin_port = htons(destPort); 
     //printf("Send to <%s><%d> Len:%d\n",destIP,destPort,len);
     servaddr.sin_addr.s_addr=inet_addr(destIP);
-    sendto(sockfd, (char *)pdata, len, 0, (const struct sockaddr *) &servaddr, sizeof(servaddr)); 
+    ssize_t sent = sendto(sockfd, (char *)pdata, len, 0, (const struct sockaddr *) &servaddr, sizeof(servaddr)); 
+    if((int)sent != len)
+    {
+        printf("UDP tx error %d\n",(int)sent);
+    }
     close(sockfd);
 }

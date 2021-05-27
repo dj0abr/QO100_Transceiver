@@ -26,6 +26,16 @@
 
 #define AUDIO
 
+#define GUI_UDPPORT 40820
+
+void init_rx();
+void init_tx();
+void init_fft();
+void close_fft();
+
 extern int RXfifo;
 extern int TXfifo;
+extern int FFTfifo;
 extern int pbidx, capidx;
+extern char gui_ip[20];
+extern int RXoffsetfreq;

@@ -25,8 +25,6 @@ bool get_ad9361_stream_dev(struct iio_context *ctx, enum iodev d, struct iio_dev
 int pluto_get_USB(char *sn);
 void pluto_setup();
 void init_runloop();
-void init_rx();
-void init_tx();
 
 extern stream_cfg rxcfg;
 extern stream_cfg txcfg;

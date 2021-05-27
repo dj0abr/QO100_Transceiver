@@ -28,6 +28,8 @@
 
 #include "qo100trx.h"
 
+int RXoffsetfreq = 280000;
+
 void* rx_threadfunction(void* param);
 
 void init_rx()
@@ -43,7 +45,6 @@ void* rx_threadfunction(void* param)
     printf("entering RX loop\n");
 	while(keeprunning)
 	{
-        // Test: loop RX back to TX
 		uint8_t data[PLUTOBUFSIZE*4];
 		if(read_fifo(RXfifo, data, PLUTOBUFSIZE*4))
 		{
@@ -58,10 +59,8 @@ void* rx_threadfunction(void* param)
             liquid_float_complex samples[PLUTOBUFSIZE];
             streamToSamples(data, PLUTOBUFSIZE*4, samples);
 
-            // down mix the SSB channel into bandband, demodulate and send to soundcard
-            int offsetfreq = 297000; // lower beacon
-            offsetfreq -= 100;
-            downmix(samples,PLUTOBUFSIZE,offsetfreq);
+            // down mix the SSB channel into baseband, demodulate and send to soundcard
+            downmix(samples,PLUTOBUFSIZE,RXoffsetfreq);
 		}
 
         usleep(1000);

@@ -32,11 +32,40 @@ char plutoid[100] = {"ip:192.168.20.25"};
 char plutoid[100];
 #endif
 
+char gui_ip[20] = {"127.127.0.1"};
+int udprxsock = 0;
+
 // fifos to send/receive samples with pluto run thread
 int RXfifo;
 int TXfifo;
+int FFTfifo;
 
 int pbidx, capidx;
+
+void udprxfunc(uint8_t *pdata, int len, struct sockaddr_in* sender)
+{
+	if(pdata[0] == 0 || pdata[0] == 1)
+	{
+		// set RX offset
+		uint32_t off = pdata[1];
+		off <<= 8;
+		off |= pdata[2];
+		off <<= 8;
+		off |= pdata[3];
+		off <<= 8;
+		off |= pdata[4];
+
+		printf("RX offset: %d\n",off);
+
+		RXoffsetfreq = off;
+	}
+
+	if(pdata[0] == 1 || pdata[0] == 2)
+	{
+		// set TX offset
+		// TODO
+	}
+}
 
 void close_program()
 {
@@ -44,6 +73,7 @@ void close_program()
     keeprunning = 0;
 	sleep(1);
 	close_liquid();
+	close_fft();
 }
 
 int main ()
@@ -72,13 +102,23 @@ int main ()
 	printf("Pluto IP/USB ID      : <%s>\n",pluto_context_name);
 	RXfifo = create_fifo(200, PLUTOBUFSIZE*4);
 	TXfifo = create_fifo(200, PLUTOBUFSIZE*4);
+	FFTfifo = create_fifo(200, PLUTOBUFSIZE*4);
 	pluto_setup();
 
 	// init audio (soundcard)
 	#ifdef AUDIO
-	kmaudio_init();
+	if(kmaudio_init() == -1)
+	{
+		printf("NO AUDIO device\n");
+		exit(0);
+	}
 	kmaudio_getDeviceList();
 	pbidx = kmaudio_startPlayback((char *)"USB Advanced Audio Device Analog Stereo", 48000);
+	if(pbidx == -1)
+	{
+		printf("NO AUDIO play device\n");
+		exit(0);
+	}
 	//capidx = kmaudio_startCapture((char *)"USB Advanced Audio Device Analog Stereo", 48000);
 	#endif
 
@@ -87,8 +127,12 @@ int main ()
 	
 	// pluto RX/TX is now running, samples are available in the fifos
 	// start the SSB receiver and transmitter
+	init_fft();
 	init_rx();
 	init_tx();
+
+	// UDP receiver for commands from GUI
+	UdpRxInit(&udprxsock, 40821, udprxfunc , &keeprunning);
 
 	printf("initialisation finished. Enter normal operation (press Ctrl+C to cancel)\n");
 	while(keeprunning)

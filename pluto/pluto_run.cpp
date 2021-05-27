@@ -50,12 +50,13 @@ uint8_t *p_dat, *p_start;
         // Refill RX buffer
         nbytes_rx = iio_buffer_refill(rxbuf);
         if (nbytes_rx < 0) { printf("Error refilling buf %d\n",(int) nbytes_rx); }
-        measure_samplerate(0,nbytes_rx/4,10);
+        //measure_samplerate(0,nbytes_rx/4,10);
 
         p_start = (uint8_t *)iio_buffer_first(rxbuf, rx0_i);
 
         // sample buffer begins at p_start with length (PLUTOBUFSIZE * p_inc) bytes
         write_fifo(RXfifo,p_start,nbytes_rx);
+        write_fifo(FFTfifo,p_start,nbytes_rx);
     
         // ====== send samples to pluto ======
         // get samples received via UDP

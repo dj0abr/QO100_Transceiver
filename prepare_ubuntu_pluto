@@ -1,6 +1,6 @@
 sudo apt-get update
 sudo apt-get -y install build-essential libxml2-dev bison flex libcdk5-dev cmake libaio-dev libusb-1.0-0-dev libserialport-dev libavahi-client-dev
-sudo apt-get -y install libad9361-dev
+sudo apt-get -y install libasound2-dev libfftw3-dev sndfile-tools libsndfile1-dev git libad9361-dev
 git clone https://github.com/analogdevicesinc/libiio.git
 cd libiio
 mkdir build
@@ -8,4 +8,15 @@ cd build
 cmake ../
 make -j$(nproc)
 sudo make install
-
+git clone https://github.com/jgaeddert/liquid-dsp
+./bootstrap.sh
+./configure
+make
+sudo make install
+https://github.com/andrewrk/libsoundio
+cd libsoundio
+mkdir build
+cd build
+cmake ../
+make -j 4
+sudo make install

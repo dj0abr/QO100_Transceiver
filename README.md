@@ -30,10 +30,10 @@ this builds the executable file: qo100trx
 
 open the file qo100trx.cpp and look for "char plutoid[100]"
 
-Run with a pluto connected via USB:
+Run with a pluto connected via USB:\\
 char plutoid[100] = {0};
 
-or access a pluto which is connected via Ethernet-Adapter:
+or access a pluto which is connected via Ethernet-Adapter:\\
 char plutoid[100] = {"ip:192.168.20.25"};
 
 #### configure sound card
@@ -48,9 +48,12 @@ replace "USB Advanced Audio Device Analog Stereo" with the name of your sound ca
 ## run the software
 
 the software has two parts:
+
 qo100trx ... this is the part doing all the work, without the GUI
+
 trxGui.exe ... the user interface
 
 To start the software driver run:  ./qo100trx
+
 To start the GUI open another terminal, go into the directory: .../trxGui/bin/Release/   and run:  mono  trxGui.exe
 

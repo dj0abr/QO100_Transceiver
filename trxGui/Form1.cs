@@ -52,7 +52,8 @@ namespace trxGui
             int yspace = 12;
 
             bt_info.Location = new Point(panel_bigspec.Location.X + panel_bigspec.Width - bt_info.Width, panel_smallwf.Location.Y + panel_smallwf.Height + yspace);
-            gp_testmodes.Location = new Point(bt_info.Location.X - gp_testmodes.Width - 5, panel_smallwf.Location.Y + panel_smallwf.Height + 1);
+            button_setup.Location = new Point(button_setup.Location.X - gp_testmodes.Width - 5, panel_smallwf.Location.Y + panel_smallwf.Height + 1);
+            gp_testmodes.Location = new Point(button_setup.Location.X - gp_testmodes.Width - 5, panel_smallwf.Location.Y + panel_smallwf.Height + 1);
             gp_qrg.Location = new Point(13, panel_smallwf.Location.Y + panel_smallwf.Height + 1);
             gp_copyqrg.Location = new Point(gp_qrg.Location.X + gp_qrg.Width + 5, panel_smallwf.Location.Y + panel_smallwf.Height + 1);
             panel1.Location = new Point(gp_copyqrg.Location.X + gp_copyqrg.Width + 5, gp_copyqrg.Location.Y + 7);
@@ -393,6 +394,11 @@ namespace trxGui
             if (statics.ptt) statics.ptt = false;
             else statics.ptt = true;
             panel1.Invalidate();
+        }
+
+        private void button_setup_Click(object sender, EventArgs e)
+        {
+
         }
     }
 

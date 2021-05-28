@@ -39,8 +39,8 @@ namespace trxGui
             this.cb_audioloop = new System.Windows.Forms.CheckBox();
             this.gp_qrg = new System.Windows.Forms.GroupBox();
             this.gp_copyqrg = new System.Windows.Forms.GroupBox();
-            this.cb_rxtotx = new System.Windows.Forms.CheckBox();
             this.cb_txtorx = new System.Windows.Forms.CheckBox();
+            this.cb_rxtotx = new System.Windows.Forms.CheckBox();
             this.panel_smallqrg = new trxGui.DoubleBufferedPanel();
             this.panel_bandplan = new trxGui.DoubleBufferedPanel();
             this.panel_smallwf = new trxGui.DoubleBufferedPanel();
@@ -48,6 +48,8 @@ namespace trxGui
             this.panel_bigwf = new trxGui.DoubleBufferedPanel();
             this.panel_bigspec = new trxGui.DoubleBufferedPanel();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.button_setup = new System.Windows.Forms.Button();
+            this.cb_rfloop = new System.Windows.Forms.CheckBox();
             this.gp_testmodes.SuspendLayout();
             this.gp_qrg.SuspendLayout();
             this.gp_copyqrg.SuspendLayout();
@@ -108,10 +110,11 @@ namespace trxGui
             // 
             // gp_testmodes
             // 
+            this.gp_testmodes.Controls.Add(this.cb_rfloop);
             this.gp_testmodes.Controls.Add(this.cb_audioloop);
-            this.gp_testmodes.Location = new System.Drawing.Point(925, 719);
+            this.gp_testmodes.Location = new System.Drawing.Point(777, 719);
             this.gp_testmodes.Name = "gp_testmodes";
-            this.gp_testmodes.Size = new System.Drawing.Size(116, 40);
+            this.gp_testmodes.Size = new System.Drawing.Size(193, 40);
             this.gp_testmodes.TabIndex = 8;
             this.gp_testmodes.TabStop = false;
             this.gp_testmodes.Text = "Testmodes";
@@ -149,18 +152,6 @@ namespace trxGui
             this.gp_copyqrg.TabStop = false;
             this.gp_copyqrg.Text = "QRG copy";
             // 
-            // cb_rxtotx
-            // 
-            this.cb_rxtotx.AutoSize = true;
-            this.cb_rxtotx.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cb_rxtotx.Location = new System.Drawing.Point(7, 15);
-            this.cb_rxtotx.Name = "cb_rxtotx";
-            this.cb_rxtotx.Size = new System.Drawing.Size(58, 17);
-            this.cb_rxtotx.TabIndex = 0;
-            this.cb_rxtotx.Text = "RX>TX";
-            this.cb_rxtotx.UseVisualStyleBackColor = true;
-            this.cb_rxtotx.CheckedChanged += new System.EventHandler(this.cb_rxtotx_CheckedChanged);
-            // 
             // cb_txtorx
             // 
             this.cb_txtorx.AutoSize = true;
@@ -172,6 +163,18 @@ namespace trxGui
             this.cb_txtorx.Text = "TX>RX";
             this.cb_txtorx.UseVisualStyleBackColor = true;
             this.cb_txtorx.CheckedChanged += new System.EventHandler(this.cb_txtorx_CheckedChanged);
+            // 
+            // cb_rxtotx
+            // 
+            this.cb_rxtotx.AutoSize = true;
+            this.cb_rxtotx.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cb_rxtotx.Location = new System.Drawing.Point(7, 15);
+            this.cb_rxtotx.Name = "cb_rxtotx";
+            this.cb_rxtotx.Size = new System.Drawing.Size(58, 17);
+            this.cb_rxtotx.TabIndex = 0;
+            this.cb_rxtotx.Text = "RX>TX";
+            this.cb_rxtotx.UseVisualStyleBackColor = true;
+            this.cb_rxtotx.CheckedChanged += new System.EventHandler(this.cb_rxtotx_CheckedChanged);
             // 
             // panel_smallqrg
             // 
@@ -240,10 +243,32 @@ namespace trxGui
             this.panel1.BackColor = System.Drawing.Color.LightGreen;
             this.panel1.Location = new System.Drawing.Point(302, 726);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(604, 33);
+            this.panel1.Size = new System.Drawing.Size(469, 33);
             this.panel1.TabIndex = 11;
             this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
             this.panel1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseClick);
+            // 
+            // button_setup
+            // 
+            this.button_setup.BackColor = System.Drawing.Color.Silver;
+            this.button_setup.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button_setup.Location = new System.Drawing.Point(977, 723);
+            this.button_setup.Name = "button_setup";
+            this.button_setup.Size = new System.Drawing.Size(75, 27);
+            this.button_setup.TabIndex = 12;
+            this.button_setup.Text = "Setup";
+            this.button_setup.UseVisualStyleBackColor = false;
+            this.button_setup.Click += new System.EventHandler(this.button_setup_Click);
+            // 
+            // cb_rfloop
+            // 
+            this.cb_rfloop.AutoSize = true;
+            this.cb_rfloop.Location = new System.Drawing.Point(106, 17);
+            this.cb_rfloop.Name = "cb_rfloop";
+            this.cb_rfloop.Size = new System.Drawing.Size(67, 17);
+            this.cb_rfloop.TabIndex = 1;
+            this.cb_rfloop.Text = "RF Loop";
+            this.cb_rfloop.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
@@ -251,6 +276,7 @@ namespace trxGui
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Gray;
             this.ClientSize = new System.Drawing.Size(1296, 777);
+            this.Controls.Add(this.button_setup);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.gp_copyqrg);
             this.Controls.Add(this.gp_qrg);
@@ -297,6 +323,8 @@ namespace trxGui
         private System.Windows.Forms.CheckBox cb_txtorx;
         private System.Windows.Forms.CheckBox cb_rxtotx;
         private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Button button_setup;
+        private System.Windows.Forms.CheckBox cb_rfloop;
     }
 }
 

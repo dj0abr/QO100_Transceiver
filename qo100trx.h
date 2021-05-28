@@ -24,8 +24,6 @@
 #include "pluto/pluto.h"
 #include "libkmaudio/libkmaudio.h"
 
-#define AUDIO
-
 #define GUI_UDPPORT 40820
 
 void init_rx();
@@ -39,3 +37,6 @@ extern int FFTfifo;
 extern int pbidx, capidx;
 extern char gui_ip[20];
 extern int RXoffsetfreq;
+extern int TXoffsetfreq;
+extern uint8_t audioloop;
+extern uint8_t ptt;

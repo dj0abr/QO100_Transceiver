@@ -26,7 +26,25 @@
 * 
 */
 
+/*
+* reads len samples from device id into psamp
+* returns: number of values written to psamp , -1=error
+* id ... device id returned by kmaudio_startCapture
+* psamp ... float array of length len getting the audio data (mono)
+* len ... number of float values to write into psamp
+* volume ... 0.0f..2.0f will be multiplied with the input sample
+* wait ... 1=wait for data, 0=return if not enough data available (in this case psamp will return 0,0,0...)
+* 
+* if resampling is required the number of returned samples may differ from the number of requested samples
+* it can be larger, so the buffer psamp should be larger than "len" by factor 1.1
+*/
+
+int kmaudio_readsamples(int id, float* psamp, int len, float volume, int wait);
+
+
 #include "qo100trx.h"
+
+int TXoffsetfreq = 280000;
 
 void* tx_threadfunction(void* param);
 
@@ -43,9 +61,24 @@ void* tx_threadfunction(void* param)
     printf("entering TX loop\n");
 	while(keeprunning)
 	{
-
-
-        usleep(1000);
+        float f[4800];
+        int ret = kmaudio_readsamples(capidx, f, 4800, 1.0f, 0);
+        if(ret)
+        {
+            if(audioloop)
+            {
+                // send back to sound output
+                kmaudio_playsamples(pbidx,f,ret,1.0f);
+            }
+            else
+            {
+                // send to modulator
+                if(ptt)
+                    upmix(f,ret,TXoffsetfreq);
+            }
+        }
+        else
+            usleep(1000);
 	}
     printf("exit TX loop\n");
     pthread_exit(NULL); // self terminate this thread

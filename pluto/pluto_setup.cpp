@@ -29,12 +29,11 @@
 #include "../qo100trx.h"
 
 // ============= Configuration ============= 
-float LNB_REF =	 24;		// MHz (LNBs reference frequency)
-float RX_BW =    8;			// MHz
-float TX_BW =    0.1;		// MHz
-double RX_FREQ =	 ((double)BASEQRG - 390.0*(double)LNB_REF);	// MHz 10489.475 - 390*24 = 1129.475
-double TX_FREQ =	 ((double)BASEQRG - 390.0*(double)LNB_REF);	// MHz
-float TX_GAIN =  -10;		// dBm max = 0, max_usable=-5
+float RX_BW =    	8;					// MHz
+float TX_BW =    	0.1;				// MHz
+double RX_FREQ =	(double)RXBASEQRG;	// Hz
+double TX_FREQ =	(double)TXBASEQRG;	// Hz
+float TX_GAIN =  	-10;				// dBm max = 0, max_usable=-5
 // =========================================
 
 
@@ -71,13 +70,13 @@ void pluto_setup()
 	// RX stream config
 	rxcfg.bw_hz = MHZ(RX_BW);   	// rx rf bandwidth
 	rxcfg.fs_hz = srate;   			// rx sample rate
-	rxcfg.lo_hz = MHZ(RX_FREQ); 	// rx rf frequency
+	rxcfg.lo_hz = RX_FREQ; 			// rx rf frequency
 	rxcfg.rfport = "A_BALANCED"; 	// port A (select for rf freq.)
 
 	// TX stream config
 	txcfg.bw_hz = MHZ(TX_BW); 		// tx rf bandwidth
 	txcfg.fs_hz = srate;   			// tx sample rate (must be same as RX samp rate)
-	txcfg.lo_hz = MHZ(TX_FREQ); 	// tx rf frequency
+	txcfg.lo_hz = TX_FREQ; 			// tx rf frequency
 	txcfg.rfport = "A"; 			// port A (select for rf freq.)
 	txcfg.hwgain = TX_GAIN;
 

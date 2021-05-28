@@ -3,7 +3,7 @@ LDFLAGS = -lpthread -lrt -lm -liio -lliquid -lad9361 -lfftw3 -lfftw3_threads -ls
 OBJ = qo100trx.o rx.o tx.o fft.o\
 kmlib/kmtimer.o kmlib/km_helper.o kmlib/kmfifo.o\
 udp/udp.o\
-liquid/liquiddrv.o\
+liquid/liquiddrv.o liquid/liquiddrv_modulator.o\
 pluto/pluto_finder.o pluto/pluto_driver.o pluto/pluto_setup.o pluto/pluto_run.o\
 libkmaudio/libkmaudio_fifo.o  libkmaudio/libkmaudio_getDevices.o  libkmaudio/libkmaudio_getDevices_Linux.o\
 libkmaudio/libkmaudio_init.o libkmaudio/libkmaudio_init_linux.o libkmaudio/libkmaudio_interface.o libkmaudio/libkmaudio_capture_linux.o\

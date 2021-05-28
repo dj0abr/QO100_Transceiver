@@ -1,5 +1,9 @@
 #define SAMPRATE  		1120000			// 1.12MS/s
-#define BASEQRG			10489.47		// range ist 10489.470 - 10490.03
+
+#define LNB_REF			24000			// kHz
+#define BASEQRG			10489470		// kHz, spectrum range ist 10489.470 - 10490.03
+#define RXBASEQRG		((BASEQRG - 390*LNB_REF)*1000)
+#define TXBASEQRG		RXBASEQRG
 #define PLUTOBUFSIZE  	(SAMPRATE/10)
 
 #define MHZ(x) ((long long)(x*1000000.0 + .5))
@@ -32,7 +36,6 @@ extern struct iio_buffer  *rxbuf;
 extern struct iio_buffer  *txbuf;
 extern struct iio_channel *rx0_i;
 extern struct iio_channel *tx0_i;
-extern float LNB_REF;
 extern float RX_BW;
 extern float TX_BW;
 extern double RX_FREQ;

@@ -4,7 +4,7 @@
 nco_crcf dnnco = NULL;      
 
 // SSB Demodulator
-float mod_index  = 0.1f;                // modulation index (bandwidth)
+float demod_index  = 0.1f;                // modulation index (bandwidth)
 ampmodem demod = NULL;
 
 // Low pass
@@ -33,11 +33,11 @@ void init_liquid()
     tune_downmixer(0);
 
     // SSB Demodulator
-    demod = ampmodem_create(mod_index, LIQUID_AMPMODEM_USB, 1);
+    demod = ampmodem_create(demod_index, LIQUID_AMPMODEM_USB, 1);
 
     // create downsampler
     decim_q = resamp_crcf_create(decim_r,decim_h_len,decim_bw,decim_slsl,decim_npfb);
-    if(decim_q == NULL) printf("dedcimqerror\n");
+    if(decim_q == NULL) printf("decimq error\n");
 
     // low pass
     lp_q = iirfilt_crcf_create_prototype(LIQUID_IIRDES_ELLIP, LIQUID_IIRDES_LOWPASS, LIQUID_IIRDES_SOS,
@@ -105,6 +105,7 @@ void downmix(liquid_float_complex *samples, int len, int offsetfreq)
     if (dnnco == NULL) return;
     if (demod == NULL) return;
     if (decim_q == NULL) return;
+    if (lp_q == NULL) return;
 
     // re-tune if RX grq has been changed
     tune_downmixer(offsetfreq);
@@ -138,8 +139,7 @@ void downmix(liquid_float_complex *samples, int len, int offsetfreq)
         ampmodem_demodulate(demod, soundsamp, &z);
 
         // send z to soundcard
-        #ifdef AUDIO
-        kmaudio_playsamples(pbidx,&z,1,1.0f);
-        #endif
+        if(audioloop == 0)
+            kmaudio_playsamples(pbidx,&z,1,1.0f);
     }
 }

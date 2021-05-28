@@ -176,7 +176,7 @@ double real, imag;
                 // convert to dB scale
                 if(v <=0) v=0.01;
                 bin[i] = log(v);
-                bin[i] *= 2000;
+                bin[i] *= 1000;
                 if(bin[i] > 32768) printf("reduce multiplicator %f\n",bin[i]);
             }
             // bins are in the range 0..32767 (16 bit)

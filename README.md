@@ -3,8 +3,7 @@ QO-100 Software Transceiver using an Adalm-Pluto and an SBC (Raspberry, Odroid .
 
 This project is a fully functional software based transceiver for QO-100
 
-! ATTENTION: this is work in progress. Do not use these files until this warning is removed !
-Status May,27 2021 ... RX is fully working
+Status May,28 2021 ... RX and TX are fully working, still need some work to make installation easier. In the meantime the base frequency for RX and TX has to be defined in pluto.h
 
 ## Hardware requirements
 

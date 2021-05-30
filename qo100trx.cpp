@@ -248,7 +248,7 @@ int main ()
 			newPluto = 0;
 			startPluto();
 		}
-
+*/
 		if(faudio)
 		{
 			faudio = 0;
@@ -261,7 +261,7 @@ int main ()
 			memcpy(ub+1,s,len);
 			sendUDP(gui_ip, GUI_UDPPORT, ub, len+1);
 		}
-
+/*
 		if(newaudiodevs)
 		{
 			printf("establish new audio settings\n");

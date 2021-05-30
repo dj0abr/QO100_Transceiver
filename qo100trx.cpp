@@ -223,7 +223,7 @@ int main ()
 		printf("NO AUDIO device\n");
 		exit(0);
 	}
-	//kmaudio_getDeviceList();
+	kmaudio_getDeviceList();
 
 	// init DSP demodulator
 	init_liquid();

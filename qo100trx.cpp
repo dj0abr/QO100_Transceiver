@@ -243,7 +243,7 @@ int main ()
 	while(keeprunning)
 	{
 		printf("loop\n");
-		if(newPluto)
+		/*if(newPluto)
 		{
 			newPluto = 0;
 			startPluto();
@@ -284,7 +284,7 @@ int main ()
 
 				newaudiodevs = 0;
 			}
-		}
+		}*/
 
 		usleep(100);
 	}

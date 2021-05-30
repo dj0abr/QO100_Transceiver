@@ -63,7 +63,8 @@ namespace trxGui
             gp_testmodes.Location = new Point(button_setup.Location.X - gp_testmodes.Width - 5, panel_smallwf.Location.Y + panel_smallwf.Height + 1);
             gp_qrg.Location = new Point(13, panel_smallwf.Location.Y + panel_smallwf.Height + 1);
             gp_copyqrg.Location = new Point(gp_qrg.Location.X + gp_qrg.Width + 5, panel_smallwf.Location.Y + panel_smallwf.Height + 1);
-            panel1.Location = new Point(gp_copyqrg.Location.X + gp_copyqrg.Width + 5, gp_copyqrg.Location.Y + 7);
+            gp_audio.Location = new Point(gp_copyqrg.Location.X + gp_copyqrg.Width + 5, gp_copyqrg.Location.Y);
+            panel1.Location = new Point(gp_audio.Location.X + gp_audio.Width + 5, gp_audio.Location.Y + 7);
             panel1.Width = gp_testmodes.Location.X - panel1.Location.X - 5;
 
             cb_rxtotx.Location = new Point(cb_rxtotx.Location.X, 19);
@@ -214,7 +215,9 @@ namespace trxGui
         private void sendRXTXoffset()
         {
             if (statics.RXoffset < 0) statics.RXoffset = 0;
+            if (statics.RXoffset > 560000) statics.RXoffset = 560000;
             if (statics.TXoffset < 0) statics.RXoffset = 0;
+            if (statics.TXoffset > 560000) statics.TXoffset = 560000;
 
             Byte[] txb = new Byte[9];
             txb[0] = 0;
@@ -272,21 +275,25 @@ namespace trxGui
 
         private void panel_bigwf_MouseWheel(object sender, MouseEventArgs e)
         {
+            int factor = 100;
+            if (Control.ModifierKeys == Keys.Alt) factor = 1000;
+            if (Control.ModifierKeys == Keys.Shift) factor = 10000;
+
             if (rb_rit.Checked)
             {
                 if (e.Delta > 0) //wheel direction
-                    statics.RXoffset += 100;
+                    statics.RXoffset += factor;
                 else
-                    statics.RXoffset -= 100;
+                    statics.RXoffset -= factor;
 
                 sendRXTXoffset();
             }
             else
             {
                 if (e.Delta > 0) //wheel direction
-                    statics.TXoffset += 100;
+                    statics.TXoffset += factor;
                 else
-                    statics.TXoffset -= 100;
+                    statics.TXoffset -= factor;
 
                 sendRXTXoffset();
             }
@@ -575,6 +582,25 @@ namespace trxGui
                 }
             }
             catch { }
+        }
+
+        private void checkBox2_CheckedChanged(object sender, EventArgs e)
+        {
+            Byte[] txb = new Byte[2];
+            txb[0] = 9;
+            txb[1] = (Byte)((checkBox2.Checked) ? 1 : 0);
+            Udp.UdpSendData(txb);
+        }
+
+        private void bt_info_Click(object sender, EventArgs e)
+        {
+            Form_info fi = new Form_info();
+
+            // Show the settings form
+            var res = fi.ShowDialog();
+            if (res == DialogResult.OK)
+            {
+            }
         }
     }
 

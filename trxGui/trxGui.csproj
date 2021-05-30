@@ -7,7 +7,7 @@
     <ProjectGuid>{B4D0AE1A-EF2F-413D-B67A-AB7CBDD6B4BB}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>trxGui</RootNamespace>
-    <AssemblyName>trxGui</AssemblyName>
+    <AssemblyName>qo100trx</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -27,7 +27,7 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>..\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -53,6 +53,12 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Form_info.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form_info.Designer.cs">
+      <DependentUpon>Form_info.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form_setup.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -65,6 +71,9 @@
     <Compile Include="udp.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form_info.resx">
+      <DependentUpon>Form_info.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form_setup.resx">
       <DependentUpon>Form_setup.cs</DependentUpon>

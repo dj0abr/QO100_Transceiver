@@ -33,7 +33,7 @@ float RX_BW =    	8;					// MHz
 float TX_BW =    	0.1;				// MHz
 double RX_FREQ =	(double)RXBASEQRG;	// Hz
 double TX_FREQ =	(double)TXBASEQRG;	// Hz
-float TX_GAIN =  	-10;				// dBm max = 0, max_usable=-5
+float TX_GAIN =  	0;				// dBm max = 0, max_usable=-5
 // =========================================
 
 

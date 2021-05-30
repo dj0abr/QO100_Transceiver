@@ -43,6 +43,7 @@ namespace trxGui
             this.label3 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.textBox3 = new System.Windows.Forms.TextBox();
+            this.textBox1 = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // button1
@@ -69,7 +70,7 @@ namespace trxGui
             // cb_audioPB
             // 
             this.cb_audioPB.FormattingEnabled = true;
-            this.cb_audioPB.Location = new System.Drawing.Point(154, 39);
+            this.cb_audioPB.Location = new System.Drawing.Point(154, 32);
             this.cb_audioPB.Name = "cb_audioPB";
             this.cb_audioPB.Size = new System.Drawing.Size(280, 21);
             this.cb_audioPB.TabIndex = 2;
@@ -77,7 +78,7 @@ namespace trxGui
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(12, 42);
+            this.label10.Location = new System.Drawing.Point(12, 35);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(133, 13);
             this.label10.TabIndex = 11;
@@ -86,7 +87,7 @@ namespace trxGui
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(12, 75);
+            this.label11.Location = new System.Drawing.Point(12, 68);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(66, 13);
             this.label11.TabIndex = 12;
@@ -95,14 +96,14 @@ namespace trxGui
             // cb_audioCAP
             // 
             this.cb_audioCAP.FormattingEnabled = true;
-            this.cb_audioCAP.Location = new System.Drawing.Point(154, 72);
+            this.cb_audioCAP.Location = new System.Drawing.Point(154, 65);
             this.cb_audioCAP.Name = "cb_audioCAP";
             this.cb_audioCAP.Size = new System.Drawing.Size(280, 21);
             this.cb_audioCAP.TabIndex = 13;
             // 
             // tb_txqrg
             // 
-            this.tb_txqrg.Location = new System.Drawing.Point(154, 199);
+            this.tb_txqrg.Location = new System.Drawing.Point(154, 152);
             this.tb_txqrg.Name = "tb_txqrg";
             this.tb_txqrg.Size = new System.Drawing.Size(177, 20);
             this.tb_txqrg.TabIndex = 21;
@@ -110,7 +111,7 @@ namespace trxGui
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(12, 202);
+            this.label6.Location = new System.Drawing.Point(12, 155);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(115, 13);
             this.label6.TabIndex = 20;
@@ -119,7 +120,7 @@ namespace trxGui
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(337, 170);
+            this.label2.Location = new System.Drawing.Point(337, 123);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(361, 13);
             this.label2.TabIndex = 27;
@@ -127,7 +128,7 @@ namespace trxGui
             // 
             // tb_rxqrg
             // 
-            this.tb_rxqrg.Location = new System.Drawing.Point(154, 166);
+            this.tb_rxqrg.Location = new System.Drawing.Point(154, 119);
             this.tb_rxqrg.Name = "tb_rxqrg";
             this.tb_rxqrg.Size = new System.Drawing.Size(177, 20);
             this.tb_rxqrg.TabIndex = 26;
@@ -135,7 +136,7 @@ namespace trxGui
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(12, 169);
+            this.label3.Location = new System.Drawing.Point(12, 122);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(106, 13);
             this.label3.TabIndex = 25;
@@ -144,7 +145,7 @@ namespace trxGui
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(337, 206);
+            this.label1.Location = new System.Drawing.Point(337, 159);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(355, 13);
             this.label1.TabIndex = 28;
@@ -153,19 +154,31 @@ namespace trxGui
             // textBox3
             // 
             this.textBox3.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.textBox3.Location = new System.Drawing.Point(44, 254);
+            this.textBox3.Location = new System.Drawing.Point(15, 211);
             this.textBox3.Multiline = true;
             this.textBox3.Name = "textBox3";
             this.textBox3.ReadOnly = true;
-            this.textBox3.Size = new System.Drawing.Size(465, 184);
+            this.textBox3.Size = new System.Drawing.Size(435, 227);
             this.textBox3.TabIndex = 29;
             this.textBox3.Text = resources.GetString("textBox3.Text");
+            // 
+            // textBox1
+            // 
+            this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.textBox1.Location = new System.Drawing.Point(483, 211);
+            this.textBox1.Multiline = true;
+            this.textBox1.Name = "textBox1";
+            this.textBox1.ReadOnly = true;
+            this.textBox1.Size = new System.Drawing.Size(300, 193);
+            this.textBox1.TabIndex = 30;
+            this.textBox1.Text = resources.GetString("textBox1.Text");
             // 
             // Form_setup
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.textBox1);
             this.Controls.Add(this.textBox3);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.label2);
@@ -202,5 +215,6 @@ namespace trxGui
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox textBox3;
+        private System.Windows.Forms.TextBox textBox1;
     }
 }

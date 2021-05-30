@@ -10,14 +10,18 @@ libkmaudio/libkmaudio_init.o libkmaudio/libkmaudio_init_linux.o libkmaudio/libkm
 libkmaudio/libkmaudio_playback_linux.o libkmaudio/libkmaudio_resampler.o
 
 default: $(OBJ)
-	g++ $(CXXFLAGS) -o qo100trx $(OBJ) $(LDFLAGS)
+	g++ $(CXXFLAGS) -o Release/trxdriver $(OBJ) $(LDFLAGS)
+	rm -rf  Release/*.config Release/*.pdb
+	echo "mono qo100trx.exe" > Release/startQO100trx
+	chmod 755 Release/startQO100trx
+
 
 clean:
-	rm -r *.o
-	rm -r kmlib/*.o 
-	rm -r pluto/*.o 
-	rm -r udp/*.o 
-	rm -r liquid/*.o 
-	rm -r libkmaudio/*.o 
-	rm -r qo100trx
+	rm -rf *.o
+	rm -rf kmlib/*.o 
+	rm -rf pluto/*.o 
+	rm -rf udp/*.o 
+	rm -rf liquid/*.o 
+	rm -rf libkmaudio/*.o 
+	rm -rf Release/trxdriver
 	

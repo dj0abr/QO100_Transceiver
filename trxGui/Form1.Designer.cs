@@ -44,6 +44,8 @@ namespace trxGui
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel_qrg = new System.Windows.Forms.Panel();
             this.button_setup = new System.Windows.Forms.Button();
+            this.gp_audio = new System.Windows.Forms.GroupBox();
+            this.checkBox2 = new System.Windows.Forms.CheckBox();
             this.panel_bigspec = new trxGui.DoubleBufferedPanel();
             this.panel_bigwf = new trxGui.DoubleBufferedPanel();
             this.panel_bandplan = new trxGui.DoubleBufferedPanel();
@@ -53,6 +55,7 @@ namespace trxGui
             this.gp_testmodes.SuspendLayout();
             this.gp_qrg.SuspendLayout();
             this.gp_copyqrg.SuspendLayout();
+            this.gp_audio.SuspendLayout();
             this.SuspendLayout();
             // 
             // timer_draw
@@ -70,12 +73,13 @@ namespace trxGui
             this.bt_info.TabIndex = 4;
             this.bt_info.Text = "Info";
             this.bt_info.UseVisualStyleBackColor = false;
+            this.bt_info.Click += new System.EventHandler(this.bt_info_Click);
             // 
             // gp_testmodes
             // 
             this.gp_testmodes.Controls.Add(this.cb_rfloop);
             this.gp_testmodes.Controls.Add(this.cb_audioloop);
-            this.gp_testmodes.Location = new System.Drawing.Point(738, 709);
+            this.gp_testmodes.Location = new System.Drawing.Point(788, 709);
             this.gp_testmodes.Name = "gp_testmodes";
             this.gp_testmodes.Size = new System.Drawing.Size(180, 40);
             this.gp_testmodes.TabIndex = 8;
@@ -85,9 +89,10 @@ namespace trxGui
             // cb_rfloop
             // 
             this.cb_rfloop.AutoSize = true;
+            this.cb_rfloop.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cb_rfloop.Location = new System.Drawing.Point(106, 17);
             this.cb_rfloop.Name = "cb_rfloop";
-            this.cb_rfloop.Size = new System.Drawing.Size(67, 17);
+            this.cb_rfloop.Size = new System.Drawing.Size(64, 17);
             this.cb_rfloop.TabIndex = 1;
             this.cb_rfloop.Text = "RF Loop";
             this.cb_rfloop.UseVisualStyleBackColor = true;
@@ -96,9 +101,10 @@ namespace trxGui
             // cb_audioloop
             // 
             this.cb_audioloop.AutoSize = true;
+            this.cb_audioloop.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cb_audioloop.Location = new System.Drawing.Point(11, 17);
             this.cb_audioloop.Name = "cb_audioloop";
-            this.cb_audioloop.Size = new System.Drawing.Size(80, 17);
+            this.cb_audioloop.Size = new System.Drawing.Size(77, 17);
             this.cb_audioloop.TabIndex = 0;
             this.cb_audioloop.Text = "Audio Loop";
             this.cb_audioloop.UseVisualStyleBackColor = true;
@@ -181,9 +187,9 @@ namespace trxGui
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.LightGreen;
-            this.panel1.Location = new System.Drawing.Point(301, 716);
+            this.panel1.Location = new System.Drawing.Point(433, 716);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(427, 33);
+            this.panel1.Size = new System.Drawing.Size(345, 33);
             this.panel1.TabIndex = 11;
             this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
             this.panel1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseClick);
@@ -208,6 +214,28 @@ namespace trxGui
             this.button_setup.Text = "SETUP";
             this.button_setup.UseVisualStyleBackColor = false;
             this.button_setup.Click += new System.EventHandler(this.button_setup_Click);
+            // 
+            // gp_audio
+            // 
+            this.gp_audio.Controls.Add(this.checkBox2);
+            this.gp_audio.Location = new System.Drawing.Point(301, 713);
+            this.gp_audio.Name = "gp_audio";
+            this.gp_audio.Size = new System.Drawing.Size(89, 40);
+            this.gp_audio.TabIndex = 11;
+            this.gp_audio.TabStop = false;
+            this.gp_audio.Text = "Audio";
+            // 
+            // checkBox2
+            // 
+            this.checkBox2.AutoSize = true;
+            this.checkBox2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.checkBox2.Location = new System.Drawing.Point(7, 16);
+            this.checkBox2.Name = "checkBox2";
+            this.checkBox2.Size = new System.Drawing.Size(69, 17);
+            this.checkBox2.TabIndex = 0;
+            this.checkBox2.Text = "Compress";
+            this.checkBox2.UseVisualStyleBackColor = true;
+            this.checkBox2.CheckedChanged += new System.EventHandler(this.checkBox2_CheckedChanged);
             // 
             // panel_bigspec
             // 
@@ -277,6 +305,7 @@ namespace trxGui
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Gray;
             this.ClientSize = new System.Drawing.Size(1147, 761);
+            this.Controls.Add(this.gp_audio);
             this.Controls.Add(this.button_setup);
             this.Controls.Add(this.panel_qrg);
             this.Controls.Add(this.panel1);
@@ -300,6 +329,8 @@ namespace trxGui
             this.gp_qrg.PerformLayout();
             this.gp_copyqrg.ResumeLayout(false);
             this.gp_copyqrg.PerformLayout();
+            this.gp_audio.ResumeLayout(false);
+            this.gp_audio.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -325,6 +356,8 @@ namespace trxGui
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel panel_qrg;
         private System.Windows.Forms.Button button_setup;
+        private System.Windows.Forms.GroupBox gp_audio;
+        private System.Windows.Forms.CheckBox checkBox2;
     }
 }
 

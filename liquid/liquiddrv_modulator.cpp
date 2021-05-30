@@ -27,7 +27,6 @@ float        tx_lp_As    =  60.0f;    // stop-band attenuation
 unsigned int tx_lp_n     = 128;       // number of samples
 iirfilt_crcf tx_lp_q = NULL;
 
-
 void showmax(float f)
 {
 static float fs=0; 
@@ -82,7 +81,6 @@ void close_liquid_modulator()
 
     if(tx_lp_q) iirfilt_crcf_destroy(tx_lp_q);
     tx_lp_q = NULL;
-
 }
 
 void tune_upmixer(int offset)
@@ -109,6 +107,8 @@ int txarridx = 0;
 
 void upmix(float *f, int len, int offsetfreq)
 {
+float fcompr;
+
     if (mod == NULL) return;
     if (interp_q == NULL) return;
     if (upnco == NULL) return;
@@ -119,9 +119,26 @@ void upmix(float *f, int len, int offsetfreq)
 
     for(int i=0; i<len; i++)
     {
+        // audio compression
+        if(compressor)
+        {
+            fcompr = f[i];
+            if(fcompr >= 1) fcompr = 0.99;
+            if(fcompr <= -1) fcompr = -0.99;
+            for(int co=0; co<2; co++)
+            {
+                fcompr = 3.3 * log10(fcompr+1);
+                if(fcompr >= 1) fcompr = 0.99;
+                if(fcompr <= -1) fcompr = -0.99;
+            }
+        }
+        else
+            fcompr = f[i];
+
+
         // modulator, at 48k audio sample rate
         liquid_float_complex y;
-        ampmodem_modulate(mod, f[i], &y);
+        ampmodem_modulate(mod, fcompr, &y);
 
         // filter SSB bandwidth
         liquid_float_complex cfilt;
@@ -162,16 +179,18 @@ void upmix(float *f, int len, int offsetfreq)
 
 void sendToPluto()
 {
-int16_t xi;
-int16_t xq;
+int32_t xi;
+int32_t xq;
 uint8_t txbuf[PLUTOBUFSIZE * 4];
 int txbufidx = 0;
+
+
 
     for(int i=0; i<PLUTOBUFSIZE; i++)
     {
         // convert complex to pluto format
-        xi = (int16_t)(txarr[i].real * 32768.0f);
-        xq = (int16_t)(txarr[i].imag * 32768.0f);
+        xi = (int32_t)(txarr[i].real * 32768.0f);
+        xq = (int32_t)(txarr[i].imag * 32768.0f);
 
         txbuf[txbufidx++] = xi & 0xff;
         txbuf[txbufidx++] = xi >> 8;

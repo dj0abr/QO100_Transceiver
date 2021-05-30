@@ -38,23 +38,23 @@ namespace trxGui
             if (statics.ostype == 0) return false;
 
             // kill old processes already running
-            killall("qo100trx");
+            killall("trxdriver");
 
             if (start == true)
             {
                 // starte Prozesse
                 try
                 {
-                    if (!File.Exists("qo100trx")) return false;
+                    if (!File.Exists("trxdriver")) return false;
                     cmd = new Process();
-                    cmd.StartInfo.FileName = "qo100trx";
+                    cmd.StartInfo.FileName = "trxdriver";
 
                     if (cmd != null)
                     {
                         cmd.StartInfo.WindowStyle = ProcessWindowStyle.Normal;// .Hidden;
                         cmd.StartInfo.Arguments = "";
                         cmd.Start();
-                        Console.WriteLine("qo100trx started");
+                        Console.WriteLine("trxdriver started");
                         Thread.Sleep(100);
                     }
                 }

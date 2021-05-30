@@ -117,29 +117,32 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="textBox3.Text" xml:space="preserve">
-    <value>Examples for RX:
-
-Receiver Frequency = 10489.5 - 390 x LNB-Reference-Frequency
-
-for an LNB running with 25 MHz Reference enter: 739.5 
-( 10489.500 - 390 * 25 = 739.5 )
-
-for an LNB running with 24 MHz Reference enter: 1129.5
-( 10489.500 - 390 * 24 = 1129.5 )
-
-the Amsat-Donwconverter runs with 24 MHz LNB Reference
-so you enter: 1129.5
-
-to receive a down-converted signal AFTER the down-converter enter the downconverter's output frequency of the lower beacon at 10489.500 MHz</value>
-  </data>
   <data name="textBox1.Text" xml:space="preserve">
-    <value>Examples for TX:
+    <value>QO-100 DSP Transceiver for Adalm-Pluto and Linux
+by DJ0ABR, Version 1.0
 
-Enter the TX frequency of the lower beacon which is at 2400.000 MHz
+Mouse usage:
+---------------
+upper Spectrum / Waterfall:
 
-to send directly into a 2.4GHz Amplifier enter: 2400.000
+left  click ... set RX    frequency: 100 Hz steps
+right click ... set RX+TX frequency: 100 Hz steps
 
-If using an Up-Converter, enter the Up-Converter's input frequency</value>
+hold ALT  -key ... 1 kHz steps
+hold SHIFT-key ... 10kHz steps
+
+lower Spectrum / Waterfall:
+
+left  click ... set RX    frequency: 10 Hz steps
+right click ... set RX+TX frequency: 10 Hz steps
+
+PTT:
+===
+Mouse click or SHIFT-key
+
+Credits:
+=====
+J.Gaeddert for his exceptional DSP library:
+https://github.com/jgaeddert/liquid-dsp</value>
   </data>
 </root>

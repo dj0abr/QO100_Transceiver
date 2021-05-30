@@ -39,6 +39,7 @@ int faudio = 1;
 char pbdevname[101] = {0};
 char capdevname[101] = {0};
 int newaudiodevs = 0;
+int compressor = 0;
 
 // fifos to send/receive samples with pluto run thread
 int RXfifo;
@@ -60,7 +61,7 @@ void udprxfunc(uint8_t *pdata, int len, struct sockaddr_in* sender)
 		off <<= 8;
 		off |= pdata[4];
 
-		printf("RX offset: %d\n",off);
+		//printf("RX offset: %d\n",off);
 
 		RXoffsetfreq = off;
 
@@ -73,7 +74,7 @@ void udprxfunc(uint8_t *pdata, int len, struct sockaddr_in* sender)
 		off <<= 8;
 		off |= pdata[8];
 
-		printf("TX offset: %d\n",off);
+		//printf("TX offset: %d\n",off);
 
 		TXoffsetfreq = off;
 	}
@@ -148,6 +149,9 @@ void udprxfunc(uint8_t *pdata, int len, struct sockaddr_in* sender)
 		setRXfrequency((long long)RX_FREQ);
 		setTXfrequency((long long)TX_FREQ);
 	}
+
+	if(pdata[0] == 9)
+		compressor = pdata[1];
 }
 
 void close_program()

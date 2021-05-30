@@ -487,21 +487,28 @@ namespace trxGui
 
         private void sendAudioDevs()
         {
-            if (!statics.newaudiodevs) return;
-            statics.newaudiodevs = false;
+            try
+            {
+                if (!statics.newaudiodevs) return;
+                statics.newaudiodevs = false;
 
-            //Console.WriteLine("<" + statics.AudioPBdev.Trim() + ">" + "<" + statics.AudioCAPdev + ">");
-            Byte[] pb = statics.StringToByteArrayUtf8(statics.AudioPBdev.Trim());
-            Byte[] cap = statics.StringToByteArrayUtf8(statics.AudioCAPdev.Trim());
+                //Console.WriteLine("<" + statics.AudioPBdev.Trim() + ">" + "<" + statics.AudioCAPdev + ">");
+                Byte[] pb = statics.StringToByteArrayUtf8(statics.AudioPBdev.Trim());
+                Byte[] cap = statics.StringToByteArrayUtf8(statics.AudioCAPdev.Trim());
 
-            if (pb.Length > 100 || cap.Length > 100) return;
+                if (pb.Length > 100 || cap.Length > 100) return;
 
-            Byte[] txb = new Byte[201];
-            for (int i = 0; i < txb.Length; i++) txb[i] = 0;
-            Array.Copy(pb, 0, txb, 1, pb.Length);
-            Array.Copy(cap, 0, txb, 101, cap.Length);
-            txb[0] = 7;
-            Udp.UdpSendData(txb);
+                Byte[] txb = new Byte[201];
+                for (int i = 0; i < txb.Length; i++) txb[i] = 0;
+                Array.Copy(pb, 0, txb, 1, pb.Length);
+                Array.Copy(cap, 0, txb, 101, cap.Length);
+                txb[0] = 7;
+                Udp.UdpSendData(txb);
+            }
+            catch
+            {
+                // no audio devs
+            }
         }
 
         private void sendBaseQRG()

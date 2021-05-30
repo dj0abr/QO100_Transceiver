@@ -1,22 +1,40 @@
 sudo apt-get update
 sudo apt-get -y install build-essential libxml2-dev bison flex libcdk5-dev cmake libaio-dev libusb-1.0-0-dev libserialport-dev libavahi-client-dev
 sudo apt-get -y install libasound2-dev libfftw3-dev sndfile-tools libsndfile1-dev git libad9361-dev mono-complete
+sudo apt-get -y install autotools-dev automake pavucontrol
+mkdir -p libraries
+cd libraries
 git clone https://github.com/analogdevicesinc/libiio.git
 cd libiio
-mkdir build
+mkdir -p build
 cd build
 cmake ../
 make -j$(nproc)
 sudo make install
-git clone https://github.com/jgaeddert/liquid-dsp
+cd ..
+cd ..
+if [ ! -d "liquid-dsp" ] ; then
+    git clone https://github.com/jgaeddert/liquid-dsp
+    cd liquid-dsp
+else
+    cd liquid-dsp
+    git pull https://github.com/jgaeddert/liquid-dsp
+fi
 ./bootstrap.sh
 ./configure
-make
+make -j$(nproc)
 sudo make install
-git clone https://github.com/andrewrk/libsoundio
-cd libsoundio
-mkdir build
+
+if [ ! -d "libsoundio" ] ; then
+    git clone https://github.com/andrewrk/libsoundio
+    cd libsoundio
+else
+    cd libsoundio
+    git pull https://github.com/andrewrk/libsoundio
+fi
+mkdir -p build
 cd build
 cmake ../
-make -j 4
+make -j$(nproc)
 sudo make install
+cd ..

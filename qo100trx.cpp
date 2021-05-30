@@ -263,6 +263,7 @@ int main ()
 
 		if(newaudiodevs)
 		{
+			printf("establish new audio settings\n");
 			if(*pbdevname && *capdevname)
 			{
 				// audio device names available

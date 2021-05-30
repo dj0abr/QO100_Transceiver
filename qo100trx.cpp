@@ -243,25 +243,26 @@ int main ()
 	while(keeprunning)
 	{
 		printf("loop\n");
-		/*if(newPluto)
+		if(newPluto)
 		{
 			newPluto = 0;
 			startPluto();
 		}
-*/
+
 		if(faudio)
 		{
 			faudio = 0;
 			int len;
 			// read list of audio devices
 			uint8_t *s = io_getAudioDevicelist(&len);
+			printf("Audio Devs=%d <%s>\n",len,s);
 			// and send to GUI
 			uint8_t ub[len+1];
 			ub[0] = 4; // ID for sound device string
 			memcpy(ub+1,s,len);
 			sendUDP(gui_ip, GUI_UDPPORT, ub, len+1);
 		}
-/*
+
 		if(newaudiodevs)
 		{
 			printf("establish new audio settings\n");
@@ -284,7 +285,7 @@ int main ()
 
 				newaudiodevs = 0;
 			}
-		}*/
+		}
 
 		usleep(100);
 	}

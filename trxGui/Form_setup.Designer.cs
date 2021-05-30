@@ -44,6 +44,11 @@ namespace trxGui
             this.label1 = new System.Windows.Forms.Label();
             this.textBox3 = new System.Windows.Forms.TextBox();
             this.textBox1 = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.rb_plutousb = new System.Windows.Forms.RadioButton();
+            this.rb_plutoeth = new System.Windows.Forms.RadioButton();
+            this.tb_plutoip = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // button1
@@ -70,7 +75,7 @@ namespace trxGui
             // cb_audioPB
             // 
             this.cb_audioPB.FormattingEnabled = true;
-            this.cb_audioPB.Location = new System.Drawing.Point(154, 32);
+            this.cb_audioPB.Location = new System.Drawing.Point(154, 69);
             this.cb_audioPB.Name = "cb_audioPB";
             this.cb_audioPB.Size = new System.Drawing.Size(280, 21);
             this.cb_audioPB.TabIndex = 2;
@@ -78,7 +83,7 @@ namespace trxGui
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(12, 35);
+            this.label10.Location = new System.Drawing.Point(12, 72);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(133, 13);
             this.label10.TabIndex = 11;
@@ -87,7 +92,7 @@ namespace trxGui
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(12, 68);
+            this.label11.Location = new System.Drawing.Point(12, 96);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(66, 13);
             this.label11.TabIndex = 12;
@@ -96,7 +101,7 @@ namespace trxGui
             // cb_audioCAP
             // 
             this.cb_audioCAP.FormattingEnabled = true;
-            this.cb_audioCAP.Location = new System.Drawing.Point(154, 65);
+            this.cb_audioCAP.Location = new System.Drawing.Point(154, 93);
             this.cb_audioCAP.Name = "cb_audioCAP";
             this.cb_audioCAP.Size = new System.Drawing.Size(280, 21);
             this.cb_audioCAP.TabIndex = 13;
@@ -120,7 +125,7 @@ namespace trxGui
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(337, 123);
+            this.label2.Location = new System.Drawing.Point(337, 133);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(361, 13);
             this.label2.TabIndex = 27;
@@ -128,7 +133,7 @@ namespace trxGui
             // 
             // tb_rxqrg
             // 
-            this.tb_rxqrg.Location = new System.Drawing.Point(154, 119);
+            this.tb_rxqrg.Location = new System.Drawing.Point(154, 129);
             this.tb_rxqrg.Name = "tb_rxqrg";
             this.tb_rxqrg.Size = new System.Drawing.Size(177, 20);
             this.tb_rxqrg.TabIndex = 26;
@@ -136,7 +141,7 @@ namespace trxGui
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(12, 122);
+            this.label3.Location = new System.Drawing.Point(12, 132);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(106, 13);
             this.label3.TabIndex = 25;
@@ -173,11 +178,66 @@ namespace trxGui
             this.textBox1.TabIndex = 30;
             this.textBox1.Text = resources.GetString("textBox1.Text");
             // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(12, 23);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(75, 13);
+            this.label4.TabIndex = 31;
+            this.label4.Text = "Pluto Address:";
+            // 
+            // rb_plutousb
+            // 
+            this.rb_plutousb.AutoSize = true;
+            this.rb_plutousb.Checked = true;
+            this.rb_plutousb.Location = new System.Drawing.Point(154, 23);
+            this.rb_plutousb.Name = "rb_plutousb";
+            this.rb_plutousb.Size = new System.Drawing.Size(72, 17);
+            this.rb_plutousb.TabIndex = 32;
+            this.rb_plutousb.TabStop = true;
+            this.rb_plutousb.Text = "local USB";
+            this.rb_plutousb.UseVisualStyleBackColor = true;
+            this.rb_plutousb.CheckedChanged += new System.EventHandler(this.rb_plutousb_CheckedChanged);
+            // 
+            // rb_plutoeth
+            // 
+            this.rb_plutoeth.AutoSize = true;
+            this.rb_plutoeth.Location = new System.Drawing.Point(259, 23);
+            this.rb_plutoeth.Name = "rb_plutoeth";
+            this.rb_plutoeth.Size = new System.Drawing.Size(65, 17);
+            this.rb_plutoeth.TabIndex = 33;
+            this.rb_plutoeth.Text = "Ethernet";
+            this.rb_plutoeth.UseVisualStyleBackColor = true;
+            this.rb_plutoeth.CheckedChanged += new System.EventHandler(this.rb_plutoeth_CheckedChanged);
+            // 
+            // tb_plutoip
+            // 
+            this.tb_plutoip.Enabled = false;
+            this.tb_plutoip.Location = new System.Drawing.Point(330, 22);
+            this.tb_plutoip.Name = "tb_plutoip";
+            this.tb_plutoip.Size = new System.Drawing.Size(142, 20);
+            this.tb_plutoip.TabIndex = 34;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(480, 25);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(141, 13);
+            this.label5.TabIndex = 35;
+            this.label5.Text = "enter IP address of the Pluto";
+            // 
             // Form_setup
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.tb_plutoip);
+            this.Controls.Add(this.rb_plutoeth);
+            this.Controls.Add(this.rb_plutousb);
+            this.Controls.Add(this.label4);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.textBox3);
             this.Controls.Add(this.label1);
@@ -216,5 +276,10 @@ namespace trxGui
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox textBox3;
         private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.RadioButton rb_plutousb;
+        private System.Windows.Forms.RadioButton rb_plutoeth;
+        private System.Windows.Forms.TextBox tb_plutoip;
+        private System.Windows.Forms.Label label5;
     }
 }

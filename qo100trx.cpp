@@ -40,6 +40,7 @@ char pbdevname[101] = {0};
 char capdevname[101] = {0};
 int newaudiodevs = 0;
 int compressor = 0;
+int newPluto = 0;
 
 // fifos to send/receive samples with pluto run thread
 int RXfifo;
@@ -152,6 +153,24 @@ void udprxfunc(uint8_t *pdata, int len, struct sockaddr_in* sender)
 
 	if(pdata[0] == 9)
 		compressor = pdata[1];
+
+	if(pdata[0] == 10)
+	{
+		if(pdata[1] == 1)
+		{
+			printf("Pluto USB\n");
+			// Pluto on local USB
+			*plutoid = 0;
+		}
+		else
+		{
+			// Pluto on Ethernet
+			strcpy(plutoid,"ip:");
+			memcpy(plutoid+3,pdata+2,len-2);
+			printf("Pluto ETH:<%s>\n",plutoid);
+		}
+		newPluto = 1;
+	}
 }
 
 void close_program()
@@ -164,12 +183,8 @@ void close_program()
 	close_fft();
 }
 
-int main ()
+void startPluto()
 {
-	printf("=== QO100 Transceiver, by DJ0ABR ===\n");
-
-    install_signal_handler(close_program);
-
 	// find a pluto connected via USB or Ethernet
 	if(*plutoid == 'i')
 	{
@@ -188,10 +203,19 @@ int main ()
 
 	//  Pluto found, now initialize it
 	printf("Pluto IP/USB ID      : <%s>\n",pluto_context_name);
+
+	pluto_setup();
+}
+
+int main ()
+{
+	printf("=== QO100 Transceiver, by DJ0ABR ===\n");
+
+    install_signal_handler(close_program);
+
 	RXfifo = create_fifo(200, PLUTOBUFSIZE*4);
 	TXfifo = create_fifo(200, PLUTOBUFSIZE*4);
 	FFTfifo = create_fifo(200, PLUTOBUFSIZE*4);
-	pluto_setup();
 
 	// init audio (soundcard)
 	if(kmaudio_init() == -1)
@@ -218,6 +242,12 @@ int main ()
 	printf("initialisation finished. Enter normal operation (press Ctrl+C to cancel)\n");
 	while(keeprunning)
 	{
+		if(newPluto)
+		{
+			newPluto = 0;
+			startPluto();
+		}
+
 		if(faudio)
 		{
 			faudio = 0;

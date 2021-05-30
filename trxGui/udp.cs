@@ -134,7 +134,7 @@ namespace trxGui
                         {
                             // b contains audio devices and init status
                             String s = statics.ByteArrayToStringUtf8(b, 4);
-                            //Console.WriteLine("Audio Devices:" + s);
+                            Console.WriteLine("Audio Devices:" + s);
                             String[] sa1 = s.Split(new char[] { '^' });
                             statics.AudioPBdevs = sa1[0].Split(new char[] { '~' });
                             statics.AudioCAPdevs = sa1[1].Split(new char[] { '~' });

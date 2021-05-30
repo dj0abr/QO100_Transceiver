@@ -22,6 +22,10 @@ namespace trxGui
             cb_audioPB.Text = statics.AudioPBdev;
             cb_audioCAP.Text = statics.AudioCAPdev;
 
+            rb_plutousb.Checked = statics.plutousb == 1 ? true : false;
+            rb_plutoeth.Checked = statics.plutousb == 1 ? false : true;
+            tb_plutoip.Text = statics.plutoaddress;
+
             // populate combo boxes
             if (statics.AudioPBdevs != null)
             {
@@ -95,7 +99,25 @@ namespace trxGui
 
             statics.rxqrg = (int)(statics.MyToDouble(tb_rxqrg.Text) * 1000);
             statics.txqrg = (int)(statics.MyToDouble(tb_txqrg.Text) * 1000);
+
+            statics.plutousb = rb_plutousb.Checked?1:0;
+            statics.plutoaddress = tb_plutoip.Text;
         }
 
+        private void rb_plutousb_CheckedChanged(object sender, EventArgs e)
+        {
+            if (rb_plutousb.Checked)
+            {
+                tb_plutoip.Enabled = false;
+            }
+        }
+
+        private void rb_plutoeth_CheckedChanged(object sender, EventArgs e)
+        {
+            if (rb_plutoeth.Checked)
+            {
+                tb_plutoip.Enabled = true;
+            }
+        }
     }
 }

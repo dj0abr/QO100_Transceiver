@@ -31,6 +31,8 @@ namespace trxGui
         public static int txqrg;
         public static int noiselevel = 1000;
         public static int maxlevel = 32000;
+        public static int plutousb = 1;
+        public static String plutoaddress = "";
 
         static Process cmd = null;
         public static bool StartQO100trx(bool start = true)

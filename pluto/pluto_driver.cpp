@@ -151,7 +151,7 @@ void setTXfrequency(long long freq)
 	{
 		lastfreq = freq;
 
-		printf("************* TX-QRG *************** %lld\n",freq);
+		//printf("************* TX-QRG *************** %lld\n",freq);
 		
 		struct iio_channel *chn = NULL;
 		if (!get_lo_chan(ctx, TX, &chn)) { return; }
@@ -167,7 +167,7 @@ void setRXfrequency(long long freq)
 	{
 		lastrxfreq = freq;
 
-		printf("************* RX-QRG *************** %lld\n",freq);
+		//printf("************* RX-QRG *************** %lld\n",freq);
 		
 		struct iio_channel *chn = NULL;
 		if (!get_lo_chan(ctx, RX, &chn)) { return; }

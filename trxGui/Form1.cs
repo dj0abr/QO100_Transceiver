@@ -116,7 +116,7 @@ namespace trxGui
 
         private void timer_draw_Tick(object sender, EventArgs e)
         {
-            if(Udp.getBigSpecBitmap_avail())
+            if (Udp.getBigSpecBitmap_avail())
                 panel_bigspec.Invalidate();
 
             if (Udp.getSmallSpecBitmap_avail())
@@ -154,6 +154,8 @@ namespace trxGui
                 sendAudioDevs();
                 sendBaseQRG();
             }
+
+            sendPlutoAddress();
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
@@ -474,6 +476,9 @@ namespace trxGui
 
         private void button_setup_Click(object sender, EventArgs e)
         {
+            int oldpluto = statics.plutousb;
+            String oldpladr = statics.plutoaddress;
+
             Form_setup setupForm = new Form_setup();
 
             // Show the settings form
@@ -482,6 +487,13 @@ namespace trxGui
             {
                 sendAudioDevs();
                 sendBaseQRG();
+
+                if(oldpluto != statics.plutousb || oldpladr != statics.plutoaddress)
+                {
+                    // pluto setting has been changed, restart required
+                    MessageBox.Show("Pluto settings changed. Press OK to close this software, then start it again", "RESTART REQUIRED", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    Close();
+                }
             }
         }
 
@@ -569,6 +581,8 @@ namespace trxGui
                     statics.AudioCAPdev = ReadString(sr);
                     statics.rxqrg = ReadInt(sr);
                     statics.txqrg = ReadInt(sr);
+                    statics.plutousb = ReadInt(sr);
+                    statics.plutoaddress = ReadString(sr);
                 }
             }
             catch
@@ -586,6 +600,8 @@ namespace trxGui
                     sw.WriteLine(statics.AudioCAPdev);
                     sw.WriteLine(statics.rxqrg.ToString());
                     sw.WriteLine(statics.txqrg.ToString());
+                    sw.WriteLine(statics.plutousb.ToString());
+                    sw.WriteLine(statics.plutoaddress);
                 }
             }
             catch { }
@@ -607,6 +623,23 @@ namespace trxGui
             var res = fi.ShowDialog();
             if (res == DialogResult.OK)
             {
+            }
+        }
+
+        int spa = 1;
+        private void sendPlutoAddress()
+        {
+            if (spa == 1)   // do only once after program start
+            {
+                Console.WriteLine("send pluto ID");
+                spa = 0;
+                Byte[] iparr = statics.StringToByteArrayUtf8(statics.plutoaddress.Trim());
+
+                Byte[] txb = new Byte[iparr.Length + 2];
+                txb[0] = 10;
+                txb[1] = (Byte)statics.plutousb;
+                Array.Copy(iparr, 0, txb, 2, iparr.Length);
+                Udp.UdpSendData(txb);
             }
         }
     }

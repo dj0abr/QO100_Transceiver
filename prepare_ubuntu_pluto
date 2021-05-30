@@ -13,7 +13,7 @@ git clone https://github.com/jgaeddert/liquid-dsp
 ./configure
 make
 sudo make install
-https://github.com/andrewrk/libsoundio
+git clone https://github.com/andrewrk/libsoundio
 cd libsoundio
 mkdir build
 cd build

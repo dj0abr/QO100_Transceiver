@@ -261,7 +261,7 @@ int main ()
 			sendUDP(gui_ip, GUI_UDPPORT, ub, len+1);
 		}
 
-		if(newaudiodevs)
+		/*if(newaudiodevs)
 		{
 			printf("establish new audio settings\n");
 			if(*pbdevname && *capdevname)
@@ -283,7 +283,7 @@ int main ()
 
 				newaudiodevs = 0;
 			}
-		}
+		}*/
 
 		usleep(100);
 	}

@@ -77,7 +77,7 @@ namespace trxGui
             this.cb_audioPB.FormattingEnabled = true;
             this.cb_audioPB.Location = new System.Drawing.Point(154, 69);
             this.cb_audioPB.Name = "cb_audioPB";
-            this.cb_audioPB.Size = new System.Drawing.Size(280, 21);
+            this.cb_audioPB.Size = new System.Drawing.Size(538, 21);
             this.cb_audioPB.TabIndex = 2;
             // 
             // label10
@@ -103,7 +103,7 @@ namespace trxGui
             this.cb_audioCAP.FormattingEnabled = true;
             this.cb_audioCAP.Location = new System.Drawing.Point(154, 93);
             this.cb_audioCAP.Name = "cb_audioCAP";
-            this.cb_audioCAP.Size = new System.Drawing.Size(280, 21);
+            this.cb_audioCAP.Size = new System.Drawing.Size(538, 21);
             this.cb_audioCAP.TabIndex = 13;
             // 
             // tb_txqrg

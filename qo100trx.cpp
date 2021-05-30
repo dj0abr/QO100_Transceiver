@@ -242,6 +242,7 @@ int main ()
 	printf("initialisation finished. Enter normal operation (press Ctrl+C to cancel)\n");
 	while(keeprunning)
 	{
+		printf("loop\n");
 		if(newPluto)
 		{
 			newPluto = 0;

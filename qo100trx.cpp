@@ -270,11 +270,13 @@ int main ()
 				printf("close streams\n");
 				if(pbidx!=-1) close_stream(pbidx);
 				if(capidx!=-1) close_stream(capidx);
-				printf("init streams\n");
+
+				printf("init PB stream\n");
 				pbidx = kmaudio_startPlayback(pbdevname, 48000);
 				if(pbidx == -1)
 					printf("NO AUDIO play device: <%s>\n",pbdevname);
 
+				printf("init CAP stream\n");
 				capidx = kmaudio_startCapture(capdevname, 48000);
 				if(capidx == -1)
 					printf("NO AUDIO record device: <%s>\n",capdevname);

@@ -117,7 +117,7 @@ void udprxfunc(uint8_t *pdata, int len, struct sockaddr_in* sender)
 		memcpy(capdevname,pdata+1+100,100);
 		capdevname[99] = 0;*/
 		printf("get Audiodevs: <%s><%s>\n",pbdevname,capdevname);
-		newaudiodevs = 1;
+		//newaudiodevs = 1;
 	}
 
 	if(pdata[0] == 8)

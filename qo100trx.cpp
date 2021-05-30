@@ -112,12 +112,12 @@ void udprxfunc(uint8_t *pdata, int len, struct sockaddr_in* sender)
 
 	if(pdata[0] == 7)
 	{
-		/*memcpy(pbdevname,pdata+1,100);
+		memcpy(pbdevname,pdata+1,100);
 		pbdevname[99] = 0;
 		memcpy(capdevname,pdata+1+100,100);
-		capdevname[99] = 0;*/
-		//printf("get Audiodevs: <%s><%s>\n",pbdevname,capdevname);
-		//newaudiodevs = 1;
+		capdevname[99] = 0;
+		printf("get Audiodevs: <%s><%s>\n",pbdevname,capdevname);
+		newaudiodevs = 1;
 	}
 
 	if(pdata[0] == 8)
@@ -223,7 +223,7 @@ int main ()
 		printf("NO AUDIO device\n");
 		exit(0);
 	}
-	kmaudio_getDeviceList();
+	//kmaudio_getDeviceList();
 
 	// init DSP demodulator
 	init_liquid();
@@ -262,7 +262,7 @@ int main ()
 			sendUDP(gui_ip, GUI_UDPPORT, ub, len+1);
 		}
 
-		/*if(newaudiodevs)
+		if(newaudiodevs)
 		{
 			printf("establish new audio settings\n");
 			if(*pbdevname && *capdevname)
@@ -284,7 +284,7 @@ int main ()
 
 				newaudiodevs = 0;
 			}
-		}*/
+		}
 
 		usleep(100);
 	}

@@ -104,21 +104,21 @@ namespace trxGui
 
                         if (rxtype == 0)
                         {
-                            // big WF
+                            // big Spectrum, mid values
                             int[] arr = getSpecArr(b);
                             drawBigSpec(arr);
                         }
 
                         if (rxtype == 1)
                         {
-                            // small WF
+                            // small Spectrum
                             int[] arr = getSpecArr(b);
                             drawSmallSpec(arr);
                         }
 
                         if (rxtype == 2)
                         {
-                            // big WF
+                            // big WF (raw - no mid - values)
                             int[] arr = getSpecArr(b);
                             drawBigWF(arr);
                         }
@@ -128,6 +128,40 @@ namespace trxGui
                             // small WF
                             int[] arr = getSpecArr(b);
                             drawSmallWF(arr);
+                        }
+
+                        if(rxtype == 4)
+                        {
+                            // b contains audio devices and init status
+                            String s = statics.ByteArrayToStringUtf8(b, 4);
+                            //Console.WriteLine("Audio Devices:" + s);
+                            String[] sa1 = s.Split(new char[] { '^' });
+                            statics.AudioPBdevs = sa1[0].Split(new char[] { '~' });
+                            statics.AudioCAPdevs = sa1[1].Split(new char[] { '~' });
+                            statics.GotAudioDevices = 1;
+                        }
+
+                        if (rxtype == 5)
+                        {
+                            int v = b[0];
+                            v <<= 8;
+                            v |= b[1];
+                            v <<= 8;
+                            v |= b[2];
+                            v <<= 8;
+                            v |= b[3];
+                            statics.noiselevel = v * 50 / 51;
+
+                            v = b[4];
+                            v <<= 8;
+                            v |= b[5];
+                            v <<= 8;
+                            v |= b[6];
+                            v <<= 8;
+                            v |= b[7];
+                            statics.maxlevel = v * 55 / 50;
+
+                            //Console.WriteLine("noiselevel: " + statics.noiselevel);
                         }
                     }
                 }
@@ -161,8 +195,13 @@ namespace trxGui
         }
 
         static Pen penline = new Pen(Brushes.LightGreen, 1);
+        static Pen penmarker = new Pen(Brushes.Green, 2);
+        static Pen penmarkerTX = new Pen(Brushes.Red, 2);
+        static Font rxtx = new Font("Verdana", 8.0f);
         static void drawBigSpec(int[] arr)
         {
+            int noiselevel = statics.noiselevel * 54/50;
+
             Bitmap bmbigspec = new Bitmap(bigSpecW, bigSpecH);
             using (Graphics gr = Graphics.FromImage(bmbigspec))
             {
@@ -173,13 +212,35 @@ namespace trxGui
 
                 for (int i = 0; i < arr.Length; i++)
                 {
-                    int val = scaleY(arr[i], 23000, 32000, bigSpecH);
+                    int val = scaleY(arr[i], noiselevel, statics.maxlevel, bigSpecH);
                     poly[i + 1] = new Point(i, val);
                 }
 
                 gr.FillRectangle(Brushes.Black, 0, 0, bigSpecW, bigSpecH);
                 gr.FillPolygon(Brushes.Blue, poly);
                 gr.DrawPolygon(penline, poly);
+
+                // green vertical line at RX frequency
+                int x = statics.RXoffset * 2 / 1000;
+                int xtx = statics.TXoffset * 2 / 1000;
+                int xydiff = Math.Abs(x - xtx);
+                
+                penmarker.DashPattern = new float[] { 2.0f, 2.0f };
+                gr.DrawLine(penmarker, x, 20, x, bigSpecH);
+
+                // red vertical line at TX frequency
+                penmarkerTX.DashPattern = new float[] { 2.0f, 2.0f };
+                gr.DrawLine(penmarkerTX, xtx, 24, xtx, bigSpecH-4);
+
+                if (xydiff > 10)
+                {
+                    gr.DrawString("RX", rxtx, Brushes.LightGreen, x - 6, 0);
+                    gr.DrawString("TX", rxtx, Brushes.LightCoral, xtx - 6, 0);
+                }
+                else
+                {
+                    gr.DrawString("RX/TX", rxtx, Brushes.White, x - 15, 0);
+                }
             }
             bigspecQ.Add(bmbigspec);
         }
@@ -201,7 +262,7 @@ namespace trxGui
 
                 for (int i = 0; i < arr.Length; i++)
                 {
-                    int val = scaleY(arr[i], 21000, 32000, smallSpecH);
+                    int val = scaleY(arr[i], statics.noiselevel, statics.maxlevel, smallSpecH);
                     poly[i + 1] = new Point(i, val);
                 }
 
@@ -215,9 +276,11 @@ namespace trxGui
             smallspecQ.Add(bmsmallspec);
         }
 
-        static int bigmin = 1000000;
-        static int bigmax = 0;
-        static int fb = 0;
+        static int scaleYWF(int val, int valmin, int valmax, int max)
+        {
+            // scale
+            return max * (val - valmin) / (valmax - valmin);
+        }
         static void drawBigWF(int[] arr)
         {
             // create a new bitmap
@@ -227,21 +290,12 @@ namespace trxGui
                 // copy existing bitmap into bmnew, one line lower
                 gr.DrawImage(bmBigWF, 0, 1);
 
-                // check min/max
                 for (int i = 0; i < arr.Length; i++)
                 {
-                    if (fb < arr.Length * 5)
-                    {
-                        if (arr[i] < bigmin) bigmin = arr[i];
-                        if (arr[i] > bigmax) bigmax = arr[i];
-                        fb++;
-                    }
-
                     // scale color
-                    int v = arr[i] - bigmin;
-                    v *= 255;
-                    v /= 10000; //bigmax;
-                    
+                    int v = 255 - scaleY(arr[i], statics.noiselevel, statics.maxlevel*47/50, 255);
+                    //Console.WriteLine(arr[i] + ": " + v);
+
                     SolidBrush br = new SolidBrush(col.getColor(v));
                     gr.FillRectangle(br, i, 0, i, 1);
                 }
@@ -279,9 +333,6 @@ namespace trxGui
             bigWFQ.Add(bmnew);
         }
 
-        static int smallmin = 1000000;
-        static int smallmax = 0;
-        static int fs = 0;
         static void drawSmallWF(int[] arr)
         {
             // create a new bitmap
@@ -291,21 +342,11 @@ namespace trxGui
                 // copy existing bitmap into bmnew, one line lower
                 gr.DrawImage(bmSmallWF, 0, 1);
 
-                // check min/max
                 for (int i = 0; i < arr.Length; i++)
                 {
-                    if (fs < arr.Length*5)
-                    {
-                        if (arr[i] < smallmin) smallmin = arr[i];
-                        if (arr[i] > smallmax) smallmax = arr[i];
-                        //Console.WriteLine(smallmin + " " + smallmax);
-                        fs++;
-                    }
-
                     // scale color
-                    int v = arr[i] - (smallmin * 52)/32;
-                    v *= 255;
-                    v /= ((smallmax/5)*2);
+                    int v = 255 - scaleY(arr[i], statics.noiselevel * 48/50, statics.maxlevel * 47 / 50, 255);
+                    //Console.WriteLine(arr[i] + ": " + v);
 
                     SolidBrush br = new SolidBrush(col.getColor(v));
                     gr.FillRectangle(br, i, 0, i, 1);
@@ -318,7 +359,7 @@ namespace trxGui
                 grbm.DrawImage(bmnew, 0, 0);
             }
 
-            // scales out of scrolling
+            // draw scales after scrolling
             using (Graphics gr = Graphics.FromImage(bmnew))
             {
                 // tuning (middle) line

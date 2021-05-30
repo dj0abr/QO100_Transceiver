@@ -89,6 +89,11 @@ void tune_upmixer(int offset)
 {
 static int lastoffset = -1;
 
+    if(rfloop)
+    {
+        offset = RXoffsetfreq;
+    }
+
     if(lastoffset != offset)
     {
         lastoffset = offset;

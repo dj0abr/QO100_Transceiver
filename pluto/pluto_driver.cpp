@@ -31,6 +31,7 @@
 
 #include "../qo100trx.h"
 
+void setTXfrequency(long long freq);
 
 // static scratch mem for strings 
 static char tmpstr[64];
@@ -130,10 +131,46 @@ bool cfg_ad9361_streaming_ch(struct iio_context *ctx, stream_cfg *cfg, enum iode
 	if(type == TX)
 	{
 		wr_ch_double(chn, "hardwaregain", txcfg.hwgain - 10);
+		setTXfrequency(cfg->lo_hz);
 	}
-
-	// Configure LO channel
-	if (!get_lo_chan(ctx, type, &chn)) { return false; }
-	wr_ch_lli(chn, "frequency", cfg->lo_hz);
+	else
+	{
+		// Configure LO channel
+		//if (!get_lo_chan(ctx, type, &chn)) { return false; }
+		//wr_ch_lli(chn, "frequency", cfg->lo_hz);
+		setRXfrequency(cfg->lo_hz);
+	}
 	return true;
+}
+
+long long lastfreq = 0;
+
+void setTXfrequency(long long freq)
+{
+	if(freq != lastfreq)
+	{
+		lastfreq = freq;
+
+		printf("************* TX-QRG *************** %lld\n",freq);
+		
+		struct iio_channel *chn = NULL;
+		if (!get_lo_chan(ctx, TX, &chn)) { return; }
+		wr_ch_lli(chn, "frequency", freq);	
+	}
+}
+
+long long lastrxfreq = 0;
+
+void setRXfrequency(long long freq)
+{
+	if(freq != lastrxfreq)
+	{
+		lastrxfreq = freq;
+
+		printf("************* RX-QRG *************** %lld\n",freq);
+		
+		struct iio_channel *chn = NULL;
+		if (!get_lo_chan(ctx, RX, &chn)) { return; }
+		wr_ch_lli(chn, "frequency", freq);	
+	}
 }

@@ -3,7 +3,7 @@
 #define LNB_REF			24000			// kHz
 #define BASEQRG			10489470		// kHz, spectrum range ist 10489.470 - 10490.03
 #define RXBASEQRG		((BASEQRG - 390*LNB_REF)*1000)
-#define TXBASEQRG		RXBASEQRG
+#define TXBASEQRG		(2400000 - 30)
 #define PLUTOBUFSIZE  	(SAMPRATE/10)
 
 #define MHZ(x) ((long long)(x*1000000.0 + .5))
@@ -29,9 +29,13 @@ bool get_ad9361_stream_dev(struct iio_context *ctx, enum iodev d, struct iio_dev
 int pluto_get_USB(char *sn);
 void pluto_setup();
 void init_runloop();
+void setTXfrequency(long long freq);
+void setRXfrequency(long long freq);
+
 
 extern stream_cfg rxcfg;
 extern stream_cfg txcfg;
+extern struct iio_context *ctx;
 extern struct iio_buffer  *rxbuf;
 extern struct iio_buffer  *txbuf;
 extern struct iio_channel *rx0_i;

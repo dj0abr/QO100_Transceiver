@@ -62,20 +62,26 @@ void* tx_threadfunction(void* param)
 	while(keeprunning)
 	{
         float f[4800];
-        int ret = kmaudio_readsamples(capidx, f, 4800, 1.0f, 0);
-        if(ret)
+        if(capidx != -1)
         {
-            if(audioloop)
+            int ret = kmaudio_readsamples(capidx, f, 4800, 1.0f, 0);
+            if(ret)
             {
-                // send back to sound output
-                kmaudio_playsamples(pbidx,f,ret,1.0f);
+                if(audioloop)
+                {
+                    // send back to sound output
+                    if(pbidx != -1)
+                        kmaudio_playsamples(pbidx,f,ret,1.0f);
+                }
+                else
+                {
+                    // send to modulator
+                    if(ptt)
+                        upmix(f,ret,TXoffsetfreq);
+                }
             }
             else
-            {
-                // send to modulator
-                if(ptt)
-                    upmix(f,ret,TXoffsetfreq);
-            }
+                usleep(1000);
         }
         else
             usleep(1000);

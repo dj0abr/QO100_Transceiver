@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace trxGui
@@ -17,6 +20,137 @@ namespace trxGui
         public static int TXoffset = 280000;    // Tuner: 470 + Offset: 280 = 750kHz (mid Beacon)
         public static bool ptt = false;
         public static bool pttkey = false;
+        public static int GotAudioDevices = 0;
+        public static String[] AudioPBdevs;
+        public static String[] AudioCAPdevs;
+        public static String AudioPBdev;
+        public static String AudioCAPdev;
+        public static bool newaudiodevs = false;
+        public static int ostype;
+        public static int rxqrg;
+        public static int txqrg;
+        public static int noiselevel = 1000;
+        public static int maxlevel = 32000;
+
+        static Process cmd = null;
+        public static bool StartQO100trx(bool start = true)
+        {
+            if (statics.ostype == 0) return false;
+
+            // kill old processes already running
+            killall("qo100trx");
+
+            if (start == true)
+            {
+                // starte Prozesse
+                try
+                {
+                    if (!File.Exists("qo100trx")) return false;
+                    cmd = new Process();
+                    cmd.StartInfo.FileName = "qo100trx";
+
+                    if (cmd != null)
+                    {
+                        cmd.StartInfo.WindowStyle = ProcessWindowStyle.Normal;// .Hidden;
+                        cmd.StartInfo.Arguments = "";
+                        cmd.Start();
+                        Console.WriteLine("qo100trx started");
+                        Thread.Sleep(100);
+                    }
+                }
+                catch { return false; }
+            }
+            return true;
+        }
+
+        static public void killall(String s)
+        {
+            // kill a Linux process
+            try
+            {
+                if (cmd != null)
+                    cmd.Kill();
+                cmd = null;
+
+                Process proc = new Process();
+                proc.EnableRaisingEvents = false;
+                proc.StartInfo.FileName = "killall";
+                proc.StartInfo.UseShellExecute = false;
+                proc.StartInfo.RedirectStandardOutput = true;
+                proc.OutputDataReceived += (sender, args) => { };   // schreibe Output ins nichts
+                proc.StartInfo.RedirectStandardError = true;
+                proc.ErrorDataReceived += (sender, args) => { };   // schreibe Output ins nichts
+                proc.StartInfo.Arguments = s;
+                proc.Start();
+                proc.WaitForExit();
+                Thread.Sleep(100);
+            }
+            catch { }
+        }
+
+        public static string ByteArrayToStringUtf8(byte[] arr, int offset = 0)
+        {
+            Byte[] ba = new byte[arr.Length];
+            int dst = 0;
+            for (int i = offset; i < arr.Length; i++)
+            {
+                if (arr[i] != 0) ba[dst++] = arr[i];
+            }
+            Byte[] ban = new byte[dst];
+            Array.Copy(ba, ban, dst);
+
+            System.Text.UTF8Encoding enc = new System.Text.UTF8Encoding();
+
+            return enc.GetString(ban);
+        }
+
+        public static byte[] StringToByteArrayUtf8(string str)
+        {
+            System.Text.UTF8Encoding enc = new System.Text.UTF8Encoding();
+            return enc.GetBytes(str);
+        }
+
+        public static String getHomePath(String subpath, String filename)
+        {
+            String deli = "/";
+            if (statics.ostype == 0) deli = "\\";
+
+            //String home = Application.UserAppDataPath;
+            String home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+
+            home = home + deli;
+            try { Directory.CreateDirectory(home); } catch { }
+
+            // if not exists, create subfolder "oscardata"
+            if (subpath.Length > 0)
+                try
+                {
+                    home += subpath + deli;
+                    Directory.CreateDirectory(home);
+                }
+                catch { }
+
+            return home + filename;
+        }
+
+        // Culture invariant conversion
+
+        public static double MyToDouble(String s)
+
+        {
+            double r = 0;
+
+            try
+            {
+                s = s.Replace(',', '.');
+                r = Convert.ToDouble(s, System.Globalization.CultureInfo.InvariantCulture);
+            }
+            catch
+            {
+            }
+            return r;
+
+        }
     }
 
     public class Bandentry
@@ -33,7 +167,6 @@ namespace trxGui
             text = txt;
             textpos = tp;
         }
-
     }
 
     public class Bandplan

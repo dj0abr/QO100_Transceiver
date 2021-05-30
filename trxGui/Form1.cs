@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Drawing;
+using System.IO;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace trxGui
@@ -10,6 +12,11 @@ namespace trxGui
         {
             InitializeComponent();
 
+            // set the position of the GUI elements
+            // this is required because "mono" does some strange/wrong scaling
+
+            load_Setup();
+
             panel_bigwf.MouseWheel += panel_bigwf_MouseWheel;
             panel_bigspec.MouseWheel += panel_bigwf_MouseWheel;
 
@@ -17,7 +24,7 @@ namespace trxGui
             panel_smallspec.MouseWheel += panel_smallwf_MouseWheel;
 
             this.Width = 1155;
-            this.Height = 774;
+            this.Height = 780;
 
             panel_qrg.Width = 1120;
             panel_qrg.Height = 40;
@@ -52,7 +59,7 @@ namespace trxGui
             int yspace = 12;
 
             bt_info.Location = new Point(panel_bigspec.Location.X + panel_bigspec.Width - bt_info.Width, panel_smallwf.Location.Y + panel_smallwf.Height + yspace);
-            button_setup.Location = new Point(button_setup.Location.X - gp_testmodes.Width - 5, panel_smallwf.Location.Y + panel_smallwf.Height + 1);
+            button_setup.Location = new Point(bt_info.Location.X - button_setup.Width - 5, bt_info.Location.Y);
             gp_testmodes.Location = new Point(button_setup.Location.X - gp_testmodes.Width - 5, panel_smallwf.Location.Y + panel_smallwf.Height + 1);
             gp_qrg.Location = new Point(13, panel_smallwf.Location.Y + panel_smallwf.Height + 1);
             gp_copyqrg.Location = new Point(gp_qrg.Location.X + gp_qrg.Width + 5, panel_smallwf.Location.Y + panel_smallwf.Height + 1);
@@ -62,11 +69,35 @@ namespace trxGui
             cb_rxtotx.Location = new Point(cb_rxtotx.Location.X, 19);
             cb_txtorx.Location = new Point(cb_txtorx.Location.X, 19);
 
+            // test OS type
+            OperatingSystem osversion = System.Environment.OSVersion;
+            if (osversion.VersionString.Contains("indow"))
+                statics.ostype = 0; // Win$
+            else
+                statics.ostype = 1; // Linux
+
+            // if this program was started from another loacation
+            // set the working directory to the path of the .exe file
+            // so it can find hsmodem(.exe)
+            try
+            {
+                String s = System.Reflection.Assembly.GetExecutingAssembly().Location;
+                s = Path.GetDirectoryName(s);
+                Directory.SetCurrentDirectory(s);
+                Console.WriteLine("working path: " + s);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("cannot set working path: " + e.ToString());
+            }
+
             Udp.InitUdp(panel_bigspec.Width, panel_bigspec.Height);
+
+            statics.StartQO100trx();
 
             timer_draw.Start();
 
-            sendRXoffset(1);
+            sendRXTXoffset();
         }
 
         private void panel_bigspec_Paint(object sender, PaintEventArgs e)
@@ -109,10 +140,25 @@ namespace trxGui
                 statics.ptt = false;
                 panel1.Invalidate();
             }
+
+            // wait for audio devices
+            if (statics.GotAudioDevices == 0)
+            {
+                // request device list
+                Byte[] txb = new Byte[1];
+                txb[0] = 6;
+                Udp.UdpSendData(txb);
+
+                statics.newaudiodevs = true;
+                sendAudioDevs();
+                sendBaseQRG();
+            }
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
+            statics.StartQO100trx(false);
+            save_Setup();
             statics.running = false;
         }
 
@@ -165,17 +211,21 @@ namespace trxGui
             tuneSmall(e);
         }
 
-        private void sendRXoffset(Byte mode)
+        private void sendRXTXoffset()
         {
             if (statics.RXoffset < 0) statics.RXoffset = 0;
-            //if (statics.RXoffset > 1030) statics.RXoffset = 1030;
+            if (statics.TXoffset < 0) statics.RXoffset = 0;
 
-            Byte[] txb = new Byte[5];
-            txb[0] = mode;
+            Byte[] txb = new Byte[9];
+            txb[0] = 0;
             txb[1] = (Byte)(statics.RXoffset >> 24);
             txb[2] = (Byte)(statics.RXoffset >> 16);
             txb[3] = (Byte)(statics.RXoffset >> 8);
             txb[4] = (Byte)(statics.RXoffset & 0xff);
+            txb[5] = (Byte)(statics.TXoffset >> 24);
+            txb[6] = (Byte)(statics.TXoffset >> 16);
+            txb[7] = (Byte)(statics.TXoffset >> 8);
+            txb[8] = (Byte)(statics.TXoffset & 0xff);
 
             Udp.UdpSendData(txb);
 
@@ -189,14 +239,14 @@ namespace trxGui
             if (e.Button == MouseButtons.Left)
             {
                 statics.RXoffset = e.X * 500;
-                sendRXoffset(0);
+                sendRXTXoffset();
             }
 
             if (e.Button == MouseButtons.Right)
             {
                 statics.RXoffset = e.X * 500;
                 statics.TXoffset = e.X * 500;
-                sendRXoffset(1);
+                sendRXTXoffset();
             }
         }
 
@@ -209,14 +259,14 @@ namespace trxGui
             if (e.Button == MouseButtons.Left)
             {
                 statics.RXoffset += hz;
-                sendRXoffset(0);
+                sendRXTXoffset();
             }
 
             if (e.Button == MouseButtons.Right)
             {
                 statics.RXoffset += hz;
                 statics.TXoffset += hz;
-                sendRXoffset(1);
+                sendRXTXoffset();
             }
         }
 
@@ -229,7 +279,7 @@ namespace trxGui
                 else
                     statics.RXoffset -= 100;
 
-                sendRXoffset(0);
+                sendRXTXoffset();
             }
             else
             {
@@ -238,7 +288,7 @@ namespace trxGui
                 else
                     statics.TXoffset -= 100;
 
-                sendRXoffset(2);
+                sendRXTXoffset();
             }
         }
 
@@ -251,7 +301,7 @@ namespace trxGui
                 else
                     statics.RXoffset -= 10;
 
-                sendRXoffset(0);
+                sendRXTXoffset();
             }
             else
             {
@@ -260,7 +310,7 @@ namespace trxGui
                 else
                     statics.TXoffset -= 10;
 
-                sendRXoffset(2);
+                sendRXTXoffset();
             }
         }
 
@@ -339,16 +389,19 @@ namespace trxGui
             {
                 double val = (double)(statics.RXoffset + 10489470000) / 1e6;
                 String s = String.Format(" RX:" + "{0:0.000000}" + " MHz", val);
-                gr.DrawString(s, bigfnt, Brushes.White, titrightpos, 0);
+                gr.DrawString(s, bigfnt, Brushes.Green, titrightpos, 0);
 
                 val = (double)(statics.TXoffset + 10489470000) / 1e6 - 8089.5;
                 s = String.Format(" TX:" + "{0:0.000000}" + " MHz", val);
-                gr.DrawString(s, bigfnt, Brushes.White, 560+ titrightpos, 0);
+                gr.DrawString(s, bigfnt, Brushes.DarkRed, 560+ titrightpos, 0);
             }
         }
 
         private void cb_audioloop_CheckedChanged(object sender, EventArgs e)
         {
+            if (cb_audioloop.Checked)
+                cb_rfloop.Checked = false;
+
             Byte[] txb = new Byte[2];
             txb[0] = 3;
             txb[1] = (Byte)(cb_audioloop.Checked ? 1 : 0);
@@ -356,17 +409,33 @@ namespace trxGui
             Udp.UdpSendData(txb);
         }
 
+        private void cb_rfloop_CheckedChanged(object sender, EventArgs e)
+        {
+            if(cb_rfloop.Checked)
+                cb_audioloop.Checked = false;
+
+            
+
+            Byte[] txb = new Byte[2];
+            txb[0] = 5;
+            txb[1] = (Byte)(cb_rfloop.Checked ? 1 : 0);
+
+            Console.WriteLine("cw " + cb_rfloop.Checked + " " + txb[1]);
+
+            Udp.UdpSendData(txb);
+        }
+
         private void cb_rxtotx_CheckedChanged(object sender, EventArgs e)
         {
             statics.TXoffset = statics.RXoffset;
-            sendRXoffset(1);
+            sendRXTXoffset();
             cb_rxtotx.Checked = false;
         }
 
         private void cb_txtorx_CheckedChanged(object sender, EventArgs e)
         {
             statics.RXoffset = statics.TXoffset;
-            sendRXoffset(0);
+            sendRXTXoffset();
             cb_txtorx.Checked = false;
         }
 
@@ -398,9 +467,130 @@ namespace trxGui
 
         private void button_setup_Click(object sender, EventArgs e)
         {
+            Form_setup setupForm = new Form_setup();
 
+            // Show the settings form
+            var res = setupForm.ShowDialog();
+            if(res == DialogResult.OK)
+            {
+                sendAudioDevs();
+                sendBaseQRG();
+            }
+        }
+
+        private void sendAudioDevs()
+        {
+            if (!statics.newaudiodevs) return;
+            statics.newaudiodevs = false;
+
+            //Console.WriteLine("<" + statics.AudioPBdev.Trim() + ">" + "<" + statics.AudioCAPdev + ">");
+            Byte[] pb = statics.StringToByteArrayUtf8(statics.AudioPBdev.Trim());
+            Byte[] cap = statics.StringToByteArrayUtf8(statics.AudioCAPdev.Trim());
+
+            if (pb.Length > 100 || cap.Length > 100) return;
+
+            Byte[] txb = new Byte[201];
+            for (int i = 0; i < txb.Length; i++) txb[i] = 0;
+            Array.Copy(pb, 0, txb, 1, pb.Length);
+            Array.Copy(cap, 0, txb, 101, cap.Length);
+            txb[0] = 7;
+            Udp.UdpSendData(txb);
+        }
+
+        private void sendBaseQRG()
+        {
+            Byte[] txb = new Byte[9];
+            txb[0] = 8;
+            //Console.WriteLine("*********************************** " + statics.rxqrg + " * " + statics.txqrg);
+            txb[1] = (Byte)(statics.rxqrg >> 24);
+            txb[2] = (Byte)(statics.rxqrg >> 16);
+            txb[3] = (Byte)(statics.rxqrg >> 8);
+            txb[4] = (Byte)(statics.rxqrg & 0xff);
+            txb[5] = (Byte)(statics.txqrg >> 24);
+            txb[6] = (Byte)(statics.txqrg >> 16);
+            txb[7] = (Byte)(statics.txqrg >> 8);
+            txb[8] = (Byte)(statics.txqrg & 0xff);
+            Udp.UdpSendData(txb);
+        }
+
+        private String ReadString(StreamReader sr)
+        {
+            try
+            {
+                String s = sr.ReadLine();
+                if (s != null)
+                {
+                    return s;
+                }
+            }
+            catch { }
+            return " ";
+        }
+
+        private int ReadInt(StreamReader sr)
+        {
+            int v;
+
+            try
+            {
+                String s = sr.ReadLine();
+                if (s != null)
+                {
+                    v = Convert.ToInt32(s);
+                    return v;
+                }
+            }
+            catch { }
+            return 0;
+        }
+
+        void load_Setup()
+        {
+            try
+            {
+                String fn = statics.getHomePath("", "trx.cfg");
+                using (StreamReader sr = new StreamReader(fn))
+                {
+                    statics.AudioPBdev = ReadString(sr);
+                    statics.AudioCAPdev = ReadString(sr);
+                    statics.rxqrg = ReadInt(sr);
+                    statics.txqrg = ReadInt(sr);
+                }
+            }
+            catch
+            {
+            }
+        }
+
+        void save_Setup()
+        {
+            try
+            {
+                using (StreamWriter sw = new StreamWriter(statics.getHomePath("", "trx.cfg")))
+                {
+                    sw.WriteLine(statics.AudioPBdev);
+                    sw.WriteLine(statics.AudioCAPdev);
+                    sw.WriteLine(statics.rxqrg.ToString());
+                    sw.WriteLine(statics.txqrg.ToString());
+                }
+            }
+            catch { }
         }
     }
 
-    class DoubleBufferedPanel : Panel { public DoubleBufferedPanel() : base() { DoubleBuffered = true; } }
+    class DoubleBufferedPanel : Panel 
+    { 
+        public DoubleBufferedPanel() : base() 
+        {
+            // double buffering crashes under windows
+            OperatingSystem osversion = System.Environment.OSVersion;
+            if (osversion.VersionString.Contains("indow"))
+                statics.ostype = 0; // Win$
+            else
+            {
+                statics.ostype = 1; // Linux
+                DoubleBuffered = true;
+            }
+        }
+    }
 }

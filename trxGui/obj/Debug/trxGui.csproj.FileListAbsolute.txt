@@ -1,10 +1,11 @@
 E:\funk\sat\QO100_Transceiver\trxGui\bin\Debug\trxGui.exe.config
 E:\funk\sat\QO100_Transceiver\trxGui\bin\Debug\trxGui.exe
 E:\funk\sat\QO100_Transceiver\trxGui\bin\Debug\trxGui.pdb
-E:\funk\sat\QO100_Transceiver\trxGui\obj\Debug\trxGui.csprojAssemblyReference.cache
 E:\funk\sat\QO100_Transceiver\trxGui\obj\Debug\trxGui.Form1.resources
 E:\funk\sat\QO100_Transceiver\trxGui\obj\Debug\trxGui.Properties.Resources.resources
 E:\funk\sat\QO100_Transceiver\trxGui\obj\Debug\trxGui.csproj.GenerateResource.cache
 E:\funk\sat\QO100_Transceiver\trxGui\obj\Debug\trxGui.csproj.CoreCompileInputs.cache
 E:\funk\sat\QO100_Transceiver\trxGui\obj\Debug\trxGui.exe
 E:\funk\sat\QO100_Transceiver\trxGui\obj\Debug\trxGui.pdb
+E:\funk\sat\QO100_Transceiver\trxGui\obj\Debug\trxGui.csprojAssemblyReference.cache
+E:\funk\sat\QO100_Transceiver\trxGui\obj\Debug\trxGui.Form_setup.resources

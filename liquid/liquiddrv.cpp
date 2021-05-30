@@ -68,7 +68,7 @@ static int lastoffset = -1;
     if(lastoffset != offset)
     {
         lastoffset = offset;
-        printf("tune RX to %f\n",BASEQRG*1e6 + offset);
+        //printf("tune RX to %f\n",BASEQRG*1e6 + offset);
         float RADIANS_PER_SAMPLE   = ((2.0f * (float)M_PI * offset)/(float)SAMPRATE);
         nco_crcf_set_phase(dnnco, 0.0f);
         nco_crcf_set_frequency(dnnco, RADIANS_PER_SAMPLE);
@@ -139,7 +139,7 @@ void downmix(liquid_float_complex *samples, int len, int offsetfreq)
         ampmodem_demodulate(demod, soundsamp, &z);
 
         // send z to soundcard
-        if(audioloop == 0)
+        if(audioloop == 0 && pbidx != -1)
             kmaudio_playsamples(pbidx,&z,1,1.0f);
     }
 }

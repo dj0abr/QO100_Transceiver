@@ -32,18 +32,24 @@ char plutoid[100] = {"ip:192.168.20.25"};
 char gui_ip[20] = {"127.127.0.1"};
 int udprxsock = 0;
 uint8_t audioloop = 0;
+uint8_t rfloop = 0;
 uint8_t ptt = 0;
+uint8_t lastptt = 0;
+int faudio = 1;
+char pbdevname[101] = {0};
+char capdevname[101] = {0};
+int newaudiodevs = 0;
 
 // fifos to send/receive samples with pluto run thread
 int RXfifo;
 int TXfifo;
 int FFTfifo;
 
-int pbidx, capidx;
+int pbidx = -1, capidx = -1;
 
 void udprxfunc(uint8_t *pdata, int len, struct sockaddr_in* sender)
 {
-	if(pdata[0] == 0 || pdata[0] == 1)
+	if(pdata[0] == 0)
 	{
 		// set RX offset
 		uint32_t off = pdata[1];
@@ -57,18 +63,15 @@ void udprxfunc(uint8_t *pdata, int len, struct sockaddr_in* sender)
 		printf("RX offset: %d\n",off);
 
 		RXoffsetfreq = off;
-	}
 
-	if(pdata[0] == 1 || pdata[0] == 2)
-	{
 		// set TX offset
-		uint32_t off = pdata[1];
+		off = pdata[5];
 		off <<= 8;
-		off |= pdata[2];
+		off |= pdata[6];
 		off <<= 8;
-		off |= pdata[3];
+		off |= pdata[7];
 		off <<= 8;
-		off |= pdata[4];
+		off |= pdata[8];
 
 		printf("TX offset: %d\n",off);
 
@@ -79,7 +82,72 @@ void udprxfunc(uint8_t *pdata, int len, struct sockaddr_in* sender)
 		audioloop = pdata[1];
 
 	if(pdata[0] == 4)
+	{
 		ptt = pdata[1];
+		if(ptt && lastptt == 0)
+		{
+			io_fifo_clear(capidx);
+			fifo_clear(TXfifo);
+		}
+		lastptt = ptt;
+	}
+
+	if(pdata[0] == 5)
+	{
+		rfloop = pdata[1];
+		if(rfloop)
+		{
+			setRXfrequency((long long)TX_FREQ);
+		}
+		else
+		{
+			setRXfrequency((long long)RX_FREQ);
+		}
+	}
+
+	if(pdata[0] == 6)
+		faudio = 0;
+
+	if(pdata[0] == 7)
+	{
+		memcpy(pbdevname,pdata+1,100);
+		pbdevname[99] = 0;
+		memcpy(capdevname,pdata+1+100,100);
+		capdevname[99] = 0;
+		//printf("get Audiodevs: <%s><%s>\n",pbdevname,capdevname);
+		newaudiodevs = 1;
+	}
+
+	if(pdata[0] == 8)
+	{
+		uint32_t rxbaseqrg;
+		rxbaseqrg = pdata[1];
+		rxbaseqrg <<= 8;
+		rxbaseqrg += pdata[2];
+		rxbaseqrg <<= 8;
+		rxbaseqrg += pdata[3];
+		rxbaseqrg <<= 8;
+		rxbaseqrg += pdata[4];
+
+		rxbaseqrg -= 30;
+
+		uint32_t txbaseqrg;
+		txbaseqrg = pdata[5];
+		txbaseqrg <<= 8;
+		txbaseqrg += pdata[6];
+		txbaseqrg <<= 8;
+		txbaseqrg += pdata[7];
+		txbaseqrg <<= 8;
+		txbaseqrg += pdata[8];
+
+		txbaseqrg -= 30;
+
+		RX_FREQ = (double)rxbaseqrg * 1000.0f;
+		TX_FREQ = (double)txbaseqrg * 1000.0f;
+
+		setRXfrequency((long long)RX_FREQ);
+		setTXfrequency((long long)TX_FREQ);
+	}
 }
 
 void close_program()
@@ -128,18 +196,6 @@ int main ()
 		exit(0);
 	}
 	kmaudio_getDeviceList();
-	pbidx = kmaudio_startPlayback((char *)"USB Advanced Audio Device Analog Stereo", 48000);
-	if(pbidx == -1)
-	{
-		printf("NO AUDIO play device\n");
-		exit(0);
-	}
-	capidx = kmaudio_startCapture((char *)"USB Advanced Audio Device Analog Stereo", 48000);
-	if(capidx == -1)
-	{
-		printf("NO AUDIO record device\n");
-		exit(0);
-	}
 
 	// init DSP demodulator
 	init_liquid();
@@ -158,7 +214,41 @@ int main ()
 	printf("initialisation finished. Enter normal operation (press Ctrl+C to cancel)\n");
 	while(keeprunning)
 	{
-		usleep(1000);
+		if(faudio)
+		{
+			faudio = 0;
+			int len;
+			// read list of audio devices
+			uint8_t *s = io_getAudioDevicelist(&len);
+			// and send to GUI
+			uint8_t ub[len+1];
+			ub[0] = 4; // ID for sound device string
+			memcpy(ub+1,s,len);
+			sendUDP(gui_ip, GUI_UDPPORT, ub, len+1);
+		}
+
+		if(newaudiodevs)
+		{
+			if(*pbdevname && *capdevname)
+			{
+				// audio device names available
+				printf("close streams\n");
+				if(pbidx!=-1) close_stream(pbidx);
+				if(capidx!=-1) close_stream(capidx);
+				printf("init streams\n");
+				pbidx = kmaudio_startPlayback(pbdevname, 48000);
+				if(pbidx == -1)
+					printf("NO AUDIO play device: <%s>\n",pbdevname);
+
+				capidx = kmaudio_startCapture(capdevname, 48000);
+				if(capidx == -1)
+					printf("NO AUDIO record device: <%s>\n",capdevname);
+
+				newaudiodevs = 0;
+			}
+		}
+
+		usleep(100);
 	}
 
 	return 0;

@@ -78,7 +78,7 @@ fftw_complex *cpout = NULL;	            // ouput data from fft, input data to if
 fftw_plan plan = NULL;
 
 #define FFT_RESOLUTION  25             // Hz per bin
-#define FFT_LENGTH (SAMPRATE / FFT_RESOLUTION)
+#define FFT_LENGTH (SAMPRATE / FFT_RESOLUTION)  // 1.12MS/s / 25 = 44800
 
 void fftinit()
 {
@@ -160,10 +160,10 @@ double real, imag;
             din_idx = 0;
             // the fft input buffer is full, now lets execute the fft
             fftw_execute(plan);
-            // the FFT delivers FFT_LENGTH values (11200 bins)
+            // the FFT delivers FFT_LENGTH values (44800 bins)
             // but we only use the first half of them, which is the full range with the 
-            // requested resolution of 10 Hz per bin (5600 bins)
-            int numbins = FFT_LENGTH/2;
+            // requested resolution of 25 Hz per bin (22400 bins)
+            int numbins = FFT_LENGTH/2; // 22400 (22400*25=560k)
 
             // calculate the absolute level from I and Q values
             float bin[numbins];
@@ -180,6 +180,66 @@ double real, imag;
                 if(bin[i] > 32768) printf("reduce multiplicator %f\n",bin[i]);
             }
             // bins are in the range 0..32767 (16 bit)
+
+            // ======== noise level ==========
+            // measure the noise level on freq: ,475 to ,490 MHz, just below the lower beacon
+            // ,470 is index 0, steps 25 Hz
+            // ,475 is index 200 and ,490 is index 800
+            // so we calc the mid value if this range
+            float gval = 0;
+            int gstart = ((475-470)*1000)/25;
+            int gend = ((490-470)*1000)/25;
+            for(int g=gstart; g<gend; g++)
+                gval += bin[g];
+            gval /= (gend-gstart);
+
+            // and make the mid value over 10 values
+            #define GMIDLEN 10
+            static float gmid[GMIDLEN];
+            static int gmididx = 0;
+            gmid[gmididx] = gval;
+            if(++gmididx >= GMIDLEN) gmididx = 0;
+            float gvalmid = 0;
+            for(int g=0; g<GMIDLEN; g++)
+                gvalmid += gmid[g];
+            gvalmid /= GMIDLEN;
+            uint32_t gvalmid_u = (uint32_t)gvalmid;
+            //printf("noise level: %f\n",gvalmid);
+
+            // ======== beacon level ==========
+            // measure the max beacon level
+            // max of 749 - 751
+            float mval = 0;
+            int mstart = ((749-470)*1000)/25;
+            int mend = ((751-470)*1000)/25;
+            for(int m=mstart; m<mend; m++)
+                if(bin[m] > mval) mval = bin[m];
+
+            // and make the mid value over 10 values
+            #define MMIDLEN 10
+            static float mmid[MMIDLEN];
+            static int mmididx = 0;
+            mmid[mmididx] = mval;
+            if(++mmididx >= MMIDLEN) mmididx = 0;
+            float mvalmid = 0;
+            for(int m=0; m<MMIDLEN; m++)
+                mvalmid += mmid[m];
+            mvalmid /= MMIDLEN;
+            uint32_t mvalmid_u = (uint32_t)mvalmid;
+            //printf("max level: %f %f\n",mval,mvalmid);
+
+            uint8_t levels[9];
+            levels[0] = 5;
+            levels[1] = gvalmid_u >> 24;
+            levels[2] = gvalmid_u >> 16;
+            levels[3] = gvalmid_u >> 8;
+            levels[4] = gvalmid_u & 0xff;
+            levels[5] = mvalmid_u >> 24;
+            levels[6] = mvalmid_u >> 16;
+            levels[7] = mvalmid_u >> 8;
+            levels[8] = mvalmid_u & 0xff;
+            
+            sendUDP(gui_ip, GUI_UDPPORT, levels, 9);
 
             // ======== BIG Waterfall ========
             // the big waterfall has a resulution of numbins/5 = 1120 pixel
@@ -231,9 +291,11 @@ double real, imag;
             if(++bmididx >= midlen) bmididx = 0;
 
             // send the big fft bins to the GUI
+            // raw values, no mid val, for waterfall
             sendUDP(gui_ip, GUI_UDPPORT, biglineraw, bigidx);
 
             // send the big fft bins to the GUI
+            // mid vals for spectrum
             sendUDP(gui_ip, GUI_UDPPORT, bigline, bigidx);
 
             // ======== SMALL Waterfall ========

@@ -321,7 +321,7 @@ namespace trxGui
             this.Controls.Add(this.panel_smallqrg);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Name = "Form1";
-            this.Text = "QO100 Linux - Pluto Transceiver (by DJ0ABR) V1.0";
+            this.Text = "QO100 Linux - Pluto Transceiver (by DJ0ABR) V1.1";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.gp_testmodes.ResumeLayout(false);
             this.gp_testmodes.PerformLayout();

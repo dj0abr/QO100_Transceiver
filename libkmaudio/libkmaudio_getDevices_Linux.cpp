@@ -91,7 +91,7 @@ int kmaudio_getDeviceList()
     {
         csum = sum;
 
-        printf("====== Linux Devices found: ======\n");
+        /*printf("====== Linux Devices found: ======\n");
         for (int i = 0; i < devanz; i++)
         {
             printf("Index:  %d\n", devlist[i].index);
@@ -103,7 +103,7 @@ int kmaudio_getDeviceList()
             printf("SR 48000: %d\n", devlist[i].supports_48000);
             printf("is active: %s\n", devlist[i].active ? "yes" : "no");
             printf("--------------------------------------\n");
-        }
+        }*/
     }
     return 0;
 }
@@ -184,7 +184,7 @@ int scan_devices()
         didx = getDevlistIndex(device->name, device->id);
         if (getDeviceParameters(didx, device) == 1)
         {
-            printf("%d %d %d ====CAP:\nid:<%s>\nname:<%s>\n", i, devanz, didx, device->id, device->name);
+            printf("%d %d %d ====CAP: name:<%s>\n", i, devanz, didx, device->name);
             devlist[didx].in_out = 0;
             devlist[didx].index = didx;
             devlist[didx].active = 1;
@@ -210,7 +210,7 @@ int scan_devices()
         didx = getDevlistIndex(device->name, device->id);
         if (getDeviceParameters(didx, device) == 1)
         {
-            printf("%d %d %d ====PB :\nid:<%s>\nname:<%s>\n", i, devanz, didx, device->id, device->name);
+            printf("%d %d %d ====PB : name:<%s>\n", i, devanz, didx, device->name);
             devlist[didx].in_out = 1;
             devlist[didx].index = didx;
             devlist[didx].active = 1;

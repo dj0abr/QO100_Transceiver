@@ -142,20 +142,55 @@ namespace trxGui
                 panel1.Invalidate();
             }
 
-            // wait for audio devices
-            if (statics.GotAudioDevices == 0)
+            if (statics.GotAudioDevices == 1)
             {
-                // request device list
-                Byte[] txb = new Byte[1];
-                txb[0] = 6;
-                Udp.UdpSendData(txb);
+                // just got the list of audio devices
+                statics.GotAudioDevices = 0;
+
+                // check if the current selected device is in the new device list
+                bool pbfound = false;
+                foreach(String s in statics.AudioPBdevs)
+                {
+                    if(s == statics.AudioPBdev)
+                    {
+                        pbfound = true;
+                        break;
+                    }
+                }
+
+                bool capfound = false;
+                foreach (String s in statics.AudioCAPdevs)
+                {
+                    if (s == statics.AudioCAPdev)
+                    {
+                        capfound = true;
+                        break;
+                    }
+                }
+
+                if(!pbfound)
+                {
+                    Console.WriteLine("NO Playback Device found, using default");
+                    if (statics.AudioPBdevs.Length == 0)
+                        statics.AudioPBdev = "Default";
+                    else
+                        statics.AudioPBdev = statics.AudioPBdevs[0];
+                }
+
+                if (!capfound)
+                {
+                    Console.WriteLine("NO Captur Device found, using default");
+                    if (statics.AudioCAPdevs.Length == 0)
+                        statics.AudioCAPdev = "Default";
+                    else
+                        statics.AudioCAPdev = statics.AudioCAPdevs[0];
+                }
 
                 statics.newaudiodevs = true;
                 sendAudioDevs();
                 sendBaseQRG();
+                sendPlutoAddress();
             }
-
-            sendPlutoAddress();
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
@@ -626,21 +661,16 @@ namespace trxGui
             }
         }
 
-        int spa = 1;
         private void sendPlutoAddress()
         {
-            if (spa == 1)   // do only once after program start
-            {
-                Console.WriteLine("send pluto ID");
-                spa = 0;
-                Byte[] iparr = statics.StringToByteArrayUtf8(statics.plutoaddress.Trim());
+            //Console.WriteLine("send pluto ID <" + statics.plutoaddress.Trim() + ">");
+            Byte[] iparr = statics.StringToByteArrayUtf8(statics.plutoaddress.Trim());
 
-                Byte[] txb = new Byte[iparr.Length + 2];
-                txb[0] = 10;
-                txb[1] = (Byte)statics.plutousb;
-                Array.Copy(iparr, 0, txb, 2, iparr.Length);
-                Udp.UdpSendData(txb);
-            }
+            Byte[] txb = new Byte[iparr.Length + 2];
+            txb[0] = 10;
+            txb[1] = (Byte)statics.plutousb;
+            Array.Copy(iparr, 0, txb, 2, iparr.Length);
+            Udp.UdpSendData(txb);
         }
     }
 

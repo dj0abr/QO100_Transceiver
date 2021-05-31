@@ -35,11 +35,11 @@ uint8_t audioloop = 0;
 uint8_t rfloop = 0;
 uint8_t ptt = 0;
 uint8_t lastptt = 0;
-int faudio = 1;
 char pbdevname[101] = {0};
 char capdevname[101] = {0};
 int newaudiodevs = 0;
 int compressor = 0;
+int gotPlutoID = 0;
 
 // fifos to send/receive samples with pluto run thread
 int RXfifo;
@@ -50,6 +50,8 @@ int pbidx = -1, capidx = -1;
 
 void udprxfunc(uint8_t *pdata, int len, struct sockaddr_in* sender)
 {
+	//printf("UDP command from GUI: %d\n",pdata[0]);
+
 	if(pdata[0] == 0)
 	{
 		// set RX offset
@@ -106,16 +108,13 @@ void udprxfunc(uint8_t *pdata, int len, struct sockaddr_in* sender)
 		}
 	}
 
-	if(pdata[0] == 6)
-		faudio = 0;
-
 	if(pdata[0] == 7)
 	{
 		memcpy(pbdevname,pdata+1,100);
 		pbdevname[99] = 0;
 		memcpy(capdevname,pdata+1+100,100);
 		capdevname[99] = 0;
-		//printf("get Audiodevs: <%s><%s>\n",pbdevname,capdevname);
+		printf("get Audiodevs: <%s><%s>\n",pbdevname,capdevname);
 		newaudiodevs = 1;
 	}
 
@@ -145,13 +144,29 @@ void udprxfunc(uint8_t *pdata, int len, struct sockaddr_in* sender)
 
 		RX_FREQ = (double)rxbaseqrg * 1000.0f;
 		TX_FREQ = (double)txbaseqrg * 1000.0f;
-
-		setRXfrequency((long long)RX_FREQ);
-		setTXfrequency((long long)TX_FREQ);
 	}
 
 	if(pdata[0] == 9)
 		compressor = pdata[1];
+
+	if(pdata[0] == 10)
+	{
+		if(pdata[1] == 1)
+		{
+			// Pluto on local USB
+			*plutoid = 0;
+			printf("Pluto on local USB\n");
+		}
+		else
+		{
+			// Pluto on ETH
+			memset(plutoid,0,sizeof(plutoid));
+			strcpy(plutoid,"ip:");
+			memcpy(plutoid+3,pdata+2,len-2);
+			printf("Pluto on Ethernet IP: <%s>\n",plutoid);
+		}
+		gotPlutoID = 1;
+	}
 }
 
 void close_program()
@@ -166,11 +181,53 @@ void close_program()
 
 int main ()
 {
-	printf("=== QO100 Transceiver, by DJ0ABR ===\n");
+	printf("=== QO100 Transceiver Pluto-Driver, by DJ0ABR ===\n");
 
     install_signal_handler(close_program);
 
-	// find a pluto connected via USB or Ethernet
+	// Install FIFOs
+	RXfifo = create_fifo(200, PLUTOBUFSIZE*4);
+	TXfifo = create_fifo(200, PLUTOBUFSIZE*4);
+	FFTfifo = create_fifo(200, PLUTOBUFSIZE*4);
+
+	// start audio (soundcard) and get connected devices
+	if(kmaudio_init() == -1)
+	{
+		printf("NO AUDIO device\n");
+		exit(0);
+	}
+	kmaudio_getDeviceList();
+
+	// UDP receiver for commands from GUI
+	UdpRxInit(&udprxsock, 40821, udprxfunc , &keeprunning);
+
+	// send audio devices to GUI
+	int len;
+	uint8_t *s = io_getAudioDevicelist(&len);
+	uint8_t ub[len+1];
+	ub[0] = 4; // ID for sound device string
+	memcpy(ub+1,s,len);
+	sendUDP(gui_ip, GUI_UDPPORT, ub, len+1);
+
+	// wait for initial configuration from GUI
+	// the GUI sends now:
+	// selected Audio Device (udp code 7)
+	// Base QRGs (udp code 8)
+	// Pluto Address (udp code 10)
+	int to=0;
+	while(gotPlutoID == 0)
+	{
+		printf("to:%d\n",to);
+		usleep(100000);
+		if(++to >= 50)
+		{
+			printf("no config from GUI, exit program\n");
+			exit(0);
+		}
+	}
+	printf("initial config OK, continue\n");
+
+	// find plutoid
 	if(*plutoid == 'i')
 	{
 		strcpy(pluto_context_name,plutoid);
@@ -188,18 +245,7 @@ int main ()
 
 	//  Pluto found, now initialize it
 	printf("Pluto IP/USB ID      : <%s>\n",pluto_context_name);
-	RXfifo = create_fifo(200, PLUTOBUFSIZE*4);
-	TXfifo = create_fifo(200, PLUTOBUFSIZE*4);
-	FFTfifo = create_fifo(200, PLUTOBUFSIZE*4);
 	pluto_setup();
-
-	// init audio (soundcard)
-	if(kmaudio_init() == -1)
-	{
-		printf("NO AUDIO device\n");
-		exit(0);
-	}
-	kmaudio_getDeviceList();
 
 	// init DSP demodulator
 	init_liquid();
@@ -212,25 +258,9 @@ int main ()
 	init_rx();
 	init_tx();
 
-	// UDP receiver for commands from GUI
-	UdpRxInit(&udprxsock, 40821, udprxfunc , &keeprunning);
-
 	printf("initialisation finished. Enter normal operation (press Ctrl+C to cancel)\n");
 	while(keeprunning)
 	{
-		if(faudio)
-		{
-			faudio = 0;
-			int len;
-			// read list of audio devices
-			uint8_t *s = io_getAudioDevicelist(&len);
-			// and send to GUI
-			uint8_t ub[len+1];
-			ub[0] = 4; // ID for sound device string
-			memcpy(ub+1,s,len);
-			sendUDP(gui_ip, GUI_UDPPORT, ub, len+1);
-		}
-
 		if(newaudiodevs)
 		{
 			if(*pbdevname && *capdevname)
@@ -241,14 +271,10 @@ int main ()
 				if(capidx!=-1) close_stream(capidx);
 				printf("init streams\n");
 
-				strcpy(pbdevname,"Playback/recording through the PulseAudio sound server");
-				
-
 				pbidx = kmaudio_startPlayback(pbdevname, 48000);
 				if(pbidx == -1)
 					printf("NO AUDIO play device: <%s>\n",pbdevname);
 
-				strcpy(capdevname,"Playback/recording through the PulseAudio sound server");
 				capidx = kmaudio_startCapture(capdevname, 48000);
 				if(capidx == -1)
 					printf("NO AUDIO record device: <%s>\n",capdevname);

@@ -3,7 +3,7 @@ QO-100 Software Transceiver using an Adalm-Pluto and an SBC (Raspberry, Odroid .
 
 This project is a fully functional software based transceiver for QO-100
 
-Version Status:
+Version Status:\
 V1.0 ... May,28 2021 ... Now fully working, Setup via Setup Menu.\
 V1.1 ... May,31 2021 ... Pluto USB/ETH setup, speech compressor
 
@@ -16,11 +16,11 @@ V1.1 ... May,31 2021 ... Pluto USB/ETH setup, speech compressor
 
 ## Installation
 
-Install all required libraries by running the script:
+Install all required libraries by running the script:\
 ./prepare_ubuntu_pluto
 
 ## build the software
-make clean
+make clean\
 make
 
 this builds the executable file: qo100trx

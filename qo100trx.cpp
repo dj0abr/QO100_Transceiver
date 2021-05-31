@@ -240,6 +240,10 @@ int main ()
 				if(pbidx!=-1) close_stream(pbidx);
 				if(capidx!=-1) close_stream(capidx);
 				printf("init streams\n");
+
+				strcpy(pbdevname,"USB Advanced Audio Device");
+				strcpy(capdevname,"USB Advanced Audio Device");
+
 				pbidx = kmaudio_startPlayback(pbdevname, 48000);
 				if(pbidx == -1)
 					printf("NO AUDIO play device: <%s>\n",pbdevname);

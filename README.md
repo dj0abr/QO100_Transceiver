@@ -16,14 +16,14 @@ V1.1 ... May,31 2021 ... Pluto USB/ETH setup, speech compressor
 
 ## Installation
 
-Install all required libraries by running the script:\
+open a terminal and run these commands:
+
+<code>
+git clone https://github.com/dj0abr/QO100_Transceiver
+cd QO100_Transceiver
 ./prepare_ubuntu_pluto
-
-## build the software
-make clean\
-make
-
-this builds the executable file: qo100trx
+./install
+</code>
 
 ## run the software
 

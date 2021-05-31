@@ -176,7 +176,7 @@ int scan_devices()
         didx = getDevlistIndex(device->name, device->id);
         if (getDeviceParameters(didx, device) == 1)
         {
-            //printf("%d %d ====CAP:\nid:<%s>\nname:<%s>\n", i,devanz,device->id, device->name);
+            printf("%d %d ====CAP:\nid:<%s>\nname:<%s>\n", i,devanz,device->id, device->name);
             devlist[didx].in_out = 0;
             devlist[didx].index = didx;
             devlist[didx].active = 1;
@@ -199,7 +199,7 @@ int scan_devices()
         didx = getDevlistIndex(device->name, device->id);
         if (getDeviceParameters(didx, device) == 1)
         {
-            //printf("====PB :\nid:<%s>\nname:<%s>\n", device->id, device->name);
+            printf("====PB :\nid:<%s>\nname:<%s>\n", device->id, device->name);
             devlist[didx].in_out = 1;
             devlist[didx].index = didx;
             devlist[didx].active = 1;

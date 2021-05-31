@@ -150,7 +150,9 @@ int getDeviceParameters(int idx, struct SoundIoDevice *device)
 
 int getDevlistIndex(char *name, char *id)
 {
-    /*for (int i = 0; i < devanz; i++)
+    /* !!! Achtung: das hier filtert Devices raus die auf PB und CAP gleiche Daten haben !!!
+       noch nach PB und CAP unterscheiden
+    for (int i = 0; i < devanz; i++)
     {
         // check if already exists
         if (!strcmp(devlist[i].id, id) && !strcmp(devlist[i].name, name))

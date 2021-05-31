@@ -159,7 +159,7 @@ int kmaudio_startPlayback(char* devname, int samprate)
     char* pbdevid = getDevID(devname, 1, &idx);
     if (pbdevid == NULL) 
     {
-        printf("Device ID not found\n");
+        printf("PB: Device ID not found\n");
         return -1;
     }
 

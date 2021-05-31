@@ -133,7 +133,12 @@ int kmaudio_startCapture(char* devname, int samprate)
 
     int idx = 0; // index into devlist
     char* capdevid = getDevID(devname, 0, &idx);
-    if (capdevid == NULL) return -1;
+    if (capdevid == NULL)
+    {
+        printf("CAP: Device ID not found\n");
+        return -1;
+    }
+
 
     // if an old stream is open, close it
     close_capture_stream(idx);

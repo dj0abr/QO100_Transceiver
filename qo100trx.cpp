@@ -241,8 +241,8 @@ int main ()
 				if(capidx!=-1) close_stream(capidx);
 				printf("init streams\n");
 
-				strcpy(pbdevname,"USB Advanced Audio Device");
-				strcpy(capdevname,"USB Advanced Audio Device");
+				strcpy(pbdevname,"Playback/recording through the PulseAudio sound serve");
+				strcpy(capdevname,"Playback/recording through the PulseAudio sound serve");
 
 				pbidx = kmaudio_startPlayback(pbdevname, 48000);
 				if(pbidx == -1)

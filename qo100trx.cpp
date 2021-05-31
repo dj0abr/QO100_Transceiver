@@ -242,12 +242,13 @@ int main ()
 				printf("init streams\n");
 
 				strcpy(pbdevname,"Playback/recording through the PulseAudio sound server");
-				strcpy(capdevname,"Playback/recording through the PulseAudio sound server");
+				
 
 				pbidx = kmaudio_startPlayback(pbdevname, 48000);
 				if(pbidx == -1)
 					printf("NO AUDIO play device: <%s>\n",pbdevname);
 
+				strcpy(capdevname,"Playback/recording through the PulseAudio sound server");
 				capidx = kmaudio_startCapture(capdevname, 48000);
 				if(capidx == -1)
 					printf("NO AUDIO record device: <%s>\n",capdevname);

@@ -12,7 +12,8 @@ libkmaudio/libkmaudio_playback_linux.o libkmaudio/libkmaudio_resampler.o
 default: $(OBJ)
 	g++ $(CXXFLAGS) -o Release/trxdriver $(OBJ) $(LDFLAGS)
 	rm -rf  Release/*.config Release/*.pdb
-	echo "mono qo100trx.exe" > Release/startQO100trx
+	echo "export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib" > Release/startQO100trx
+	echo "mono qo100trx.exe" >> Release/startQO100trx
 	chmod 755 Release/startQO100trx
 
 

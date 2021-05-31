@@ -29,12 +29,15 @@ this builds the executable file: qo100trx
 
 the software has two parts:
 
-qo100trx ... this is the part doing all the work, without the GUI
-
+trxdriver .... this is the part doing all the work, without the GUI\
 trxGui.exe ... the user interface
 
-* Copy both files in a directory of your choice
-* start the software by entering:   mono  trxGui.exe
+After installation both files are located in the folder\
+.../QO100_Transceiver/Release
+
+Additionally a start script was created
+
+* start the software by entering:   ./startQO100trx
 
 this opens the user interface and automatically starts the background jobs
 
@@ -42,5 +45,11 @@ this opens the user interface and automatically starts the background jobs
 
 click the SETUP button
 
+* enter how the pluto is connected
 * choose the sound device where microphone and loud speaker are connected
 * enter the correct RX and TX frequencies. See the examples on the screen.
+
+#### Audio on Raspberry PI OS: 
+
+Raspi OS shows many many audio devices nobody really needs.\
+It is highly recommended to choose Pulseaudio for loudspeaker and microphone and then use the sound mixer pavucontrol (is installed) to select devices and control volume.

@@ -27,6 +27,9 @@ float        tx_lp_As    =  60.0f;    // stop-band attenuation
 unsigned int tx_lp_n     = 128;       // number of samples
 iirfilt_crcf tx_lp_q = NULL;
 
+// AGC
+agc_rrrf agc_q = NULL;
+
 void showmax(float f)
 {
 static float fs=0; 
@@ -60,10 +63,13 @@ void init_liquid_modulator()
     interp_q = resamp_crcf_create(interp_r,interp_h_len,interp_bw,interp_slsl,interp_npfb);
     if(interp_q == NULL) printf("interp_q error\n");
 
-        // low pass
+    // low pass
     tx_lp_q = iirfilt_crcf_create_prototype(LIQUID_IIRDES_ELLIP, LIQUID_IIRDES_BANDPASS, LIQUID_IIRDES_SOS,
                                          tx_lp_order, tx_lp_fc, tx_lp_f0, tx_lp_Ap, tx_lp_As);
 
+    // agc
+    agc_q = agc_rrrf_create();     
+    agc_rrrf_set_bandwidth(agc_q,0.01f);    // set loop filter bandwidth
 }
 
 void close_liquid_modulator()
@@ -81,6 +87,9 @@ void close_liquid_modulator()
 
     if(tx_lp_q) iirfilt_crcf_destroy(tx_lp_q);
     tx_lp_q = NULL;
+
+    if(agc_q) agc_rrrf_destroy(agc_q);
+    agc_q = NULL;
 }
 
 void tune_upmixer(int offset)
@@ -105,36 +114,64 @@ static int lastoffset = -1;
 liquid_float_complex txarr[PLUTOBUFSIZE];
 int txarridx = 0;
 
+// it looks like the AGC functions do not work with 0..1 levels
+// so we need to adapt the levels
+const float agcmult = 100.0f;
+const float gainreduction = 1000.0f;
+// the max gain is used to limit the background noise if no signal is present
+const float maxgain = 0.6f;
+
 void upmix(float *f, int len, int offsetfreq)
 {
 float fcompr;
+float gain = 1;
 
     if (mod == NULL) return;
     if (interp_q == NULL) return;
     if (upnco == NULL) return;
     if (tx_lp_q == NULL) return;
+    if (agc_q == NULL) return;
 
     // re-tune if TX grq has been changed
     tune_upmixer(offsetfreq);
 
+    if(audioagc > 0)
+    {
+        // estimate AGC level for this number of new samples
+        agc_rrrf_init(agc_q, f, len);
+        gain = agc_rrrf_get_gain(agc_q);
+        gain /= gainreduction;
+        if(gain > maxgain) gain = maxgain;
+        //printf("%f\n",gain);
+    }
+
+    // loop through all samples
     for(int i=0; i<len; i++)
     {
-        // audio compression
-        if(compressor)
+        if(audioagc > 0)
         {
+            // audio AGC
+            float fagc;
+            agc_rrrf_set_gain(agc_q,gain);
+            agc_rrrf_execute(agc_q, f[i] *agcmult, &fagc);
+            //printf("%f   %f   %f\n",gain,f[i],fagc);
+            fcompr = fagc;
+        }
+        else
             fcompr = f[i];
+
+        // audio compression
+        if(compressor > 0)
+        {
             if(fcompr >= 1) fcompr = 0.99;
             if(fcompr <= -1) fcompr = -0.99;
-            for(int co=0; co<2; co++)
+            for(int co=0; co<compressor; co++)
             {
                 fcompr = 3.3 * log10(fcompr+1);
                 if(fcompr >= 1) fcompr = 0.99;
                 if(fcompr <= -1) fcompr = -0.99;
             }
         }
-        else
-            fcompr = f[i];
-
 
         // modulator, at 48k audio sample rate
         liquid_float_complex y;

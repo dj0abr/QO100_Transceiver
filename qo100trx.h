@@ -42,3 +42,4 @@ extern uint8_t audioloop;
 extern uint8_t ptt;
 extern uint8_t rfloop;
 extern int compressor;
+extern int audioagc;

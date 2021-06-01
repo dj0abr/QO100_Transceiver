@@ -39,6 +39,7 @@ char pbdevname[101] = {0};
 char capdevname[101] = {0};
 int newaudiodevs = 0;
 int compressor = 0;
+int audioagc = 0;
 int gotPlutoID = 0;
 
 // fifos to send/receive samples with pluto run thread
@@ -167,6 +168,9 @@ void udprxfunc(uint8_t *pdata, int len, struct sockaddr_in* sender)
 		}
 		gotPlutoID = 1;
 	}
+
+	if(pdata[0] == 11)
+		audioagc = pdata[1];
 }
 
 void close_program()
@@ -182,6 +186,12 @@ void close_program()
 int main ()
 {
 	printf("=== QO100 Transceiver Pluto-Driver, by DJ0ABR ===\n");
+
+	// https://github.com/torvalds/linux/blob/master/include/uapi/asm-generic/errno-base.h
+	/*char s1[100];
+	iio_strerror(-19, s1, 99);
+	printf("<%s>\n",s1);
+	exit(0);*/
 
     install_signal_handler(close_program);
 
@@ -285,6 +295,6 @@ int main ()
 
 		usleep(100);
 	}
-
+ 
 	return 0;
 }

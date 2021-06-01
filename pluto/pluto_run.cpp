@@ -44,6 +44,7 @@ uint8_t *p_dat, *p_start;
     pthread_detach(pthread_self());
 
     printf("entering pluto loop\n");
+    
 	while(keeprunning)
 	{
       	// ====== receive samples from pluto ======

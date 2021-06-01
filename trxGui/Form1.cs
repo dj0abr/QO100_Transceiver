@@ -190,6 +190,8 @@ namespace trxGui
                 sendAudioDevs();
                 sendBaseQRG();
                 sendPlutoAddress();
+                checkBox2_CheckedChanged(null, null);   // send "compress"
+                cb_audioagc_CheckedChanged(null, null);   // send "AGC"
             }
         }
 
@@ -618,6 +620,8 @@ namespace trxGui
                     statics.txqrg = ReadInt(sr);
                     statics.plutousb = ReadInt(sr);
                     statics.plutoaddress = ReadString(sr);
+                    checkBox2.Checked = ReadString(sr) == "1";
+                    cb_audioagc.Checked = ReadString(sr) == "1";
                 }
             }
             catch
@@ -637,6 +641,8 @@ namespace trxGui
                     sw.WriteLine(statics.txqrg.ToString());
                     sw.WriteLine(statics.plutousb.ToString());
                     sw.WriteLine(statics.plutoaddress);
+                    sw.WriteLine(checkBox2.Checked ? "1" : "0");
+                    sw.WriteLine(cb_audioagc.Checked ? "1" : "0");
                 }
             }
             catch { }
@@ -646,7 +652,15 @@ namespace trxGui
         {
             Byte[] txb = new Byte[2];
             txb[0] = 9;
-            txb[1] = (Byte)((checkBox2.Checked) ? 1 : 0);
+            txb[1] = (Byte)((checkBox2.Checked) ? 2 : 0); // the 2 is the compression factor
+            Udp.UdpSendData(txb);
+        }
+
+        private void cb_audioagc_CheckedChanged(object sender, EventArgs e)
+        {
+            Byte[] txb = new Byte[2];
+            txb[0] = 11;
+            txb[1] = (Byte)((cb_audioagc.Checked) ? 1 : 0);
             Udp.UdpSendData(txb);
         }
 
@@ -672,6 +686,7 @@ namespace trxGui
             Array.Copy(iparr, 0, txb, 2, iparr.Length);
             Udp.UdpSendData(txb);
         }
+
     }
 
     class DoubleBufferedPanel : Panel 

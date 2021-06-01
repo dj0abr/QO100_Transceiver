@@ -1,1 +1,2 @@
+export LD_LIBRARY_PATH=\D_LIBRARY_PATH:/usr/local/lib
 mono qo100trx.exe

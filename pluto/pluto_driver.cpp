@@ -136,8 +136,6 @@ bool cfg_ad9361_streaming_ch(struct iio_context *ctx, stream_cfg *cfg, enum iode
 	else
 	{
 		// Configure LO channel
-		//if (!get_lo_chan(ctx, type, &chn)) { return false; }
-		//wr_ch_lli(chn, "frequency", cfg->lo_hz);
 		setRXfrequency(cfg->lo_hz);
 	}
 	return true;

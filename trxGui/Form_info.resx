@@ -121,6 +121,8 @@
     <value>QO-100 DSP Transceiver for Adalm-Pluto and Linux
 by DJ0ABR, Version 1.0
 
+Open Source: https://github.com/dj0abr/QO100_Transceiver
+
 Mouse usage:
 ---------------
 upper Spectrum / Waterfall:
@@ -139,10 +141,21 @@ right click ... set RX+TX frequency: 10 Hz steps
 PTT:
 ===
 Mouse click or SHIFT-key
-
-Credits:
-=====
+</value>
+  </data>
+  <data name="textBox2.Text" xml:space="preserve">
+    <value>Credits:
+========
 J.Gaeddert for his exceptional DSP library:
-https://github.com/jgaeddert/liquid-dsp</value>
+https://github.com/jgaeddert/liquid-dsp
+MIT License
+
+Info-Icon: from Artist: Icons8
+License: Linkware (Backlink: http://icons8.com)
+
+Tool-Icon: from Artist: Oxygen Team
+License: GNU Lesser General Public License
+
+Special thanks to Amsat-DL for ongoing support throughout the project.</value>
   </data>
 </root>

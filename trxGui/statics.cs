@@ -33,6 +33,8 @@ namespace trxGui
         public static int maxlevel = 32000;
         public static int plutousb = 1;
         public static String plutoaddress = "";
+        public static int rxmouse = -1;
+        public static int rxmute = 0;
 
         static Process cmd = null;
         public static bool StartQO100trx(bool start = true)

@@ -43,3 +43,6 @@ extern uint8_t ptt;
 extern uint8_t rfloop;
 extern int compressor;
 extern int audioagc;
+extern int rxfilter;
+extern int txfilter;
+extern int rxmute;

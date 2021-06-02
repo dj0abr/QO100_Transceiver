@@ -24,7 +24,7 @@ namespace trxGui
             panel_smallspec.MouseWheel += panel_smallwf_MouseWheel;
 
             this.Width = 1155;
-            this.Height = 780;
+            this.Height = 818;
 
             panel_qrg.Width = 1120;
             panel_qrg.Height = 40;
@@ -56,16 +56,19 @@ namespace trxGui
             panel_smallqrg.Location = new Point(13, panel_smallspec.Location.Y + panel_smallspec.Height);
             panel_smallwf.Location = new Point(13, panel_smallqrg.Location.Y + panel_smallqrg.Height);
 
-            int yspace = 12;
+            int yspace = 8;
 
-            bt_info.Location = new Point(panel_bigspec.Location.X + panel_bigspec.Width - bt_info.Width, panel_smallwf.Location.Y + panel_smallwf.Height + yspace);
-            button_setup.Location = new Point(bt_info.Location.X - button_setup.Width - 5, bt_info.Location.Y);
-            gp_testmodes.Location = new Point(button_setup.Location.X - gp_testmodes.Width - 5, panel_smallwf.Location.Y + panel_smallwf.Height + 1);
+            panel_info.Location = new Point(panel_bigspec.Location.X + panel_bigspec.Width - panel_info.Width, panel_smallwf.Location.Y + panel_smallwf.Height + yspace);
+            panel_setup.Location = new Point(panel_info.Location.X - panel_setup.Width - 5, panel_info.Location.Y);
+            gp_testmodes.Location = new Point(panel_setup.Location.X - gp_testmodes.Width - 5, panel_smallwf.Location.Y + panel_smallwf.Height + 1);
             gp_qrg.Location = new Point(13, panel_smallwf.Location.Y + panel_smallwf.Height + 1);
             gp_copyqrg.Location = new Point(gp_qrg.Location.X + gp_qrg.Width + 5, panel_smallwf.Location.Y + panel_smallwf.Height + 1);
             gp_audio.Location = new Point(gp_copyqrg.Location.X + gp_copyqrg.Width + 5, gp_copyqrg.Location.Y);
-            panel1.Location = new Point(gp_audio.Location.X + gp_audio.Width + 5, gp_audio.Location.Y + 7);
-            panel1.Width = gp_testmodes.Location.X - panel1.Location.X - 5;
+            gp_filter.Location = new Point(gp_audio.Location.X + gp_audio.Width + 5, gp_audio.Location.Y);
+
+            // PTT Panel
+            panel1.Location = new Point(gp_qrg.Location.X, gp_qrg.Location.Y + gp_qrg.Height + 5);
+            panel1.Width = 1120;
 
             cb_rxtotx.Location = new Point(cb_rxtotx.Location.X, 19);
             cb_txtorx.Location = new Point(cb_txtorx.Location.X, 19);
@@ -190,7 +193,7 @@ namespace trxGui
                 sendAudioDevs();
                 sendBaseQRG();
                 sendPlutoAddress();
-                checkBox2_CheckedChanged(null, null);   // send "compress"
+                cb_compressor_SelectedIndexChanged(null, null);   // send "compress"
                 cb_audioagc_CheckedChanged(null, null);   // send "AGC"
             }
         }
@@ -365,6 +368,60 @@ namespace trxGui
             panel_bigwf.Focus();
         }
 
+        private void panel_bigwf_MouseMove(object sender, MouseEventArgs e)
+        {
+            panel_bigwf.Focus();
+            statics.rxmouse = e.X * 500;
+            panel_qrg.Invalidate();
+        }
+
+        private void panel_bigspec_MouseLeave(object sender, EventArgs e)
+        {
+            statics.rxmouse = -1;
+            panel_qrg.Invalidate();
+        }
+
+        private void panel_bigspec_MouseMove(object sender, MouseEventArgs e)
+        {
+            panel_bigspec.Focus();
+            statics.rxmouse = e.X * 500;
+            panel_qrg.Invalidate();
+        }
+
+        private void panel_smallspec_MouseLeave(object sender, EventArgs e)
+        {
+            statics.rxmouse = -1;
+            panel_qrg.Invalidate();
+        }
+
+        private void panel_smallspec_MouseMove(object sender, MouseEventArgs e)
+        {
+            panel_smallspec.Focus();
+            int hz = (e.X - 560) * 25;
+            statics.rxmouse = statics.RXoffset + hz;
+            panel_qrg.Invalidate();
+        }
+
+        private void panel_smallwf_MouseLeave(object sender, EventArgs e)
+        {
+            statics.rxmouse = -1;
+            panel_qrg.Invalidate();
+        }
+
+        private void panel_smallwf_MouseMove(object sender, MouseEventArgs e)
+        {
+            panel_smallwf.Focus();
+            int hz = (e.X - 560) * 25;
+            statics.rxmouse = statics.RXoffset + hz;
+            panel_qrg.Invalidate();
+        }
+
+        private void panel_bigwf_MouseLeave(object sender, EventArgs e)
+        {
+            statics.rxmouse = -1;
+            panel_qrg.Invalidate();
+        }
+
         private void panel_bigspec_MouseHover(object sender, EventArgs e)
         {
             panel_bigspec.Focus();
@@ -428,18 +485,34 @@ namespace trxGui
         }
 
         Font bigfnt = new Font("Verdana", 24.0f);
-        int titrightpos = 90;
+        Font smlfnt = new Font("Verdana", 12.0f);
+        int titrightpos = 10;
+        int mouserightpos = 880;
+        int bigy = 2;
         private void panel_qrg_Paint(object sender, PaintEventArgs e)
         {
             using (Graphics gr = e.Graphics)
             {
                 double val = (double)(statics.RXoffset + 10489470000) / 1e6;
-                String s = String.Format(" RX:" + "{0:0.000000}" + " MHz", val);
-                gr.DrawString(s, bigfnt, Brushes.Green, titrightpos, 0);
+                String s = String.Format("RX:" + "{0:0.000000}" + " MHz", val);
+                gr.DrawString(s, bigfnt, Brushes.Green, titrightpos, bigy);
 
                 val = (double)(statics.TXoffset + 10489470000) / 1e6 - 8089.5;
-                s = String.Format(" TX:" + "{0:0.000000}" + " MHz", val);
-                gr.DrawString(s, bigfnt, Brushes.DarkRed, 560+ titrightpos, 0);
+                s = String.Format("TX:" + "{0:0.000000}" + " MHz", val);
+                gr.DrawString(s, bigfnt, Brushes.DarkRed, 450+ titrightpos, bigy);
+
+                if(statics.rxmouse != -1)
+                {
+                    val = (double)(statics.rxmouse + 10489470000) / 1e6;
+                    s = "Mouse Pointer:";
+                    gr.DrawString(s, smlfnt, Brushes.Blue, mouserightpos + titrightpos+2, 0);
+                    s = String.Format("{0:0.000000}" + " MHz", val);
+                    gr.DrawString(s, smlfnt, Brushes.Blue, mouserightpos + titrightpos, 20);
+                }
+                else
+                {
+                    gr.FillRectangle(Brushes.Gray, mouserightpos + titrightpos, 0, panel_qrg.Width - (mouserightpos + titrightpos), panel_qrg.Height);
+                }
             }
         }
 
@@ -511,7 +584,7 @@ namespace trxGui
             panel1.Invalidate();
         }
 
-        private void button_setup_Click(object sender, EventArgs e)
+        private void butto_setup_click(object sender, EventArgs e)
         {
             int oldpluto = statics.plutousb;
             String oldpladr = statics.plutoaddress;
@@ -620,8 +693,12 @@ namespace trxGui
                     statics.txqrg = ReadInt(sr);
                     statics.plutousb = ReadInt(sr);
                     statics.plutoaddress = ReadString(sr);
-                    checkBox2.Checked = ReadString(sr) == "1";
+                    String dummy1 = ReadString(sr);
                     cb_audioagc.Checked = ReadString(sr) == "1";
+                    cb_compressor.SelectedIndex = ReadInt(sr);
+                    cb_filterRX.SelectedIndex = ReadInt(sr);
+                    cb_filterTX.SelectedIndex = ReadInt(sr);
+                    statics.rxmute = ReadInt(sr);
                 }
             }
             catch
@@ -641,19 +718,25 @@ namespace trxGui
                     sw.WriteLine(statics.txqrg.ToString());
                     sw.WriteLine(statics.plutousb.ToString());
                     sw.WriteLine(statics.plutoaddress);
-                    sw.WriteLine(checkBox2.Checked ? "1" : "0");
+                    sw.WriteLine("");
                     sw.WriteLine(cb_audioagc.Checked ? "1" : "0");
+                    sw.WriteLine(cb_compressor.SelectedIndex.ToString());
+                    sw.WriteLine(cb_filterRX.SelectedIndex.ToString());
+                    sw.WriteLine(cb_filterTX.SelectedIndex.ToString());
+                    sw.WriteLine(statics.rxmute);
                 }
             }
             catch { }
         }
 
-        private void checkBox2_CheckedChanged(object sender, EventArgs e)
+        private void cb_compressor_SelectedIndexChanged(object sender, EventArgs e)
         {
             Byte[] txb = new Byte[2];
             txb[0] = 9;
-            txb[1] = (Byte)((checkBox2.Checked) ? 2 : 0); // the 2 is the compression factor
+            txb[1] = (Byte)cb_compressor.SelectedIndex; // compression factor
             Udp.UdpSendData(txb);
+
+            panel_bigspec.Focus();  // remove focus to avoid flickering
         }
 
         private void cb_audioagc_CheckedChanged(object sender, EventArgs e)
@@ -664,7 +747,7 @@ namespace trxGui
             Udp.UdpSendData(txb);
         }
 
-        private void bt_info_Click(object sender, EventArgs e)
+        private void bt_info_click(object sender, EventArgs e)
         {
             Form_info fi = new Form_info();
 
@@ -687,6 +770,34 @@ namespace trxGui
             Udp.UdpSendData(txb);
         }
 
+        private void cb_filterRX_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Byte[] txb = new Byte[2];
+            txb[0] = 12;
+            txb[1] = (Byte)cb_filterRX.SelectedIndex;
+            Udp.UdpSendData(txb);
+
+            panel_bigspec.Focus();  // remove focus to avoid flickering
+        }
+
+        private void cb_filterTX_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Byte[] txb = new Byte[2];
+            txb[0] = 13;
+            txb[1] = (Byte)cb_filterTX.SelectedIndex;
+            Udp.UdpSendData(txb);
+
+            panel_bigspec.Focus();  // remove focus to avoid flickering
+        }
+
+        private void cb_rxmute_CheckedChanged(object sender, EventArgs e)
+        {
+            statics.rxmute = cb_rxmute.Checked ? 1 : 0;
+            Byte[] txb = new Byte[2];
+            txb[0] = 14;
+            txb[1] = (Byte)statics.rxmute;
+            Udp.UdpSendData(txb);
+        }
     }
 
     class DoubleBufferedPanel : Panel 

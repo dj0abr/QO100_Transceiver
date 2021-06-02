@@ -41,6 +41,9 @@ int newaudiodevs = 0;
 int compressor = 0;
 int audioagc = 0;
 int gotPlutoID = 0;
+int rxfilter = 2;
+int txfilter = 3;
+int rxmute = 0;
 
 // fifos to send/receive samples with pluto run thread
 int RXfifo;
@@ -171,6 +174,15 @@ void udprxfunc(uint8_t *pdata, int len, struct sockaddr_in* sender)
 
 	if(pdata[0] == 11)
 		audioagc = pdata[1];
+
+	if(pdata[0] == 12)
+		rxfilter = pdata[1];
+
+	if(pdata[0] == 13)
+		txfilter = pdata[1];
+
+	if(pdata[0] == 14)
+		rxmute = pdata[1];
 }
 
 void close_program()

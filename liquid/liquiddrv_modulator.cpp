@@ -2,6 +2,7 @@
 
 void tune_upmixer(int offset);
 void sendToPluto();
+void createBandpass();
 
 // Modulator
 float mod_index  = 0.9f;                // modulation index (bandwidth)
@@ -63,9 +64,8 @@ void init_liquid_modulator()
     interp_q = resamp_crcf_create(interp_r,interp_h_len,interp_bw,interp_slsl,interp_npfb);
     if(interp_q == NULL) printf("interp_q error\n");
 
-    // low pass
-    tx_lp_q = iirfilt_crcf_create_prototype(LIQUID_IIRDES_ELLIP, LIQUID_IIRDES_BANDPASS, LIQUID_IIRDES_SOS,
-                                         tx_lp_order, tx_lp_fc, tx_lp_f0, tx_lp_Ap, tx_lp_As);
+    // band pass
+    createBandpass();
 
     // agc
     agc_q = agc_rrrf_create();     
@@ -90,6 +90,30 @@ void close_liquid_modulator()
 
     if(agc_q) agc_rrrf_destroy(agc_q);
     agc_q = NULL;
+}
+
+void createBandpass()
+{
+static int lasttxfilter = -1;
+
+    if(txfilter != lasttxfilter)
+    {
+        lasttxfilter = txfilter;
+        if(tx_lp_q) iirfilt_crcf_destroy(tx_lp_q);
+
+        switch(txfilter)
+        {
+            case 0 : {tx_lp_fc=0.034f; tx_lp_f0=0.02f;} break;
+            case 1 : {tx_lp_fc=0.04f; tx_lp_f0=0.017f;} break;
+            case 2 : {tx_lp_fc=0.045f; tx_lp_f0=0.016f;} break;
+
+            case 3 : {tx_lp_fc=0.05f; tx_lp_f0=0.015f;} break;
+        }
+
+        tx_lp_q = iirfilt_crcf_create_prototype(LIQUID_IIRDES_ELLIP, LIQUID_IIRDES_BANDPASS, LIQUID_IIRDES_SOS,
+                                         tx_lp_order, tx_lp_fc, tx_lp_f0, tx_lp_Ap, tx_lp_As);
+    }
+
 }
 
 void tune_upmixer(int offset)
@@ -134,6 +158,9 @@ float gain = 1;
 
     // re-tune if TX grq has been changed
     tune_upmixer(offsetfreq);
+
+    // re-set bandpass if changed by user
+    createBandpass();
 
     if(audioagc > 0)
     {

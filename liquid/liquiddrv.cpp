@@ -1,5 +1,7 @@
 #include "../qo100trx.h"
 
+void createSSBfilter();
+
 // down mixer
 nco_crcf dnnco = NULL;      
 
@@ -40,8 +42,7 @@ void init_liquid()
     if(decim_q == NULL) printf("decimq error\n");
 
     // low pass
-    lp_q = iirfilt_crcf_create_prototype(LIQUID_IIRDES_ELLIP, LIQUID_IIRDES_LOWPASS, LIQUID_IIRDES_SOS,
-                                         lp_order, lp_fc, lp_f0, lp_Ap, lp_As);
+    createSSBfilter();
 }
 
 void close_liquid()
@@ -59,6 +60,29 @@ void close_liquid()
 
     if(lp_q) iirfilt_crcf_destroy(lp_q);
     lp_q = NULL;
+}
+
+void createSSBfilter()
+{
+static int lastrxfilter = -1;
+
+    if(rxfilter != lastrxfilter)
+    {
+        printf("create RX SSB filter: %d\n",rxfilter);
+        lastrxfilter = rxfilter;
+        if(lp_q) iirfilt_crcf_destroy(lp_q);
+
+        switch(rxfilter)
+        {
+            case 0: lp_fc    =   0.001f; break;
+            case 1: lp_fc    =   0.0018f; break;
+            case 2: lp_fc    =   0.0022f; break;
+            case 3: lp_fc    =   0.0025f; break;
+        }
+
+        lp_q = iirfilt_crcf_create_prototype(LIQUID_IIRDES_ELLIP, LIQUID_IIRDES_LOWPASS, LIQUID_IIRDES_SOS,
+                                         lp_order, lp_fc, lp_f0, lp_Ap, lp_As);
+    }
 }
 
 void tune_downmixer(int offset)
@@ -110,6 +134,9 @@ void downmix(liquid_float_complex *samples, int len, int offsetfreq)
     // re-tune if RX grq has been changed
     tune_downmixer(offsetfreq);
 
+    // re-set RX filter if it was changed by the user
+    createSSBfilter();
+
     // for each sample
     liquid_float_complex c, cfilt;
     liquid_float_complex soundsamp;
@@ -140,6 +167,11 @@ void downmix(liquid_float_complex *samples, int len, int offsetfreq)
 
         // send z to soundcard
         if(audioloop == 0 && pbidx != -1)
-            kmaudio_playsamples(pbidx,&z,1,1.0f);
+        {
+            static float playvol = 1.0f;
+            if(ptt && rxmute) playvol = 0.1f;
+            else playvol = 1.0f;
+            kmaudio_playsamples(pbidx,&z,1,playvol);
+        }
     }
 }

@@ -145,6 +145,8 @@ long long lastfreq = 0;
 
 void setTXfrequency(long long freq)
 {
+	freq += refoffset;
+
 	if(freq != lastfreq)
 	{
 		lastfreq = freq;
@@ -161,6 +163,8 @@ long long lastrxfreq = 0;
 
 void setRXfrequency(long long freq)
 {
+	freq += refoffset;
+	
 	if(freq != lastrxfreq)
 	{
 		lastrxfreq = freq;

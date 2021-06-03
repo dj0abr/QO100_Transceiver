@@ -44,6 +44,7 @@ int gotPlutoID = 0;
 int rxfilter = 2;
 int txfilter = 3;
 int rxmute = 0;
+int refoffset = 0;
 
 // fifos to send/receive samples with pluto run thread
 int RXfifo;
@@ -183,6 +184,25 @@ void udprxfunc(uint8_t *pdata, int len, struct sockaddr_in* sender)
 
 	if(pdata[0] == 14)
 		rxmute = pdata[1];
+
+	if(pdata[0] == 15)
+	{
+		int val;
+		val = pdata[1];
+		val <<= 8;
+		val += pdata[2];
+		val <<= 8;
+		val += pdata[3];
+		val <<= 8;
+		val += pdata[4];
+
+		val -= 12000;
+		refoffset += val;
+		printf("refoffset: %d\n",refoffset);
+
+		setRXfrequency((long long)TX_FREQ);
+		setRXfrequency((long long)RX_FREQ);
+	}
 }
 
 void close_program()

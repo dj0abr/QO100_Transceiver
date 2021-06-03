@@ -8,6 +8,8 @@ namespace trxGui
 {
     public partial class Form1 : Form
     {
+        bool setref = false;
+
         public Form1()
         {
             InitializeComponent();
@@ -141,6 +143,12 @@ namespace trxGui
 
             if (Udp.getSmallWFBitmap_avail())
                 panel_smallwf.Invalidate();
+
+            // detect Shift+Alt+Ctrol Key: set reference frequency to mid beacon by left mouse click
+            if ((Control.ModifierKeys & Keys.Shift) != 0 && (Control.ModifierKeys & Keys.Alt) != 0 && (Control.ModifierKeys & Keys.Control) != 0)
+                setref = true;
+            else
+                setref = false;
 
             if (Control.ModifierKeys == Keys.Shift && !statics.pttkey)
             {
@@ -291,6 +299,24 @@ namespace trxGui
             panel_qrg.Invalidate(); // show qrg
         }
 
+        private void sendReferenceOffset(int hz)
+        {
+            if (hz < -12000) hz = -12000;
+            if (hz > 12000) hz = 12000;
+
+            statics.rfoffset = hz;
+            int val = hz + 12000;   // make it always positive
+
+            Byte[] txb = new Byte[5];
+            txb[0] = 15;
+            txb[1] = (Byte)(val >> 24);
+            txb[2] = (Byte)(val >> 16);
+            txb[3] = (Byte)(val >> 8);
+            txb[4] = (Byte)(val & 0xff);
+
+            Udp.UdpSendData(txb);
+        }
+
         private void tuneBig(MouseEventArgs e)
         {
             
@@ -318,7 +344,14 @@ namespace trxGui
             if (e.Button == MouseButtons.Left)
             {
                 statics.RXoffset += hz;
-                sendRXTXoffset();
+                if(!setref)
+                    sendRXTXoffset();
+                else
+                {
+                    // set offset to Pluto reference frequency
+                    //Console.WriteLine(hz);
+                    sendReferenceOffset(hz);
+                }
             }
 
             if (e.Button == MouseButtons.Right)

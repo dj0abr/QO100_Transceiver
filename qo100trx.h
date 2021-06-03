@@ -46,3 +46,4 @@ extern int audioagc;
 extern int rxfilter;
 extern int txfilter;
 extern int rxmute;
+extern int refoffset;

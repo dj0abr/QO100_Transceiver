@@ -43,6 +43,7 @@ namespace trxGui
         public static int txfilter = 3;
         public static bool audioloop = false;
         public static bool rfloop = false;
+        public static int rfoffset = 0;
 
         static Process cmdtrx = null;
         public static bool StartQO100trx(bool start = true)

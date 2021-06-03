@@ -40,6 +40,9 @@ namespace trxGui
             panel_bigwf.Width = 1120;
             panel_bigwf.Height = 150;
 
+            panel_rxline.Width = 1120;
+            panel_rxline.Height = 15;
+
             panel_smallspec.Width = 1120;
             panel_smallspec.Height = 150;
 
@@ -54,7 +57,9 @@ namespace trxGui
             panel_bandplan.Location = new Point(13, panel_bigspec.Location.Y + panel_bigspec.Height);
             panel_bigwf.Location = new Point(13, panel_bandplan.Location.Y + panel_bandplan.Height);
 
-            panel_smallspec.Location = new Point(13, panel_bigwf.Location.Y + panel_bigwf.Height+15);
+            panel_rxline.Location = new Point(13, panel_bigwf.Location.Y + panel_bigwf.Height);
+
+            panel_smallspec.Location = new Point(13, panel_rxline.Location.Y + panel_rxline.Height);
             panel_smallqrg.Location = new Point(13, panel_smallspec.Location.Y + panel_smallspec.Height);
             panel_smallwf.Location = new Point(13, panel_smallqrg.Location.Y + panel_smallqrg.Height);
 
@@ -1035,10 +1040,15 @@ namespace trxGui
             statics.StartMixer(true);
         }
 
+        static Pen cline = new Pen(Brushes.Yellow, 2);
         private void panel_rxline_Paint(object sender, PaintEventArgs e)
         {
             int x = statics.RXoffset / 500;
-            Console.WriteLine("pp " + x);
+            //Console.WriteLine("pp " + x);
+            using (Graphics gr = e.Graphics)
+            {
+                gr.DrawLine(cline, panel_rxline.Width / 2, panel_rxline.Height, x, 0);
+            }
         }
     }
 

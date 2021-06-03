@@ -47,13 +47,13 @@ namespace trxGui
             this.panel_rfloop = new System.Windows.Forms.Panel();
             this.panel_audioloop = new System.Windows.Forms.Panel();
             this.panel_pavucontrol = new System.Windows.Forms.Panel();
+            this.panel_rxline = new trxGui.DoubleBufferedPanel();
             this.panel_bigspec = new trxGui.DoubleBufferedPanel();
             this.panel_bigwf = new trxGui.DoubleBufferedPanel();
             this.panel_bandplan = new trxGui.DoubleBufferedPanel();
             this.panel_smallwf = new trxGui.DoubleBufferedPanel();
             this.panel_smallspec = new trxGui.DoubleBufferedPanel();
             this.panel_smallqrg = new trxGui.DoubleBufferedPanel();
-            this.panel_rxline = new trxGui.DoubleBufferedPanel();
             this.SuspendLayout();
             // 
             // timer_draw
@@ -223,6 +223,15 @@ namespace trxGui
             this.panel_pavucontrol.TabIndex = 21;
             this.panel_pavucontrol.Click += new System.EventHandler(this.panel_pavucontrol_Click);
             // 
+            // panel_rxline
+            // 
+            this.panel_rxline.BackColor = System.Drawing.Color.Gray;
+            this.panel_rxline.Location = new System.Drawing.Point(12, 366);
+            this.panel_rxline.Name = "panel_rxline";
+            this.panel_rxline.Size = new System.Drawing.Size(1120, 12);
+            this.panel_rxline.TabIndex = 3;
+            this.panel_rxline.Paint += new System.Windows.Forms.PaintEventHandler(this.panel_rxline_Paint);
+            // 
             // panel_bigspec
             // 
             this.panel_bigspec.BackColor = System.Drawing.Color.LightGray;
@@ -292,15 +301,6 @@ namespace trxGui
             this.panel_smallqrg.Size = new System.Drawing.Size(1120, 12);
             this.panel_smallqrg.TabIndex = 2;
             this.panel_smallqrg.Paint += new System.Windows.Forms.PaintEventHandler(this.panel_smallqrg_Paint);
-            // 
-            // panel_rxline
-            // 
-            this.panel_rxline.BackColor = System.Drawing.Color.Silver;
-            this.panel_rxline.Location = new System.Drawing.Point(12, 366);
-            this.panel_rxline.Name = "panel_rxline";
-            this.panel_rxline.Size = new System.Drawing.Size(1120, 12);
-            this.panel_rxline.TabIndex = 3;
-            this.panel_rxline.Paint += new System.Windows.Forms.PaintEventHandler(this.panel_rxline_Paint);
             // 
             // Form1
             // 

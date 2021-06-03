@@ -107,5 +107,110 @@
   <ItemGroup>
     <None Include="Properties\info.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\empty_button_white.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\empty_button_gray.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\rit.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\rit_button.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\xit_button.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\rit_button_inact.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\rt_button.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\rt_button_inact.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\tr_button.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\tr_button_inact.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\xit_button_inact.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\agc_button.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\agc_button_inact.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\comp_button.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\comp_button_inact.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\mute.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\mute_inact.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\comp_high.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\comp_low.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\comp_mid.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\comp_off.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\tx_filter_1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\tx_filter_27.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\tx_filter_22.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\tx_filter_18.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\rx_filter_36.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\rx_filter_27.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\rx_filter_18.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\rx_filter_1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\rfloop.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\rfloop_inact.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\audioloop.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\audioloop_inact.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\ptt_tx.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\ptt_rx.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

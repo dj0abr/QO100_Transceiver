@@ -34,7 +34,15 @@ namespace trxGui
         public static int plutousb = 1;
         public static String plutoaddress = "";
         public static int rxmouse = -1;
-        public static int rxmute = 0;
+        public static bool rxmute = false;
+        public static bool rit = true;
+        public static bool xit = false;
+        public static bool audioagc = false;
+        public static int compressor = 0;
+        public static int rxfilter = 3;
+        public static int txfilter = 3;
+        public static bool audioloop = false;
+        public static bool rfloop = false;
 
         static Process cmd = null;
         public static bool StartQO100trx(bool start = true)

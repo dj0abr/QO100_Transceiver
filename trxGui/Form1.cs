@@ -24,7 +24,7 @@ namespace trxGui
             panel_smallspec.MouseWheel += panel_smallwf_MouseWheel;
 
             this.Width = 1155;
-            this.Height = 818;
+            this.Height = 790;
 
             panel_qrg.Width = 1120;
             panel_qrg.Height = 40;
@@ -56,22 +56,32 @@ namespace trxGui
             panel_smallqrg.Location = new Point(13, panel_smallspec.Location.Y + panel_smallspec.Height);
             panel_smallwf.Location = new Point(13, panel_smallqrg.Location.Y + panel_smallqrg.Height);
 
-            int yspace = 8;
+            // button panel positions
+            int xspace = 4;
 
-            panel_info.Location = new Point(panel_bigspec.Location.X + panel_bigspec.Width - panel_info.Width, panel_smallwf.Location.Y + panel_smallwf.Height + yspace);
-            panel_setup.Location = new Point(panel_info.Location.X - panel_setup.Width - 5, panel_info.Location.Y);
-            gp_testmodes.Location = new Point(panel_setup.Location.X - gp_testmodes.Width - 5, panel_smallwf.Location.Y + panel_smallwf.Height + 1);
-            gp_qrg.Location = new Point(13, panel_smallwf.Location.Y + panel_smallwf.Height + 1);
-            gp_copyqrg.Location = new Point(gp_qrg.Location.X + gp_qrg.Width + 5, panel_smallwf.Location.Y + panel_smallwf.Height + 1);
-            gp_audio.Location = new Point(gp_copyqrg.Location.X + gp_copyqrg.Width + 5, gp_copyqrg.Location.Y);
-            gp_filter.Location = new Point(gp_audio.Location.X + gp_audio.Width + 5, gp_audio.Location.Y);
+            panel_rxfilter.Size = panel_txfilter.Size = panel_rfloop.Size = panel_audioloop.Size = panel_comp.Size = panel_setup.Size = panel_info.Size = panel_rit.Size = panel_xit.Size = panel_copyRtoT.Size = panel_copyTtoR.Size = panel_agc.Size = panel_txmute.Size =new Size(48, 48);
+            panel_rit.Location = new Point(13, panel_smallwf.Location.Y + panel_smallwf.Height + 4);
+            panel_xit.Location = new Point(panel_rit.Location.X + panel_rit.Width + xspace, panel_rit.Location.Y);
+
+            panel_copyRtoT.Location = new Point(panel_xit.Location.X + panel_xit.Width + xspace+6, panel_rit.Location.Y);
+            panel_copyTtoR.Location = new Point(panel_copyRtoT.Location.X + panel_copyRtoT.Width + xspace, panel_rit.Location.Y);
+
+            panel_agc.Location = new Point(panel_copyTtoR.Location.X + panel_copyTtoR.Width + xspace+6, panel_rit.Location.Y);
+            panel_txmute.Location = new Point(panel_agc.Location.X + panel_agc.Width + xspace, panel_rit.Location.Y);
+            panel_comp.Location = new Point(panel_txmute.Location.X + panel_txmute.Width + xspace, panel_rit.Location.Y);
+
+            panel_rxfilter.Location = new Point(panel_comp.Location.X + panel_comp.Width + xspace+6, panel_rit.Location.Y);
+            panel_txfilter.Location = new Point(panel_rxfilter.Location.X + panel_rxfilter.Width + xspace, panel_rit.Location.Y);
+
+            panel_audioloop.Location = new Point(panel_txfilter.Location.X + panel_txfilter.Width + xspace+6, panel_rit.Location.Y);
+            panel_rfloop.Location = new Point(panel_audioloop.Location.X + panel_audioloop.Width + xspace, panel_rit.Location.Y);
+
+            panel_info.Location = new Point(panel_bigspec.Location.X + panel_bigspec.Width - panel_info.Width, panel_rit.Location.Y);
+            panel_setup.Location = new Point(panel_info.Location.X - panel_setup.Width - 5, panel_rit.Location.Y);
 
             // PTT Panel
-            panel1.Location = new Point(gp_qrg.Location.X, gp_qrg.Location.Y + gp_qrg.Height + 5);
-            panel1.Width = 1120;
-
-            cb_rxtotx.Location = new Point(cb_rxtotx.Location.X, 19);
-            cb_txtorx.Location = new Point(cb_txtorx.Location.X, 19);
+            panel1.Location = new Point(panel_rfloop.Location.X + panel_rfloop.Width + xspace+6, panel_rit.Location.Y);
+            panel1.Size = new Size(panel_setup.Location.X - panel1.Location.X - 6, panel_rfloop.Height);
 
             // test OS type
             OperatingSystem osversion = System.Environment.OSVersion;
@@ -193,8 +203,11 @@ namespace trxGui
                 sendAudioDevs();
                 sendBaseQRG();
                 sendPlutoAddress();
-                cb_compressor_SelectedIndexChanged(null, null);   // send "compress"
-                cb_audioagc_CheckedChanged(null, null);   // send "AGC"
+                panel_comp_Click(null, null);   // send "compress"
+                panel_agc_Click(null, null);   // send "AGC"
+                panel_txmute_Click(null, null);
+                panel_rxfilter_Click(null, null);
+                panel_txfilter_Click(null, null);
             }
         }
 
@@ -319,48 +332,48 @@ namespace trxGui
         {
             int factor = 100;
             if (Control.ModifierKeys == Keys.Alt) factor = 1000;
-            if (Control.ModifierKeys == Keys.Shift) factor = 10000;
+            if (Control.ModifierKeys == Keys.Control) factor = 10000;
 
-            if (rb_rit.Checked)
+            if (statics.rit)
             {
                 if (e.Delta > 0) //wheel direction
                     statics.RXoffset += factor;
                 else
                     statics.RXoffset -= factor;
 
-                sendRXTXoffset();
             }
-            else
+            if (statics.xit)
             {
                 if (e.Delta > 0) //wheel direction
                     statics.TXoffset += factor;
                 else
                     statics.TXoffset -= factor;
-
-                sendRXTXoffset();
             }
+
+            if (statics.rit || statics.xit)
+                sendRXTXoffset();
         }
 
         private void panel_smallwf_MouseWheel(object sender, MouseEventArgs e)
         {
-            if (rb_rit.Checked)
+            if (statics.rit)
             {
                 if (e.Delta > 0) //wheel direction
                     statics.RXoffset += 10;
                 else
                     statics.RXoffset -= 10;
-
-                sendRXTXoffset();
             }
-            else
+
+            if (statics.xit)
             {
                 if (e.Delta > 0) //wheel direction
                     statics.TXoffset += 10;
                 else
                     statics.TXoffset -= 10;
-
-                sendRXTXoffset();
             }
+
+            if (statics.rit || statics.xit)
+                sendRXTXoffset();
         }
 
         private void panel_bigwf_MouseHover(object sender, EventArgs e)
@@ -516,46 +529,12 @@ namespace trxGui
             }
         }
 
-        private void cb_audioloop_CheckedChanged(object sender, EventArgs e)
+        private void setPTT(bool onoff)
         {
-            if (cb_audioloop.Checked)
-                cb_rfloop.Checked = false;
-
             Byte[] txb = new Byte[2];
-            txb[0] = 3;
-            txb[1] = (Byte)(cb_audioloop.Checked ? 1 : 0);
-
+            txb[0] = 4;
+            txb[1] = (Byte)(onoff ? 1 : 0);
             Udp.UdpSendData(txb);
-        }
-
-        private void cb_rfloop_CheckedChanged(object sender, EventArgs e)
-        {
-            if(cb_rfloop.Checked)
-                cb_audioloop.Checked = false;
-
-            
-
-            Byte[] txb = new Byte[2];
-            txb[0] = 5;
-            txb[1] = (Byte)(cb_rfloop.Checked ? 1 : 0);
-
-            Console.WriteLine("cw " + cb_rfloop.Checked + " " + txb[1]);
-
-            Udp.UdpSendData(txb);
-        }
-
-        private void cb_rxtotx_CheckedChanged(object sender, EventArgs e)
-        {
-            statics.TXoffset = statics.RXoffset;
-            sendRXTXoffset();
-            cb_rxtotx.Checked = false;
-        }
-
-        private void cb_txtorx_CheckedChanged(object sender, EventArgs e)
-        {
-            statics.RXoffset = statics.TXoffset;
-            sendRXTXoffset();
-            cb_txtorx.Checked = false;
         }
 
         private void panel1_Paint(object sender, PaintEventArgs e)
@@ -563,18 +542,19 @@ namespace trxGui
             using (Graphics gr = e.Graphics)
             {
                 if (statics.ptt || statics.pttkey)
+                {
                     gr.FillRectangle(Brushes.Red, 0, 0, panel1.Width, panel1.Height);
+                    using (Bitmap bm = new Bitmap(Properties.Resources.ptt_tx))
+                        gr.DrawImage(bm, panel1.Width/2 - bm.Width/2, 0);
+                }
                 else
+                {
                     gr.FillRectangle(Brushes.Green, 0, 0, panel1.Width, panel1.Height);
-
-                Font fnt = new Font("Verdana", 20.0f);
-                gr.DrawString("PTT", fnt, Brushes.Black, panel1.Width/2-10, 0);
+                    using (Bitmap bm = new Bitmap(Properties.Resources.ptt_rx))
+                        gr.DrawImage(bm, panel1.Width / 2 - bm.Width / 2, 0);
+                }
             }
-
-            Byte[] txb = new Byte[2];
-            txb[0] = 4;
-            txb[1] = (Byte)((statics.ptt | statics.pttkey) ? 1 : 0);
-            Udp.UdpSendData(txb);
+            setPTT(statics.ptt | statics.pttkey);
         }
 
         private void panel1_MouseClick(object sender, MouseEventArgs e)
@@ -694,11 +674,13 @@ namespace trxGui
                     statics.plutousb = ReadInt(sr);
                     statics.plutoaddress = ReadString(sr);
                     String dummy1 = ReadString(sr);
-                    cb_audioagc.Checked = ReadString(sr) == "1";
-                    cb_compressor.SelectedIndex = ReadInt(sr);
-                    cb_filterRX.SelectedIndex = ReadInt(sr);
-                    cb_filterTX.SelectedIndex = ReadInt(sr);
-                    statics.rxmute = ReadInt(sr);
+                    statics.audioagc = ReadString(sr) == "1";
+                    statics.compressor = ReadInt(sr);
+                    statics.rxfilter = ReadInt(sr);
+                    statics.txfilter = ReadInt(sr);
+                    statics.rxmute = ReadString(sr) == "1";
+                    statics.rit = ReadString(sr) == "1";
+                    statics.xit = ReadString(sr) == "1";
                 }
             }
             catch
@@ -719,32 +701,16 @@ namespace trxGui
                     sw.WriteLine(statics.plutousb.ToString());
                     sw.WriteLine(statics.plutoaddress);
                     sw.WriteLine("");
-                    sw.WriteLine(cb_audioagc.Checked ? "1" : "0");
-                    sw.WriteLine(cb_compressor.SelectedIndex.ToString());
-                    sw.WriteLine(cb_filterRX.SelectedIndex.ToString());
-                    sw.WriteLine(cb_filterTX.SelectedIndex.ToString());
-                    sw.WriteLine(statics.rxmute);
+                    sw.WriteLine(statics.audioagc ? "1" : "0");
+                    sw.WriteLine(statics.compressor.ToString());
+                    sw.WriteLine(statics.rxfilter.ToString());
+                    sw.WriteLine(statics.txfilter.ToString());
+                    sw.WriteLine(statics.rxmute ? "1" : "0");
+                    sw.WriteLine(statics.rit ? "1" : "0");
+                    sw.WriteLine(statics.xit ? "1" : "0");
                 }
             }
             catch { }
-        }
-
-        private void cb_compressor_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            Byte[] txb = new Byte[2];
-            txb[0] = 9;
-            txb[1] = (Byte)cb_compressor.SelectedIndex; // compression factor
-            Udp.UdpSendData(txb);
-
-            panel_bigspec.Focus();  // remove focus to avoid flickering
-        }
-
-        private void cb_audioagc_CheckedChanged(object sender, EventArgs e)
-        {
-            Byte[] txb = new Byte[2];
-            txb[0] = 11;
-            txb[1] = (Byte)((cb_audioagc.Checked) ? 1 : 0);
-            Udp.UdpSendData(txb);
         }
 
         private void bt_info_click(object sender, EventArgs e)
@@ -770,33 +736,257 @@ namespace trxGui
             Udp.UdpSendData(txb);
         }
 
-        private void cb_filterRX_SelectedIndexChanged(object sender, EventArgs e)
+        private void panel_rit_Click(object sender, EventArgs e)
         {
-            Byte[] txb = new Byte[2];
-            txb[0] = 12;
-            txb[1] = (Byte)cb_filterRX.SelectedIndex;
-            Udp.UdpSendData(txb);
-
-            panel_bigspec.Focus();  // remove focus to avoid flickering
+            statics.rit = !statics.rit;
+            panel_rit.Invalidate();
         }
 
-        private void cb_filterTX_SelectedIndexChanged(object sender, EventArgs e)
+        private void panel_xit_Click(object sender, EventArgs e)
         {
-            Byte[] txb = new Byte[2];
-            txb[0] = 13;
-            txb[1] = (Byte)cb_filterTX.SelectedIndex;
-            Udp.UdpSendData(txb);
-
-            panel_bigspec.Focus();  // remove focus to avoid flickering
+            statics.xit = !statics.xit;
+            panel_xit.Invalidate();
         }
 
-        private void cb_rxmute_CheckedChanged(object sender, EventArgs e)
+        private void drawButtonPanel(Graphics gr, bool state, Bitmap bm, Bitmap bminact)
         {
-            statics.rxmute = cb_rxmute.Checked ? 1 : 0;
+            if (state)
+                gr.DrawImage(bm, 0, 0);
+            else
+                gr.DrawImage(bminact, 0, 0);
+        }
+                
+        private void panel_rit_Paint(object sender, PaintEventArgs e)
+        {
+            using (Bitmap bm = new Bitmap(Properties.Resources.rit_button))
+                using (Bitmap bminact = new Bitmap(Properties.Resources.rit_button_inact))
+                    drawButtonPanel(e.Graphics, statics.rit, bm, bminact);
+        }
+
+        private void panel_xit_Paint(object sender, PaintEventArgs e)
+        {
+            using (Bitmap bm = new Bitmap(Properties.Resources.xit_button))
+                using (Bitmap bminact = new Bitmap(Properties.Resources.xit_button_inact))
+                    drawButtonPanel(e.Graphics, statics.xit, bm, bminact);
+        }
+
+        
+        private void panel_copyRtoT_Paint(object sender, PaintEventArgs e)
+        {
+            using (Bitmap bm = new Bitmap(Properties.Resources.rt_button))
+                using (Bitmap bminact = new Bitmap(Properties.Resources.rt_button_inact))
+                    drawButtonPanel(e.Graphics,true, bm, bminact);
+        }
+
+        private void panel_copyTtoR_Paint(object sender, PaintEventArgs e)
+        {
+            using (Bitmap bm = new Bitmap(Properties.Resources.tr_button))
+                using (Bitmap bminact = new Bitmap(Properties.Resources.tr_button_inact))
+                    drawButtonPanel(e.Graphics, true, bm, bminact);
+        }
+
+        private void panel_copyRtoT_Click(object sender, EventArgs e)
+        {
+            statics.TXoffset = statics.RXoffset;
+            sendRXTXoffset();
+            panel_copyRtoT.Invalidate();
+        }
+
+        private void panel_agc_Paint(object sender, PaintEventArgs e)
+        {
+            using (Bitmap bm = new Bitmap(Properties.Resources.agc_button))
+                using (Bitmap bminact = new Bitmap(Properties.Resources.agc_button_inact))
+                    drawButtonPanel(e.Graphics, statics.audioagc, bm, bminact);
+        }
+
+        private void panel_txmute_Paint(object sender, PaintEventArgs e)
+        {
+            using (Bitmap bm = new Bitmap(Properties.Resources.mute))
+                using (Bitmap bminact = new Bitmap(Properties.Resources.mute_inact))
+                    drawButtonPanel(e.Graphics, statics.rxmute, bm, bminact);
+        }
+
+        private void panel_agc_Click(object sender, EventArgs e)
+        {
+            if(e != null) statics.audioagc = !statics.audioagc;
+            Byte[] txb = new Byte[2];
+            txb[0] = 11;
+            txb[1] = (Byte)(statics.audioagc ? 1 : 0);
+            Udp.UdpSendData(txb);
+            panel_agc.Invalidate();
+        }
+
+        private void panel_txmute_Click(object sender, EventArgs e)
+        {
+            if (e != null) statics.rxmute = !statics.rxmute;
             Byte[] txb = new Byte[2];
             txb[0] = 14;
-            txb[1] = (Byte)statics.rxmute;
+            txb[1] = (Byte)(statics.rxmute ? 1 : 0);
             Udp.UdpSendData(txb);
+            panel_txmute.Invalidate();
+        }
+
+        private void panel_comp_Click(object sender, EventArgs e)
+        {
+            if (e != null) if (++statics.compressor > 3) statics.compressor = 0;
+
+            Byte[] txb = new Byte[2];
+            txb[0] = 9;
+            txb[1] = (Byte)statics.compressor; // compression factor
+            Udp.UdpSendData(txb);
+
+            panel_comp.Invalidate();
+        }
+
+        private void panel_comp_Paint(object sender, PaintEventArgs e)
+        {
+            switch(statics.compressor)
+            {
+                case 0:
+                    using (Bitmap bm = new Bitmap(Properties.Resources.comp_off))
+                        e.Graphics.DrawImage(bm, 0, 0);
+                    break;
+                case 1:
+                    using (Bitmap bm = new Bitmap(Properties.Resources.comp_low))
+                        e.Graphics.DrawImage(bm, 0, 0);
+                    break;
+                case 2:
+                    using (Bitmap bm = new Bitmap(Properties.Resources.comp_mid))
+                        e.Graphics.DrawImage(bm, 0, 0);
+                    break;
+                case 3:
+                    using (Bitmap bm = new Bitmap(Properties.Resources.comp_high))
+                        e.Graphics.DrawImage(bm, 0, 0);
+                    break;
+            }
+        }
+
+        private void panel_copyTtoR_Click(object sender, EventArgs e)
+        {
+            statics.RXoffset = statics.TXoffset;
+            sendRXTXoffset();
+            panel_copyTtoR.Invalidate();
+        }
+
+        private void panel_rxfilter_Paint(object sender, PaintEventArgs e)
+        {
+            switch (statics.rxfilter)
+            {
+                case 0:
+                    using (Bitmap bm = new Bitmap(Properties.Resources.rx_filter_1))
+                        e.Graphics.DrawImage(bm, 0, 0);
+                    break;
+                case 1:
+                    using (Bitmap bm = new Bitmap(Properties.Resources.rx_filter_18))
+                        e.Graphics.DrawImage(bm, 0, 0);
+                    break;
+                case 2:
+                    using (Bitmap bm = new Bitmap(Properties.Resources.rx_filter_27))
+                        e.Graphics.DrawImage(bm, 0, 0);
+                    break;
+                case 3:
+                    using (Bitmap bm = new Bitmap(Properties.Resources.rx_filter_36))
+                        e.Graphics.DrawImage(bm, 0, 0);
+                    break;
+            }
+        }
+
+        private void panel_txfilter_Paint(object sender, PaintEventArgs e)
+        {
+            switch (statics.txfilter)
+            {
+                case 0:
+                    using (Bitmap bm = new Bitmap(Properties.Resources.tx_filter_1))
+                        e.Graphics.DrawImage(bm, 0, 0);
+                    break;
+                case 1:
+                    using (Bitmap bm = new Bitmap(Properties.Resources.tx_filter_18))
+                        e.Graphics.DrawImage(bm, 0, 0);
+                    break;
+                case 2:
+                    using (Bitmap bm = new Bitmap(Properties.Resources.tx_filter_22))
+                        e.Graphics.DrawImage(bm, 0, 0);
+                    break;
+                case 3:
+                    using (Bitmap bm = new Bitmap(Properties.Resources.tx_filter_27))
+                        e.Graphics.DrawImage(bm, 0, 0);
+                    break;
+            }
+        }
+
+        private void panel_rxfilter_Click(object sender, EventArgs e)
+        {
+            if (e != null) if (++statics.rxfilter > 3) statics.rxfilter = 0;
+
+            Byte[] txb = new Byte[2];
+            txb[0] = 12;
+            txb[1] = (Byte)statics.rxfilter;
+            Udp.UdpSendData(txb);
+
+            panel_rxfilter.Invalidate();
+        }
+
+        private void panel_txfilter_Click(object sender, EventArgs e)
+        {
+            if (e != null) if (++statics.txfilter > 3) statics.txfilter = 0;
+
+            Byte[] txb = new Byte[2];
+            txb[0] = 13;
+            txb[1] = (Byte)statics.txfilter;
+            Udp.UdpSendData(txb);
+
+            panel_txfilter.Invalidate();
+        }
+
+        private void panel_audioloop_Paint(object sender, PaintEventArgs e)
+        {
+            using (Bitmap bm = new Bitmap(Properties.Resources.audioloop))
+                using (Bitmap bminact = new Bitmap(Properties.Resources.audioloop_inact))
+                    drawButtonPanel(e.Graphics, statics.audioloop, bm, bminact);
+        }
+
+        private void panel_rfloop_Paint(object sender, PaintEventArgs e)
+        {
+            using (Bitmap bm = new Bitmap(Properties.Resources.rfloop))
+                using (Bitmap bminact = new Bitmap(Properties.Resources.rfloop_inact))
+                    drawButtonPanel(e.Graphics, statics.rfloop, bm, bminact);
+        }
+
+        private void panel_audioloop_Click(object sender, EventArgs e)
+        {
+            statics.audioloop = !statics.audioloop;
+            if (statics.audioloop && statics.rfloop)
+            {
+                panel_rfloop_Click(null, null);
+            }
+
+            Byte[] txb = new Byte[2];
+            txb[0] = 3;
+            txb[1] = (Byte)(statics.audioloop ? 1 : 0);
+
+            Udp.UdpSendData(txb);
+            panel_audioloop.Invalidate();
+            panel_rfloop.Invalidate();
+        }
+
+        private void panel_rfloop_Click(object sender, EventArgs e)
+        {
+            statics.rfloop = !statics.rfloop;
+            if (statics.audioloop && statics.rfloop)
+            {
+                panel_audioloop_Click(null, null);
+            }
+
+            statics.ptt = statics.rfloop;
+            panel1.Invalidate();
+
+            Byte[] txb = new Byte[2];
+            txb[0] = 5;
+            txb[1] = (Byte)(statics.rfloop ? 1 : 0);
+
+            Udp.UdpSendData(txb);
+            panel_rfloop.Invalidate();
+            panel_audioloop.Invalidate();
         }
     }
 

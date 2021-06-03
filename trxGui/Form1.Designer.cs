@@ -31,40 +31,27 @@ namespace trxGui
         {
             this.components = new System.ComponentModel.Container();
             this.timer_draw = new System.Windows.Forms.Timer(this.components);
-            this.gp_testmodes = new System.Windows.Forms.GroupBox();
-            this.cb_rfloop = new System.Windows.Forms.CheckBox();
-            this.cb_audioloop = new System.Windows.Forms.CheckBox();
-            this.gp_qrg = new System.Windows.Forms.GroupBox();
-            this.rb_rit = new System.Windows.Forms.RadioButton();
-            this.rb_xit = new System.Windows.Forms.RadioButton();
-            this.gp_copyqrg = new System.Windows.Forms.GroupBox();
-            this.cb_txtorx = new System.Windows.Forms.CheckBox();
-            this.cb_rxtotx = new System.Windows.Forms.CheckBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel_qrg = new System.Windows.Forms.Panel();
-            this.gp_audio = new System.Windows.Forms.GroupBox();
-            this.cb_audioagc = new System.Windows.Forms.CheckBox();
-            this.gp_filter = new System.Windows.Forms.GroupBox();
-            this.cb_filterRX = new System.Windows.Forms.ComboBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.cb_filterTX = new System.Windows.Forms.ComboBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.cb_compressor = new System.Windows.Forms.ComboBox();
+            this.panel_rit = new System.Windows.Forms.Panel();
+            this.panel_xit = new System.Windows.Forms.Panel();
+            this.panel_copyRtoT = new System.Windows.Forms.Panel();
+            this.panel_copyTtoR = new System.Windows.Forms.Panel();
+            this.panel_agc = new System.Windows.Forms.Panel();
+            this.panel_txmute = new System.Windows.Forms.Panel();
+            this.panel_comp = new System.Windows.Forms.Panel();
             this.panel_info = new System.Windows.Forms.Panel();
             this.panel_setup = new System.Windows.Forms.Panel();
+            this.panel_rxfilter = new System.Windows.Forms.Panel();
+            this.panel_txfilter = new System.Windows.Forms.Panel();
+            this.panel_rfloop = new System.Windows.Forms.Panel();
+            this.panel_audioloop = new System.Windows.Forms.Panel();
             this.panel_bigspec = new trxGui.DoubleBufferedPanel();
             this.panel_bigwf = new trxGui.DoubleBufferedPanel();
             this.panel_bandplan = new trxGui.DoubleBufferedPanel();
             this.panel_smallwf = new trxGui.DoubleBufferedPanel();
             this.panel_smallspec = new trxGui.DoubleBufferedPanel();
             this.panel_smallqrg = new trxGui.DoubleBufferedPanel();
-            this.cb_rxmute = new System.Windows.Forms.CheckBox();
-            this.gp_testmodes.SuspendLayout();
-            this.gp_qrg.SuspendLayout();
-            this.gp_copyqrg.SuspendLayout();
-            this.gp_audio.SuspendLayout();
-            this.gp_filter.SuspendLayout();
             this.SuspendLayout();
             // 
             // timer_draw
@@ -72,121 +59,12 @@ namespace trxGui
             this.timer_draw.Interval = 60;
             this.timer_draw.Tick += new System.EventHandler(this.timer_draw_Tick);
             // 
-            // gp_testmodes
-            // 
-            this.gp_testmodes.Controls.Add(this.cb_rfloop);
-            this.gp_testmodes.Controls.Add(this.cb_audioloop);
-            this.gp_testmodes.Location = new System.Drawing.Point(800, 709);
-            this.gp_testmodes.Name = "gp_testmodes";
-            this.gp_testmodes.Size = new System.Drawing.Size(168, 40);
-            this.gp_testmodes.TabIndex = 8;
-            this.gp_testmodes.TabStop = false;
-            this.gp_testmodes.Text = "Testmodes";
-            // 
-            // cb_rfloop
-            // 
-            this.cb_rfloop.AutoSize = true;
-            this.cb_rfloop.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cb_rfloop.Location = new System.Drawing.Point(99, 17);
-            this.cb_rfloop.Name = "cb_rfloop";
-            this.cb_rfloop.Size = new System.Drawing.Size(64, 17);
-            this.cb_rfloop.TabIndex = 1;
-            this.cb_rfloop.Text = "RF Loop";
-            this.cb_rfloop.UseVisualStyleBackColor = true;
-            this.cb_rfloop.CheckedChanged += new System.EventHandler(this.cb_rfloop_CheckedChanged);
-            // 
-            // cb_audioloop
-            // 
-            this.cb_audioloop.AutoSize = true;
-            this.cb_audioloop.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cb_audioloop.Location = new System.Drawing.Point(13, 17);
-            this.cb_audioloop.Name = "cb_audioloop";
-            this.cb_audioloop.Size = new System.Drawing.Size(77, 17);
-            this.cb_audioloop.TabIndex = 0;
-            this.cb_audioloop.Text = "Audio Loop";
-            this.cb_audioloop.UseVisualStyleBackColor = true;
-            this.cb_audioloop.CheckedChanged += new System.EventHandler(this.cb_audioloop_CheckedChanged);
-            // 
-            // gp_qrg
-            // 
-            this.gp_qrg.Controls.Add(this.rb_rit);
-            this.gp_qrg.Controls.Add(this.rb_xit);
-            this.gp_qrg.Location = new System.Drawing.Point(14, 713);
-            this.gp_qrg.Name = "gp_qrg";
-            this.gp_qrg.Size = new System.Drawing.Size(126, 40);
-            this.gp_qrg.TabIndex = 9;
-            this.gp_qrg.TabStop = false;
-            this.gp_qrg.Text = "Mouse Wheel";
-            // 
-            // rb_rit
-            // 
-            this.rb_rit.AutoSize = true;
-            this.rb_rit.BackColor = System.Drawing.Color.Gray;
-            this.rb_rit.Checked = true;
-            this.rb_rit.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.rb_rit.Location = new System.Drawing.Point(16, 13);
-            this.rb_rit.Name = "rb_rit";
-            this.rb_rit.Size = new System.Drawing.Size(48, 21);
-            this.rb_rit.TabIndex = 2;
-            this.rb_rit.TabStop = true;
-            this.rb_rit.Text = "RIT";
-            this.rb_rit.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.rb_rit.UseVisualStyleBackColor = false;
-            // 
-            // rb_xit
-            // 
-            this.rb_xit.AutoSize = true;
-            this.rb_xit.BackColor = System.Drawing.Color.Gray;
-            this.rb_xit.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.rb_xit.Location = new System.Drawing.Point(71, 13);
-            this.rb_xit.Name = "rb_xit";
-            this.rb_xit.Size = new System.Drawing.Size(47, 21);
-            this.rb_xit.TabIndex = 3;
-            this.rb_xit.Text = "XIT";
-            this.rb_xit.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.rb_xit.UseVisualStyleBackColor = false;
-            // 
-            // gp_copyqrg
-            // 
-            this.gp_copyqrg.Controls.Add(this.cb_txtorx);
-            this.gp_copyqrg.Controls.Add(this.cb_rxtotx);
-            this.gp_copyqrg.Location = new System.Drawing.Point(146, 713);
-            this.gp_copyqrg.Name = "gp_copyqrg";
-            this.gp_copyqrg.Size = new System.Drawing.Size(137, 40);
-            this.gp_copyqrg.TabIndex = 10;
-            this.gp_copyqrg.TabStop = false;
-            this.gp_copyqrg.Text = "QRG copy";
-            // 
-            // cb_txtorx
-            // 
-            this.cb_txtorx.AutoSize = true;
-            this.cb_txtorx.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cb_txtorx.Location = new System.Drawing.Point(71, 15);
-            this.cb_txtorx.Name = "cb_txtorx";
-            this.cb_txtorx.Size = new System.Drawing.Size(58, 17);
-            this.cb_txtorx.TabIndex = 1;
-            this.cb_txtorx.Text = "TX>RX";
-            this.cb_txtorx.UseVisualStyleBackColor = true;
-            this.cb_txtorx.CheckedChanged += new System.EventHandler(this.cb_txtorx_CheckedChanged);
-            // 
-            // cb_rxtotx
-            // 
-            this.cb_rxtotx.AutoSize = true;
-            this.cb_rxtotx.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cb_rxtotx.Location = new System.Drawing.Point(7, 15);
-            this.cb_rxtotx.Name = "cb_rxtotx";
-            this.cb_rxtotx.Size = new System.Drawing.Size(58, 17);
-            this.cb_rxtotx.TabIndex = 0;
-            this.cb_rxtotx.Text = "RX>TX";
-            this.cb_rxtotx.UseVisualStyleBackColor = true;
-            this.cb_rxtotx.CheckedChanged += new System.EventHandler(this.cb_rxtotx_CheckedChanged);
-            // 
             // panel1
             // 
-            this.panel1.BackColor = System.Drawing.Color.LightGreen;
-            this.panel1.Location = new System.Drawing.Point(14, 759);
+            this.panel1.BackColor = System.Drawing.Color.Yellow;
+            this.panel1.Location = new System.Drawing.Point(610, 724);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1118, 33);
+            this.panel1.Size = new System.Drawing.Size(414, 33);
             this.panel1.TabIndex = 11;
             this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
             this.panel1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseClick);
@@ -200,124 +78,84 @@ namespace trxGui
             this.panel_qrg.TabIndex = 5;
             this.panel_qrg.Paint += new System.Windows.Forms.PaintEventHandler(this.panel_qrg_Paint);
             // 
-            // gp_audio
+            // panel_rit
             // 
-            this.gp_audio.Controls.Add(this.cb_rxmute);
-            this.gp_audio.Controls.Add(this.label3);
-            this.gp_audio.Controls.Add(this.cb_audioagc);
-            this.gp_audio.Controls.Add(this.cb_compressor);
-            this.gp_audio.Location = new System.Drawing.Point(296, 713);
-            this.gp_audio.Name = "gp_audio";
-            this.gp_audio.Size = new System.Drawing.Size(231, 40);
-            this.gp_audio.TabIndex = 11;
-            this.gp_audio.TabStop = false;
-            this.gp_audio.Text = "Audio";
+            this.panel_rit.BackColor = System.Drawing.Color.White;
+            this.panel_rit.Location = new System.Drawing.Point(14, 709);
+            this.panel_rit.Name = "panel_rit";
+            this.panel_rit.Size = new System.Drawing.Size(48, 48);
+            this.panel_rit.TabIndex = 15;
+            this.panel_rit.Click += new System.EventHandler(this.panel_rit_Click);
+            this.panel_rit.Paint += new System.Windows.Forms.PaintEventHandler(this.panel_rit_Paint);
             // 
-            // cb_audioagc
+            // panel_xit
             // 
-            this.cb_audioagc.AutoSize = true;
-            this.cb_audioagc.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cb_audioagc.Location = new System.Drawing.Point(105, 16);
-            this.cb_audioagc.Name = "cb_audioagc";
-            this.cb_audioagc.Size = new System.Drawing.Size(45, 17);
-            this.cb_audioagc.TabIndex = 1;
-            this.cb_audioagc.Text = "AGC";
-            this.cb_audioagc.UseVisualStyleBackColor = true;
-            this.cb_audioagc.CheckedChanged += new System.EventHandler(this.cb_audioagc_CheckedChanged);
+            this.panel_xit.BackColor = System.Drawing.Color.White;
+            this.panel_xit.Location = new System.Drawing.Point(68, 709);
+            this.panel_xit.Name = "panel_xit";
+            this.panel_xit.Size = new System.Drawing.Size(48, 48);
+            this.panel_xit.TabIndex = 15;
+            this.panel_xit.Click += new System.EventHandler(this.panel_xit_Click);
+            this.panel_xit.Paint += new System.Windows.Forms.PaintEventHandler(this.panel_xit_Paint);
             // 
-            // gp_filter
+            // panel_copyRtoT
             // 
-            this.gp_filter.Controls.Add(this.label2);
-            this.gp_filter.Controls.Add(this.cb_filterTX);
-            this.gp_filter.Controls.Add(this.label1);
-            this.gp_filter.Controls.Add(this.cb_filterRX);
-            this.gp_filter.Location = new System.Drawing.Point(576, 713);
-            this.gp_filter.Name = "gp_filter";
-            this.gp_filter.Size = new System.Drawing.Size(195, 40);
-            this.gp_filter.TabIndex = 13;
-            this.gp_filter.TabStop = false;
-            this.gp_filter.Text = "Filter";
+            this.panel_copyRtoT.BackColor = System.Drawing.Color.White;
+            this.panel_copyRtoT.Location = new System.Drawing.Point(122, 710);
+            this.panel_copyRtoT.Name = "panel_copyRtoT";
+            this.panel_copyRtoT.Size = new System.Drawing.Size(48, 48);
+            this.panel_copyRtoT.TabIndex = 16;
+            this.panel_copyRtoT.Click += new System.EventHandler(this.panel_copyRtoT_Click);
+            this.panel_copyRtoT.Paint += new System.Windows.Forms.PaintEventHandler(this.panel_copyRtoT_Paint);
             // 
-            // cb_filterRX
+            // panel_copyTtoR
             // 
-            this.cb_filterRX.FormattingEnabled = true;
-            this.cb_filterRX.Items.AddRange(new object[] {
-            "1 kHz",
-            "1.8 kHz",
-            "2.7 kHz",
-            "3.6 kHz"});
-            this.cb_filterRX.Location = new System.Drawing.Point(30, 15);
-            this.cb_filterRX.Name = "cb_filterRX";
-            this.cb_filterRX.Size = new System.Drawing.Size(65, 21);
-            this.cb_filterRX.TabIndex = 0;
-            this.cb_filterRX.Text = "2.7 kHz";
-            this.cb_filterRX.SelectedIndexChanged += new System.EventHandler(this.cb_filterRX_SelectedIndexChanged);
+            this.panel_copyTtoR.BackColor = System.Drawing.Color.White;
+            this.panel_copyTtoR.Location = new System.Drawing.Point(176, 709);
+            this.panel_copyTtoR.Name = "panel_copyTtoR";
+            this.panel_copyTtoR.Size = new System.Drawing.Size(48, 48);
+            this.panel_copyTtoR.TabIndex = 16;
+            this.panel_copyTtoR.Click += new System.EventHandler(this.panel_copyTtoR_Click);
+            this.panel_copyTtoR.Paint += new System.Windows.Forms.PaintEventHandler(this.panel_copyTtoR_Paint);
             // 
-            // label1
+            // panel_agc
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(6, 18);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(25, 13);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "RX:";
+            this.panel_agc.BackColor = System.Drawing.Color.White;
+            this.panel_agc.Location = new System.Drawing.Point(230, 710);
+            this.panel_agc.Name = "panel_agc";
+            this.panel_agc.Size = new System.Drawing.Size(48, 48);
+            this.panel_agc.TabIndex = 17;
+            this.panel_agc.Click += new System.EventHandler(this.panel_agc_Click);
+            this.panel_agc.Paint += new System.Windows.Forms.PaintEventHandler(this.panel_agc_Paint);
             // 
-            // label2
+            // panel_txmute
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(99, 18);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(24, 13);
-            this.label2.TabIndex = 3;
-            this.label2.Text = "TX:";
+            this.panel_txmute.BackColor = System.Drawing.Color.White;
+            this.panel_txmute.Location = new System.Drawing.Point(284, 709);
+            this.panel_txmute.Name = "panel_txmute";
+            this.panel_txmute.Size = new System.Drawing.Size(48, 48);
+            this.panel_txmute.TabIndex = 17;
+            this.panel_txmute.Click += new System.EventHandler(this.panel_txmute_Click);
+            this.panel_txmute.Paint += new System.Windows.Forms.PaintEventHandler(this.panel_txmute_Paint);
             // 
-            // cb_filterTX
+            // panel_comp
             // 
-            this.cb_filterTX.FormattingEnabled = true;
-            this.cb_filterTX.Items.AddRange(new object[] {
-            "1 kHz",
-            "1.8 kHz",
-            "2.2 kHz",
-            "2.7 kHz"});
-            this.cb_filterTX.Location = new System.Drawing.Point(123, 15);
-            this.cb_filterTX.Name = "cb_filterTX";
-            this.cb_filterTX.Size = new System.Drawing.Size(65, 21);
-            this.cb_filterTX.TabIndex = 2;
-            this.cb_filterTX.Text = "2.7 kHz";
-            this.cb_filterTX.SelectedIndexChanged += new System.EventHandler(this.cb_filterTX_SelectedIndexChanged);
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(6, 18);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(40, 13);
-            this.label3.TabIndex = 5;
-            this.label3.Text = "Compr:";
-            // 
-            // cb_compressor
-            // 
-            this.cb_compressor.FormattingEnabled = true;
-            this.cb_compressor.Items.AddRange(new object[] {
-            "OFF",
-            "low",
-            "mid",
-            "high"});
-            this.cb_compressor.Location = new System.Drawing.Point(46, 15);
-            this.cb_compressor.Name = "cb_compressor";
-            this.cb_compressor.Size = new System.Drawing.Size(48, 21);
-            this.cb_compressor.TabIndex = 4;
-            this.cb_compressor.Text = "OFF";
-            this.cb_compressor.SelectedIndexChanged += new System.EventHandler(this.cb_compressor_SelectedIndexChanged);
+            this.panel_comp.BackColor = System.Drawing.Color.White;
+            this.panel_comp.Location = new System.Drawing.Point(338, 710);
+            this.panel_comp.Name = "panel_comp";
+            this.panel_comp.Size = new System.Drawing.Size(48, 48);
+            this.panel_comp.TabIndex = 18;
+            this.panel_comp.Click += new System.EventHandler(this.panel_comp_Click);
+            this.panel_comp.Paint += new System.Windows.Forms.PaintEventHandler(this.panel_comp_Paint);
             // 
             // panel_info
             // 
             this.panel_info.BackColor = System.Drawing.Color.White;
             this.panel_info.BackgroundImage = global::trxGui.Properties.Resources.info;
             this.panel_info.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.panel_info.Location = new System.Drawing.Point(1099, 715);
+            this.panel_info.Location = new System.Drawing.Point(1084, 710);
             this.panel_info.Name = "panel_info";
-            this.panel_info.Size = new System.Drawing.Size(32, 32);
+            this.panel_info.Size = new System.Drawing.Size(48, 48);
             this.panel_info.TabIndex = 15;
             this.panel_info.Click += new System.EventHandler(this.bt_info_click);
             // 
@@ -325,11 +163,52 @@ namespace trxGui
             // 
             this.panel_setup.BackColor = System.Drawing.Color.White;
             this.panel_setup.BackgroundImage = global::trxGui.Properties.Resources.setup;
-            this.panel_setup.Location = new System.Drawing.Point(1060, 715);
+            this.panel_setup.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.panel_setup.Location = new System.Drawing.Point(1030, 710);
             this.panel_setup.Name = "panel_setup";
-            this.panel_setup.Size = new System.Drawing.Size(32, 32);
+            this.panel_setup.Size = new System.Drawing.Size(48, 48);
             this.panel_setup.TabIndex = 14;
             this.panel_setup.Click += new System.EventHandler(this.butto_setup_click);
+            // 
+            // panel_rxfilter
+            // 
+            this.panel_rxfilter.BackColor = System.Drawing.Color.White;
+            this.panel_rxfilter.Location = new System.Drawing.Point(392, 710);
+            this.panel_rxfilter.Name = "panel_rxfilter";
+            this.panel_rxfilter.Size = new System.Drawing.Size(48, 48);
+            this.panel_rxfilter.TabIndex = 19;
+            this.panel_rxfilter.Click += new System.EventHandler(this.panel_rxfilter_Click);
+            this.panel_rxfilter.Paint += new System.Windows.Forms.PaintEventHandler(this.panel_rxfilter_Paint);
+            // 
+            // panel_txfilter
+            // 
+            this.panel_txfilter.BackColor = System.Drawing.Color.White;
+            this.panel_txfilter.Location = new System.Drawing.Point(446, 710);
+            this.panel_txfilter.Name = "panel_txfilter";
+            this.panel_txfilter.Size = new System.Drawing.Size(48, 48);
+            this.panel_txfilter.TabIndex = 19;
+            this.panel_txfilter.Click += new System.EventHandler(this.panel_txfilter_Click);
+            this.panel_txfilter.Paint += new System.Windows.Forms.PaintEventHandler(this.panel_txfilter_Paint);
+            // 
+            // panel_rfloop
+            // 
+            this.panel_rfloop.BackColor = System.Drawing.Color.White;
+            this.panel_rfloop.Location = new System.Drawing.Point(554, 710);
+            this.panel_rfloop.Name = "panel_rfloop";
+            this.panel_rfloop.Size = new System.Drawing.Size(48, 48);
+            this.panel_rfloop.TabIndex = 20;
+            this.panel_rfloop.Click += new System.EventHandler(this.panel_rfloop_Click);
+            this.panel_rfloop.Paint += new System.Windows.Forms.PaintEventHandler(this.panel_rfloop_Paint);
+            // 
+            // panel_audioloop
+            // 
+            this.panel_audioloop.BackColor = System.Drawing.Color.White;
+            this.panel_audioloop.Location = new System.Drawing.Point(500, 710);
+            this.panel_audioloop.Name = "panel_audioloop";
+            this.panel_audioloop.Size = new System.Drawing.Size(48, 48);
+            this.panel_audioloop.TabIndex = 21;
+            this.panel_audioloop.Click += new System.EventHandler(this.panel_audioloop_Click);
+            this.panel_audioloop.Paint += new System.Windows.Forms.PaintEventHandler(this.panel_audioloop_Paint);
             // 
             // panel_bigspec
             // 
@@ -401,53 +280,37 @@ namespace trxGui
             this.panel_smallqrg.TabIndex = 2;
             this.panel_smallqrg.Paint += new System.Windows.Forms.PaintEventHandler(this.panel_smallqrg_Paint);
             // 
-            // cb_rxmute
-            // 
-            this.cb_rxmute.AutoSize = true;
-            this.cb_rxmute.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cb_rxmute.Location = new System.Drawing.Point(156, 16);
-            this.cb_rxmute.Name = "cb_rxmute";
-            this.cb_rxmute.Size = new System.Drawing.Size(65, 17);
-            this.cb_rxmute.TabIndex = 6;
-            this.cb_rxmute.Text = "RX Mute";
-            this.cb_rxmute.UseVisualStyleBackColor = true;
-            this.cb_rxmute.CheckedChanged += new System.EventHandler(this.cb_rxmute_CheckedChanged);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Gray;
-            this.ClientSize = new System.Drawing.Size(1147, 802);
+            this.ClientSize = new System.Drawing.Size(1147, 775);
+            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.panel_rfloop);
+            this.Controls.Add(this.panel_txfilter);
+            this.Controls.Add(this.panel_audioloop);
+            this.Controls.Add(this.panel_rxfilter);
+            this.Controls.Add(this.panel_comp);
+            this.Controls.Add(this.panel_txmute);
+            this.Controls.Add(this.panel_agc);
+            this.Controls.Add(this.panel_copyTtoR);
+            this.Controls.Add(this.panel_copyRtoT);
+            this.Controls.Add(this.panel_xit);
+            this.Controls.Add(this.panel_rit);
             this.Controls.Add(this.panel_info);
             this.Controls.Add(this.panel_setup);
-            this.Controls.Add(this.gp_filter);
-            this.Controls.Add(this.gp_audio);
             this.Controls.Add(this.panel_qrg);
-            this.Controls.Add(this.panel1);
             this.Controls.Add(this.panel_bigspec);
-            this.Controls.Add(this.gp_copyqrg);
             this.Controls.Add(this.panel_bigwf);
             this.Controls.Add(this.panel_bandplan);
-            this.Controls.Add(this.gp_qrg);
             this.Controls.Add(this.panel_smallwf);
             this.Controls.Add(this.panel_smallspec);
-            this.Controls.Add(this.gp_testmodes);
             this.Controls.Add(this.panel_smallqrg);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Name = "Form1";
             this.Text = "QO100 Linux - Pluto Transceiver (by DJ0ABR) V1.2";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
-            this.gp_testmodes.ResumeLayout(false);
-            this.gp_testmodes.PerformLayout();
-            this.gp_qrg.ResumeLayout(false);
-            this.gp_qrg.PerformLayout();
-            this.gp_copyqrg.ResumeLayout(false);
-            this.gp_copyqrg.PerformLayout();
-            this.gp_audio.ResumeLayout(false);
-            this.gp_audio.PerformLayout();
-            this.gp_filter.ResumeLayout(false);
-            this.gp_filter.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -457,32 +320,24 @@ namespace trxGui
         private DoubleBufferedPanel panel_smallqrg;
         private DoubleBufferedPanel panel_bandplan;
         private DoubleBufferedPanel panel_smallwf;
-        private System.Windows.Forms.GroupBox gp_testmodes;
-        private System.Windows.Forms.CheckBox cb_rfloop;
-        private System.Windows.Forms.CheckBox cb_audioloop;
         private DoubleBufferedPanel panel_smallspec;
-        private System.Windows.Forms.GroupBox gp_qrg;
-        private System.Windows.Forms.RadioButton rb_rit;
-        private System.Windows.Forms.RadioButton rb_xit;
         private DoubleBufferedPanel panel_bigwf;
-        private System.Windows.Forms.GroupBox gp_copyqrg;
-        private System.Windows.Forms.CheckBox cb_txtorx;
-        private System.Windows.Forms.CheckBox cb_rxtotx;
         private DoubleBufferedPanel panel_bigspec;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel panel_qrg;
-        private System.Windows.Forms.GroupBox gp_audio;
-        private System.Windows.Forms.CheckBox cb_audioagc;
-        private System.Windows.Forms.GroupBox gp_filter;
-        private System.Windows.Forms.ComboBox cb_filterRX;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.ComboBox cb_filterTX;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.ComboBox cb_compressor;
         private System.Windows.Forms.Panel panel_setup;
         private System.Windows.Forms.Panel panel_info;
-        private System.Windows.Forms.CheckBox cb_rxmute;
+        private System.Windows.Forms.Panel panel_rit;
+        private System.Windows.Forms.Panel panel_xit;
+        private System.Windows.Forms.Panel panel_copyRtoT;
+        private System.Windows.Forms.Panel panel_copyTtoR;
+        private System.Windows.Forms.Panel panel_agc;
+        private System.Windows.Forms.Panel panel_txmute;
+        private System.Windows.Forms.Panel panel_comp;
+        private System.Windows.Forms.Panel panel_rxfilter;
+        private System.Windows.Forms.Panel panel_txfilter;
+        private System.Windows.Forms.Panel panel_rfloop;
+        private System.Windows.Forms.Panel panel_audioloop;
     }
 }
 

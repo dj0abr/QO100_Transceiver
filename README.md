@@ -8,7 +8,9 @@ V1.0 ... May,28 2021 ... Now fully working, Setup via Setup Menu.\
 V1.1 ... May,31 2021 ... Pluto USB/ETH setup, speech compressor\
 V1.2 ... June,2 2021 ... Audio Filter, Muting, new user interface
 
-![Screenshot](screenshot.png)
+
+
+![alt text](https://github.com/dj0abr/QO100_Transceiver/blob/main/trxGui/Properties/sampleGUI.png)
 
 ## Hardware requirements
 

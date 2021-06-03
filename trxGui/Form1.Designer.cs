@@ -53,6 +53,7 @@ namespace trxGui
             this.panel_smallwf = new trxGui.DoubleBufferedPanel();
             this.panel_smallspec = new trxGui.DoubleBufferedPanel();
             this.panel_smallqrg = new trxGui.DoubleBufferedPanel();
+            this.panel_rxline = new trxGui.DoubleBufferedPanel();
             this.SuspendLayout();
             // 
             // timer_draw
@@ -238,7 +239,7 @@ namespace trxGui
             // panel_bigwf
             // 
             this.panel_bigwf.BackColor = System.Drawing.Color.Black;
-            this.panel_bigwf.Location = new System.Drawing.Point(12, 225);
+            this.panel_bigwf.Location = new System.Drawing.Point(12, 213);
             this.panel_bigwf.Name = "panel_bigwf";
             this.panel_bigwf.Size = new System.Drawing.Size(1120, 150);
             this.panel_bigwf.TabIndex = 1;
@@ -251,7 +252,7 @@ namespace trxGui
             // panel_bandplan
             // 
             this.panel_bandplan.BackColor = System.Drawing.Color.Silver;
-            this.panel_bandplan.Location = new System.Drawing.Point(14, 206);
+            this.panel_bandplan.Location = new System.Drawing.Point(14, 200);
             this.panel_bandplan.Name = "panel_bandplan";
             this.panel_bandplan.Size = new System.Drawing.Size(1120, 12);
             this.panel_bandplan.TabIndex = 1;
@@ -273,7 +274,7 @@ namespace trxGui
             // panel_smallspec
             // 
             this.panel_smallspec.BackColor = System.Drawing.Color.LightGray;
-            this.panel_smallspec.Location = new System.Drawing.Point(12, 381);
+            this.panel_smallspec.Location = new System.Drawing.Point(12, 384);
             this.panel_smallspec.Name = "panel_smallspec";
             this.panel_smallspec.Size = new System.Drawing.Size(1120, 150);
             this.panel_smallspec.TabIndex = 1;
@@ -292,12 +293,22 @@ namespace trxGui
             this.panel_smallqrg.TabIndex = 2;
             this.panel_smallqrg.Paint += new System.Windows.Forms.PaintEventHandler(this.panel_smallqrg_Paint);
             // 
+            // panel_rxline
+            // 
+            this.panel_rxline.BackColor = System.Drawing.Color.Silver;
+            this.panel_rxline.Location = new System.Drawing.Point(12, 366);
+            this.panel_rxline.Name = "panel_rxline";
+            this.panel_rxline.Size = new System.Drawing.Size(1120, 12);
+            this.panel_rxline.TabIndex = 3;
+            this.panel_rxline.Paint += new System.Windows.Forms.PaintEventHandler(this.panel_rxline_Paint);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Gray;
             this.ClientSize = new System.Drawing.Size(1147, 775);
+            this.Controls.Add(this.panel_rxline);
             this.Controls.Add(this.panel_pavucontrol);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.panel_rfloop);
@@ -352,6 +363,7 @@ namespace trxGui
         private System.Windows.Forms.Panel panel_rfloop;
         private System.Windows.Forms.Panel panel_audioloop;
         private System.Windows.Forms.Panel panel_pavucontrol;
+        private DoubleBufferedPanel panel_rxline;
     }
 }
 

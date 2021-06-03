@@ -298,6 +298,7 @@ namespace trxGui
             Udp.UdpSendData(txb);
 
             panel_qrg.Invalidate(); // show qrg
+            panel_rxline.Invalidate();
         }
 
         private void sendReferenceOffset(int hz)
@@ -1032,6 +1033,12 @@ namespace trxGui
         private void panel_pavucontrol_Click(object sender, EventArgs e)
         {
             statics.StartMixer(true);
+        }
+
+        private void panel_rxline_Paint(object sender, PaintEventArgs e)
+        {
+            int x = statics.RXoffset / 500;
+            Console.WriteLine("pp " + x);
         }
     }
 

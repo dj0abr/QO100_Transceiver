@@ -221,6 +221,7 @@ namespace trxGui
                 gr.DrawPolygon(penline, poly);
 
                 // green vertical line at RX frequency
+                // red vertical line at TX frequency
                 int x = statics.RXoffset * 2 / 1000;
                 int xtx = statics.TXoffset * 2 / 1000;
                 int xydiff = Math.Abs(x - xtx);
@@ -329,6 +330,22 @@ namespace trxGui
 
             bmbigline.UnlockBits(bmpData);
             */
+
+            using (Graphics gr = Graphics.FromImage(bmnew))
+            {
+                // green vertical line at RX frequency
+                // red vertical line at TX frequency
+                int x = statics.RXoffset * 2 / 1000;
+                int xtx = statics.TXoffset * 2 / 1000;
+                int xydiff = Math.Abs(x - xtx);
+
+                penmarker.DashPattern = new float[] { 2.0f, 2.0f };
+                gr.DrawLine(penmarker, x, 4, x, bigWFH);
+
+                // red vertical line at TX frequency
+                penmarkerTX.DashPattern = new float[] { 2.0f, 2.0f };
+                gr.DrawLine(penmarkerTX, xtx, 0, xtx, bigWFH - 4);
+            }
 
             bigWFQ.Add(bmnew);
         }

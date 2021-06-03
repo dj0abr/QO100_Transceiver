@@ -170,7 +170,7 @@ void downmix(liquid_float_complex *samples, int len, int offsetfreq)
         {
             static float playvol = 1.0f;
             if(ptt && rxmute && rfloop == 0) playvol = 0.1f;
-            else playvol = 1.0f;
+            else playvol = 2.0f;
             kmaudio_playsamples(pbidx,&z,1,playvol);
         }
     }

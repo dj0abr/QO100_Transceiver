@@ -217,6 +217,7 @@ namespace trxGui
                 panel_txmute_Click(null, null);
                 panel_rxfilter_Click(null, null);
                 panel_txfilter_Click(null, null);
+                sendReferenceOffset(statics.rfoffset);
             }
         }
 
@@ -305,6 +306,7 @@ namespace trxGui
             if (hz > 12000) hz = 12000;
 
             statics.rfoffset = hz;
+            Console.WriteLine("--------------------------- set " + statics.rfoffset);
             int val = hz + 12000;   // make it always positive
 
             Byte[] txb = new Byte[5];
@@ -349,8 +351,8 @@ namespace trxGui
                 else
                 {
                     // set offset to Pluto reference frequency
-                    //Console.WriteLine(hz);
-                    sendReferenceOffset(hz);
+                    Console.WriteLine("hz : " + hz);
+                    sendReferenceOffset(statics.rfoffset + hz);
                 }
             }
 
@@ -715,6 +717,8 @@ namespace trxGui
                     statics.rxmute = ReadString(sr) == "1";
                     statics.rit = ReadString(sr) == "1";
                     statics.xit = ReadString(sr) == "1";
+                    statics.rfoffset = ReadInt(sr);
+                    Console.WriteLine("--------------------------- read " + statics.rfoffset);
                 }
             }
             catch
@@ -742,6 +746,8 @@ namespace trxGui
                     sw.WriteLine(statics.rxmute ? "1" : "0");
                     sw.WriteLine(statics.rit ? "1" : "0");
                     sw.WriteLine(statics.xit ? "1" : "0");
+                    sw.WriteLine(statics.rfoffset.ToString());
+                    Console.WriteLine("--------------------------- save " + statics.rfoffset);
                 }
             }
             catch { }

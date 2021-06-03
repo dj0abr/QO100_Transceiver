@@ -45,6 +45,7 @@ int rxfilter = 2;
 int txfilter = 3;
 int rxmute = 0;
 int refoffset = 0;
+int resetqrgs = 0;
 
 // fifos to send/receive samples with pluto run thread
 int RXfifo;
@@ -197,11 +198,10 @@ void udprxfunc(uint8_t *pdata, int len, struct sockaddr_in* sender)
 		val += pdata[4];
 
 		val -= 12000;
-		refoffset += val;
+		refoffset = val;
 		printf("refoffset: %d\n",refoffset);
 
-		setRXfrequency((long long)TX_FREQ);
-		setRXfrequency((long long)RX_FREQ);
+		resetqrgs = 1;
 	}
 }
 
@@ -323,6 +323,14 @@ int main ()
 
 				newaudiodevs = 0;
 			}
+		}
+
+		if(resetqrgs)
+		{
+			resetqrgs = 0;
+
+			setRXfrequency((long long)TX_FREQ);
+			setRXfrequency((long long)RX_FREQ);
 		}
 
 		usleep(100);

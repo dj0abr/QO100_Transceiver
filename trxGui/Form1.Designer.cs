@@ -46,6 +46,7 @@ namespace trxGui
             this.panel_txfilter = new System.Windows.Forms.Panel();
             this.panel_rfloop = new System.Windows.Forms.Panel();
             this.panel_audioloop = new System.Windows.Forms.Panel();
+            this.panel_pavucontrol = new System.Windows.Forms.Panel();
             this.panel_bigspec = new trxGui.DoubleBufferedPanel();
             this.panel_bigwf = new trxGui.DoubleBufferedPanel();
             this.panel_bandplan = new trxGui.DoubleBufferedPanel();
@@ -64,7 +65,7 @@ namespace trxGui
             this.panel1.BackColor = System.Drawing.Color.Yellow;
             this.panel1.Location = new System.Drawing.Point(610, 724);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(414, 33);
+            this.panel1.Size = new System.Drawing.Size(325, 33);
             this.panel1.TabIndex = 11;
             this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
             this.panel1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseClick);
@@ -210,6 +211,17 @@ namespace trxGui
             this.panel_audioloop.Click += new System.EventHandler(this.panel_audioloop_Click);
             this.panel_audioloop.Paint += new System.Windows.Forms.PaintEventHandler(this.panel_audioloop_Paint);
             // 
+            // panel_pavucontrol
+            // 
+            this.panel_pavucontrol.BackColor = System.Drawing.Color.White;
+            this.panel_pavucontrol.BackgroundImage = global::trxGui.Properties.Resources.mixer;
+            this.panel_pavucontrol.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.panel_pavucontrol.Location = new System.Drawing.Point(976, 710);
+            this.panel_pavucontrol.Name = "panel_pavucontrol";
+            this.panel_pavucontrol.Size = new System.Drawing.Size(48, 48);
+            this.panel_pavucontrol.TabIndex = 21;
+            this.panel_pavucontrol.Click += new System.EventHandler(this.panel_pavucontrol_Click);
+            // 
             // panel_bigspec
             // 
             this.panel_bigspec.BackColor = System.Drawing.Color.LightGray;
@@ -286,6 +298,7 @@ namespace trxGui
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Gray;
             this.ClientSize = new System.Drawing.Size(1147, 775);
+            this.Controls.Add(this.panel_pavucontrol);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.panel_rfloop);
             this.Controls.Add(this.panel_txfilter);
@@ -338,6 +351,7 @@ namespace trxGui
         private System.Windows.Forms.Panel panel_txfilter;
         private System.Windows.Forms.Panel panel_rfloop;
         private System.Windows.Forms.Panel panel_audioloop;
+        private System.Windows.Forms.Panel panel_pavucontrol;
     }
 }
 

@@ -59,7 +59,7 @@ namespace trxGui
             // button panel positions
             int xspace = 4;
 
-            panel_rxfilter.Size = panel_txfilter.Size = panel_rfloop.Size = panel_audioloop.Size = panel_comp.Size = panel_setup.Size = panel_info.Size = panel_rit.Size = panel_xit.Size = panel_copyRtoT.Size = panel_copyTtoR.Size = panel_agc.Size = panel_txmute.Size =new Size(48, 48);
+            panel_pavucontrol.Size = panel_rxfilter.Size = panel_txfilter.Size = panel_rfloop.Size = panel_audioloop.Size = panel_comp.Size = panel_setup.Size = panel_info.Size = panel_rit.Size = panel_xit.Size = panel_copyRtoT.Size = panel_copyTtoR.Size = panel_agc.Size = panel_txmute.Size =new Size(48, 48);
             panel_rit.Location = new Point(13, panel_smallwf.Location.Y + panel_smallwf.Height + 4);
             panel_xit.Location = new Point(panel_rit.Location.X + panel_rit.Width + xspace, panel_rit.Location.Y);
 
@@ -78,10 +78,11 @@ namespace trxGui
 
             panel_info.Location = new Point(panel_bigspec.Location.X + panel_bigspec.Width - panel_info.Width, panel_rit.Location.Y);
             panel_setup.Location = new Point(panel_info.Location.X - panel_setup.Width - 5, panel_rit.Location.Y);
+            panel_pavucontrol.Location = new Point(panel_setup.Location.X - panel_pavucontrol.Width - 5, panel_rit.Location.Y);
 
             // PTT Panel
             panel1.Location = new Point(panel_rfloop.Location.X + panel_rfloop.Width + xspace+6, panel_rit.Location.Y);
-            panel1.Size = new Size(panel_setup.Location.X - panel1.Location.X - 6, panel_rfloop.Height);
+            panel1.Size = new Size(panel_pavucontrol.Location.X - panel1.Location.X - 6, panel_rfloop.Height);
 
             // test OS type
             OperatingSystem osversion = System.Environment.OSVersion;
@@ -987,6 +988,11 @@ namespace trxGui
             Udp.UdpSendData(txb);
             panel_rfloop.Invalidate();
             panel_audioloop.Invalidate();
+        }
+
+        private void panel_pavucontrol_Click(object sender, EventArgs e)
+        {
+            statics.StartMixer(true);
         }
     }
 

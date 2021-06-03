@@ -212,5 +212,8 @@
   <ItemGroup>
     <None Include="Properties\ptt_rx.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\mixer.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

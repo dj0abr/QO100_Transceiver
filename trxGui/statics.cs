@@ -44,13 +44,13 @@ namespace trxGui
         public static bool audioloop = false;
         public static bool rfloop = false;
 
-        static Process cmd = null;
+        static Process cmdtrx = null;
         public static bool StartQO100trx(bool start = true)
         {
             if (statics.ostype == 0) return false;
 
             // kill old processes already running
-            killall("trxdriver");
+            killall(cmdtrx, "trxdriver");
 
             if (start == true)
             {
@@ -58,14 +58,14 @@ namespace trxGui
                 try
                 {
                     if (!File.Exists("trxdriver")) return false;
-                    cmd = new Process();
-                    cmd.StartInfo.FileName = "trxdriver";
+                    cmdtrx = new Process();
+                    cmdtrx.StartInfo.FileName = "trxdriver";
 
-                    if (cmd != null)
+                    if (cmdtrx != null)
                     {
-                        cmd.StartInfo.WindowStyle = ProcessWindowStyle.Normal;// .Hidden;
-                        cmd.StartInfo.Arguments = "";
-                        cmd.Start();
+                        cmdtrx.StartInfo.WindowStyle = ProcessWindowStyle.Normal;// .Hidden;
+                        cmdtrx.StartInfo.Arguments = "";
+                        cmdtrx.Start();
                         Console.WriteLine("trxdriver started");
                         Thread.Sleep(100);
                     }
@@ -75,7 +75,37 @@ namespace trxGui
             return true;
         }
 
-        static public void killall(String s)
+        static Process cmdmixer = null;
+        public static bool StartMixer(bool start = true)
+        {
+            if (statics.ostype == 0) return false;
+
+            // kill old processes already running
+            killall(cmdmixer, "pavucontrol");
+
+            if (start == true)
+            {
+                // starte Prozesse
+                try
+                {
+                    cmdmixer = new Process();
+                    cmdmixer.StartInfo.FileName = "pavucontrol";
+
+                    if (cmdmixer != null)
+                    {
+                        cmdmixer.StartInfo.WindowStyle = ProcessWindowStyle.Normal;// .Hidden;
+                        cmdmixer.StartInfo.Arguments = "";
+                        cmdmixer.Start();
+                        Console.WriteLine("pavucontrol started");
+                        Thread.Sleep(100);
+                    }
+                }
+                catch { return false; }
+            }
+            return true;
+        }
+
+        static public void killall(Process cmd, String s)
         {
             // kill a Linux process
             try

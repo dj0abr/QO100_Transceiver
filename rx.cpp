@@ -60,7 +60,7 @@ void* rx_threadfunction(void* param)
             streamToSamples(data, PLUTOBUFSIZE*4, samples);
 
             // down mix the SSB channel into baseband, demodulate and send to soundcard
-            downmix(samples,PLUTOBUFSIZE,RXoffsetfreq);
+            downmix(samples,PLUTOBUFSIZE);
 		}
 
         usleep(1000);

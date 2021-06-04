@@ -36,7 +36,7 @@ void init_liquid()
 
     // Downmixer
     dnnco = nco_crcf_create(LIQUID_NCO);
-    tune_downmixer(0);
+    tune_downmixer();
 
     // SSB Demodulator
     demod = ampmodem_create(demod_index, LIQUID_AMPMODEM_USB, 1);
@@ -93,15 +93,15 @@ static int lastrxfilter = -1;
     }
 }
 
-void tune_downmixer(int offset)
+void tune_downmixer()
 {
 static int lastoffset = -1;
 
-    if(lastoffset != offset)
+    if(lastoffset != (RXoffsetfreq + bcnoffset))
     {
-        lastoffset = offset;
-        //printf("offset: %d, tune RX to %f\n",offset,BASEQRG*1e3 + offset);
-        float RADIANS_PER_SAMPLE   = ((2.0f * (float)M_PI * offset)/(float)SAMPRATE);
+        lastoffset = RXoffsetfreq + bcnoffset;
+        //printf("offset: %d, tune RX to %f\n",lastoffset,BASEQRG*1e3 + lastoffset);
+        float RADIANS_PER_SAMPLE   = ((2.0f * (float)M_PI * lastoffset)/(float)SAMPRATE);
         nco_crcf_set_phase(dnnco, 0.0f);
         nco_crcf_set_frequency(dnnco, RADIANS_PER_SAMPLE);
     }
@@ -132,7 +132,7 @@ int16_t xq;
 }
 
 
-void downmix(liquid_float_complex *samples, int len, int offsetfreq)
+void downmix(liquid_float_complex *samples, int len)
 {
     if (dnnco == NULL) return;
     if (demod == NULL) return;
@@ -140,7 +140,7 @@ void downmix(liquid_float_complex *samples, int len, int offsetfreq)
     if (lp_q == NULL) return;
 
     // re-tune if RX grq has been changed
-    tune_downmixer(offsetfreq);
+    tune_downmixer();
 
     // re-set RX filter if it was changed by the user
     createSSBfilter();
@@ -211,8 +211,8 @@ fftw_complex *bcn_din = NULL;				// input data for  fft, output data from ifft
 fftw_complex *bcn_cpout = NULL;	            // ouput data from fft, input data to ifft
 fftw_plan bcn_plan = NULL;
 const int bcn_FFTsamprate = 4000;           // sample rate for FFT (required range * 2)
-const int bcn_resolution = 1;               // bins per Hz
-const int bcn_fftlength = bcn_FFTsamprate * bcn_resolution; // 4kS/s * 2 = 8000
+const int bcn_resolution = 5;               // Hz per bin
+const int bcn_fftlength = bcn_FFTsamprate / bcn_resolution; // 4kS/s / 5 = 800
 
 // down mixer
 nco_crcf bcn_dnnco = NULL;    
@@ -232,6 +232,8 @@ unsigned int bcn_m_predec = 8;  // filter delay
 float bcn_As_predec = 40.0f;    // stop-band att 
 const int bcnInterpolfactor = SAMPRATE / bcn_FFTsamprate;
 firdecim_crcf bcn_decim = NULL;
+
+int bcnoffset = -1;
 
 void init_beaconlock()
 {
@@ -307,8 +309,6 @@ static int bcn_din_idx = 0;
     // the output of the pre decimator is exactly one sample in y
     // the rate here is 4kS/s
 
-    
-
     // FFT
     // collect samples until we have bcn_fftlength
     bcn_din[bcn_din_idx][0] = y.real;
@@ -317,7 +317,7 @@ static int bcn_din_idx = 0;
     bcn_din_idx = 0;
 
     fftw_execute(bcn_plan);
-    int numbins = bcn_fftlength/2; // 2000
+    int numbins = bcn_fftlength/2;
 
     // calc absolute values and search max value
     float bin[numbins];
@@ -342,24 +342,57 @@ static int bcn_din_idx = 0;
         }
     }
 
-    int minqrg = minf+startqrg;
-    int maxqrg = maxf+startqrg;
+    int minqrg = minf* bcn_resolution+startqrg;
+    int maxqrg = maxf* bcn_resolution+startqrg;
     int diff = abs(maxqrg-minqrg);
+    //printf("%d  %d  %d\n",minqrg,maxqrg,diff);
 
-    if(diff < 390) return;
+    int newoffset = 0;
+    if(diff > 380) 
+    {
+        // we have both frequencies, then measure the beacon mir frequency
+        int bcnqrg = minqrg + diff/2;
+        int bcnqrgsoll = 500200;    // expected frequency
+        bcnoffset = (bcnqrg - bcnqrgsoll);
+        //printf("lower beacon %d .. %d: mid QRG: %d kHz. Offset: %d Hz\n",minqrg,maxqrg,bcnqrg,bcnoffset);
+        newoffset = 1;
+    }
+    else
+    {
+        // we have only one frequency
 
-    int bcnqrg = minqrg + diff/2;
-    int bcnqrgsoll = 500200;    // expected frequency
-    int bcnoffset = bcnqrg - bcnqrgsoll;
-    //printf("lower beacon mid QRG: %d kHz. Offset: %d Hz\n",bcnqrg,bcnoffset);
+        return;
+
+
+        int difflow = minqrg - 500000;
+        int diffhigh = maxqrg - 500400;
+        if(abs(difflow) < abs(diffhigh))
+        {
+            //printf("lower beacon low QRG: %d kHz. Offset: %d Hz\n",minqrg,difflow);
+            bcnoffset = difflow;
+            newoffset = 1;
+        }
+        else
+        {
+            //printf("lower beacon hi  QRG: %d kHz. Offset: %d Hz\n",maxqrg,diffhigh);
+            bcnoffset = diffhigh;
+            newoffset = 1;
+        }
+    }
 
     // send offset to GUI
-    uint8_t drift[5];
-    drift[0] = 6;
-    drift[1] = bcnoffset >> 24;
-    drift[2] = bcnoffset >> 16;
-    drift[3] = bcnoffset >> 8;
-    drift[4] = bcnoffset & 0xff;
-    
-    sendUDP(gui_ip, GUI_UDPPORT, drift, 5);
+    if(newoffset)
+    {
+        uint8_t drift[5];
+        drift[0] = 6;
+        drift[1] = bcnoffset >> 24;
+        drift[2] = bcnoffset >> 16;
+        drift[3] = bcnoffset >> 8;
+        drift[4] = bcnoffset & 0xff;
+        
+        sendUDP(gui_ip, GUI_UDPPORT, drift, 5);
+
+        tune_downmixer();
+    }
 }
+

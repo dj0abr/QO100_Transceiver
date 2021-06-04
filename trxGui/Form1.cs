@@ -567,7 +567,7 @@ namespace trxGui
                 if(statics.rxmouse != -1)
                 {
                     val = (double)(statics.rxmouse + 10489470000) / 1e6;
-                    s = String.Format("mouse:  {0:0.000000}" + " MHz", val);
+                    s = String.Format("Mouse:  {0:0.000000}" + " MHz", val);
                     gr.DrawString(s, smlfnt, Brushes.Blue, mouserightpos + titrightpos, 0);
                 }
                 else
@@ -575,7 +575,7 @@ namespace trxGui
                     gr.FillRectangle(Brushes.Gray, mouserightpos + titrightpos, 0, panel_qrg.Width - (mouserightpos + titrightpos), panel_qrg.Height);
                 }
 
-                s = String.Format("offset: {0:0}" + " Hz", statics.beaconoffset);
+                s = String.Format("Drift : {0:0}" + " Hz", statics.beaconoffset);
                 gr.DrawString(s, smlfnt, Brushes.Blue, mouserightpos + titrightpos, 20);
             }
         }

@@ -289,6 +289,8 @@ int main ()
 	printf("Pluto IP/USB ID      : <%s>\n",pluto_context_name);
 	pluto_setup();
 
+	// init FFT
+	init_fft();
 	// init DSP demodulator
 	init_liquid();
 	// init DSP modulator
@@ -296,7 +298,6 @@ int main ()
 	
 	// pluto RX/TX is now running, samples are available in the fifos
 	// start the SSB receiver and transmitter
-	init_fft();
 	init_rx();
 	init_tx();
 

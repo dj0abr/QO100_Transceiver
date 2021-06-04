@@ -163,6 +163,20 @@ namespace trxGui
 
                             //Console.WriteLine("noiselevel: " + statics.noiselevel);
                         }
+
+                        if (rxtype == 6)
+                        {
+                            int v = b[0];
+                            v <<= 8;
+                            v |= b[1];
+                            v <<= 8;
+                            v |= b[2];
+                            v <<= 8;
+                            v |= b[3];
+
+                            statics.beaconoffset = v;
+                            //Console.WriteLine("beaconoffset: " + statics.beaconoffset);
+                        }
                     }
                 }
                 catch { }

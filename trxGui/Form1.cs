@@ -224,7 +224,15 @@ namespace trxGui
                 panel_txfilter_Click(null, null);
                 sendReferenceOffset(statics.rfoffset);
             }
+
+            if(statics.beaconoffset != oldbcnoffset)
+            {
+                oldbcnoffset = statics.beaconoffset;
+                panel_qrg.Invalidate();
+            }
         }
+
+        int oldbcnoffset = -1;
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -540,7 +548,7 @@ namespace trxGui
         }
 
         Font bigfnt = new Font("Verdana", 24.0f);
-        Font smlfnt = new Font("Verdana", 12.0f);
+        Font smlfnt = new Font("Verdana", 10.0f);
         int titrightpos = 10;
         int mouserightpos = 880;
         int bigy = 2;
@@ -559,15 +567,16 @@ namespace trxGui
                 if(statics.rxmouse != -1)
                 {
                     val = (double)(statics.rxmouse + 10489470000) / 1e6;
-                    s = "Mouse Pointer:";
-                    gr.DrawString(s, smlfnt, Brushes.Blue, mouserightpos + titrightpos+2, 0);
-                    s = String.Format("{0:0.000000}" + " MHz", val);
-                    gr.DrawString(s, smlfnt, Brushes.Blue, mouserightpos + titrightpos, 20);
+                    s = String.Format("mouse:  {0:0.000000}" + " MHz", val);
+                    gr.DrawString(s, smlfnt, Brushes.Blue, mouserightpos + titrightpos, 0);
                 }
                 else
                 {
                     gr.FillRectangle(Brushes.Gray, mouserightpos + titrightpos, 0, panel_qrg.Width - (mouserightpos + titrightpos), panel_qrg.Height);
                 }
+
+                s = String.Format("offset: {0:0}" + " Hz", statics.beaconoffset);
+                gr.DrawString(s, smlfnt, Brushes.Blue, mouserightpos + titrightpos, 20);
             }
         }
 

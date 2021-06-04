@@ -1,6 +1,10 @@
 #include "../qo100trx.h"
+#include <fftw3.h>
 
 void createSSBfilter();
+void init_beaconlock();
+void close_beaconlock();
+void exec_beaconlock(liquid_float_complex samp);
 
 // down mixer
 nco_crcf dnnco = NULL;      
@@ -43,6 +47,8 @@ void init_liquid()
 
     // low pass
     createSSBfilter();
+
+    init_beaconlock();
 }
 
 void close_liquid()
@@ -60,6 +66,8 @@ void close_liquid()
 
     if(lp_q) iirfilt_crcf_destroy(lp_q);
     lp_q = NULL;
+
+    close_beaconlock();
 }
 
 void createSSBfilter()
@@ -92,7 +100,7 @@ static int lastoffset = -1;
     if(lastoffset != offset)
     {
         lastoffset = offset;
-        //printf("tune RX to %f\n",BASEQRG*1e6 + offset);
+        //printf("offset: %d, tune RX to %f\n",offset,BASEQRG*1e3 + offset);
         float RADIANS_PER_SAMPLE   = ((2.0f * (float)M_PI * offset)/(float)SAMPRATE);
         nco_crcf_set_phase(dnnco, 0.0f);
         nco_crcf_set_frequency(dnnco, RADIANS_PER_SAMPLE);
@@ -145,7 +153,9 @@ void downmix(liquid_float_complex *samples, int len, int offsetfreq)
 
     for(int i=0; i<len; i++)
     {
-         // down mix to SSB channel into baseband
+        exec_beaconlock(samples[i]);
+
+        // down mix SSB channel into baseband
         nco_crcf_step(dnnco);
         nco_crcf_mix_down(dnnco,samples[i],&c);
 
@@ -174,4 +184,182 @@ void downmix(liquid_float_complex *samples, int len, int offsetfreq)
             kmaudio_playsamples(pbidx,&z,1,playvol);
         }
     }
+}
+
+/* ================= beaconlock ===================
+the beacon lock measures the frequency of the lower CW beacon
+
+1) Frequency
+tuner is on x,470000
+beacon is on x,500000 - x,500400
+take 2kHz from x,499200 to x,501200
+Downmix x,499200 to baseband
+
+2) Low pass filter with < 2kHz to eliminate aliasing
+
+3) Sample Rate: Downsampling by 480
+input:  1,12MS/s
+output: 4000S/s which gives the required 2kHz range 
+
+4) run an FFT with a resolution of 0,5Hz.
+this give new FFT bins every 2s, which is the mean value
+over this 2s which should eliminate the CW information (except the long pause)
+*/
+
+// FFT
+fftw_complex *bcn_din = NULL;				// input data for  fft, output data from ifft
+fftw_complex *bcn_cpout = NULL;	            // ouput data from fft, input data to ifft
+fftw_plan bcn_plan = NULL;
+const int bcn_FFTsamprate = 4000;           // sample rate for FFT (required range * 2)
+const int bcn_resolution = 1;               // bins per Hz
+const int bcn_fftlength = bcn_FFTsamprate * bcn_resolution; // 4kS/s * 2 = 8000
+
+// down mixer
+nco_crcf bcn_dnnco = NULL;    
+const int startqrg = 499200;  
+
+// Low pass
+unsigned int bcn_lp_order =   4;       // filter order
+float        bcn_lp_fc    =   0.0018f; // cutoff frequency
+float        bcn_lp_f0    =   0.0f;    // center frequency
+float        bcn_lp_Ap    =   1.0f;    // pass-band ripple
+float        bcn_lp_As    =  40.0f;    // stop-band attenuation
+unsigned int bcn_lp_n     = 128;       // number of samples
+iirfilt_crcf bcn_lp_q = NULL;
+
+// decimator
+unsigned int bcn_m_predec = 8;  // filter delay
+float bcn_As_predec = 40.0f;    // stop-band att 
+const int bcnInterpolfactor = SAMPRATE / bcn_FFTsamprate;
+firdecim_crcf bcn_decim = NULL;
+
+void init_beaconlock()
+{
+    // Downmixer
+    bcn_dnnco = nco_crcf_create(LIQUID_NCO);
+    int offset = startqrg - 470000;
+    float RADIANS_PER_SAMPLE   = ((2.0f * (float)M_PI * offset)/(float)SAMPRATE);
+    nco_crcf_set_phase(bcn_dnnco, 0.0f);
+    nco_crcf_set_frequency(bcn_dnnco, RADIANS_PER_SAMPLE);
+
+    // Low pass filter
+    bcn_lp_q = iirfilt_crcf_create_prototype(LIQUID_IIRDES_ELLIP, LIQUID_IIRDES_LOWPASS, LIQUID_IIRDES_SOS,
+                                         bcn_lp_order, bcn_lp_fc, bcn_lp_f0, bcn_lp_Ap, bcn_lp_As);
+
+    // decimator
+    bcn_decim = firdecim_crcf_create_kaiser(bcnInterpolfactor, bcn_m_predec, bcn_As_predec);
+    firdecim_crcf_set_scale(bcn_decim, 1.0f/(float)bcnInterpolfactor);
+
+    // FFT
+    fftw_import_wisdom_from_filename("bcn_fftcfg");
+    bcn_din   = (fftw_complex *)fftw_malloc(sizeof(fftw_complex) * bcn_fftlength);
+	bcn_cpout = (fftw_complex *)fftw_malloc(sizeof(fftw_complex) * bcn_fftlength);
+    bcn_plan = fftw_plan_dft_1d(bcn_fftlength, bcn_din, bcn_cpout, FFTW_FORWARD, FFTW_MEASURE);
+    fftw_export_wisdom_to_filename("bcn_fftcfg");
+}
+
+void close_beaconlock()
+{
+    if(bcn_dnnco) nco_crcf_destroy(bcn_dnnco);
+    bcn_dnnco = NULL;
+
+    if(bcn_lp_q) iirfilt_crcf_destroy(bcn_lp_q);
+    bcn_lp_q = NULL;
+
+    if(bcn_decim != NULL) firdecim_crcf_destroy(bcn_decim);
+    bcn_decim = NULL;
+
+    if(bcn_din) fftw_free(bcn_din);
+    bcn_din = NULL;
+
+    if(bcn_cpout) fftw_free(bcn_cpout);
+    bcn_cpout = NULL;
+
+}
+
+void exec_beaconlock(liquid_float_complex samp)
+{
+static liquid_float_complex ccol[bcnInterpolfactor];
+static int ccol_idx = 0;
+static int bcn_din_idx = 0;
+
+    if (bcn_dnnco == NULL) return;
+    if (bcn_lp_q == NULL) return;
+    if (bcn_decim == NULL) return;
+
+    // mix lower beacon into baseband
+    liquid_float_complex c;
+    nco_crcf_step(bcn_dnnco);
+    nco_crcf_mix_down(bcn_dnnco,samp,&c);
+
+    // Filter
+    liquid_float_complex cfilt;
+    iirfilt_crcf_execute(bcn_lp_q, c, &cfilt);
+
+    // down sampling 1,2MS/s -> 4kS/s
+    ccol[ccol_idx++] = cfilt;
+    if (ccol_idx < bcnInterpolfactor) return;
+    ccol_idx = 0;
+
+    // we have bcnInterpolfactor samples in ccol
+    liquid_float_complex y;
+    firdecim_crcf_execute(bcn_decim, ccol, &y);
+    // the output of the pre decimator is exactly one sample in y
+    // the rate here is 4kS/s
+
+    
+
+    // FFT
+    // collect samples until we have bcn_fftlength
+    bcn_din[bcn_din_idx][0] = y.real;
+    bcn_din[bcn_din_idx][1] = y.imag;
+    if(++bcn_din_idx < bcn_fftlength) return;
+    bcn_din_idx = 0;
+
+    fftw_execute(bcn_plan);
+    int numbins = bcn_fftlength/2; // 2000
+
+    // calc absolute values and search max value
+    float bin[numbins];
+    float real,imag;
+    float max = 0;
+    for(int i=0; i<numbins; i++)
+    {
+        real = bcn_cpout[i][0];
+        imag = bcn_cpout[i][1];
+        bin[i] = sqrt((real * real) + (imag * imag));
+        if(bin[i]>max) max=bin[i];
+    }
+
+    // from all samples > 1/2 max search the min and max frequency
+    int minf=99999, maxf=0;
+    for(int i=0; i<numbins; i++)
+    {
+        if(bin[i] > (max*1/2))
+        {
+            if(i < minf) minf = i;
+            if(i > maxf) maxf = i;
+        }
+    }
+
+    int minqrg = minf+startqrg;
+    int maxqrg = maxf+startqrg;
+    int diff = abs(maxqrg-minqrg);
+
+    if(diff < 390) return;
+
+    int bcnqrg = minqrg + diff/2;
+    int bcnqrgsoll = 500200;    // expected frequency
+    int bcnoffset = bcnqrg - bcnqrgsoll;
+    //printf("lower beacon mid QRG: %d kHz. Offset: %d Hz\n",bcnqrg,bcnoffset);
+
+    // send offset to GUI
+    uint8_t drift[5];
+    drift[0] = 6;
+    drift[1] = bcnoffset >> 24;
+    drift[2] = bcnoffset >> 16;
+    drift[3] = bcnoffset >> 8;
+    drift[4] = bcnoffset & 0xff;
+    
+    sendUDP(gui_ip, GUI_UDPPORT, drift, 5);
 }

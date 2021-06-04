@@ -110,30 +110,6 @@ void close_fft()
     cpout = NULL;
 }
 
-// convert a pluto stream into fftw3 samples
-void streamToFftSamples(uint8_t *stream, int streamlen, liquid_float_complex *samples)
-{
-int didx = 0;
-int16_t xi;
-int16_t xq;
-
-    for(int i=0; i<streamlen; i+=4)
-    {
-        xi = stream[i+1];
-        xi <<= 8;
-        xi += stream[i];
-        
-        xq = stream[i+3];
-        xq <<= 8;
-        xq += stream[i+2];
-
-        samples[didx].real = (float)xi / 32768.0f;
-        samples[didx].imag = (float)xq / 32768.0f;
-
-        didx++;
-    }
-}
-
 void calc_fft(uint8_t *data, int len)
 {
 static int din_idx = 0;

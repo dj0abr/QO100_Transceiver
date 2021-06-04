@@ -380,7 +380,7 @@ static int first=1;
     {
         cnt[id] = 0;
         sr = (samples[id]*1e6)/(tnow - lastus[id]);
-        printf("%d: %.3f\n",id,sr/1e6);
+        printf("%d: %.6f\n",id,sr/1e6);
     }
     return sr;
 }

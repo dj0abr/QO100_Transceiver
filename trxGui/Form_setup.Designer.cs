@@ -159,11 +159,11 @@ namespace trxGui
             // textBox3
             // 
             this.textBox3.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.textBox3.Location = new System.Drawing.Point(15, 211);
+            this.textBox3.Location = new System.Drawing.Point(15, 191);
             this.textBox3.Multiline = true;
             this.textBox3.Name = "textBox3";
             this.textBox3.ReadOnly = true;
-            this.textBox3.Size = new System.Drawing.Size(435, 227);
+            this.textBox3.Size = new System.Drawing.Size(435, 247);
             this.textBox3.TabIndex = 29;
             this.textBox3.Text = resources.GetString("textBox3.Text");
             // 

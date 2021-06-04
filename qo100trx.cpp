@@ -46,6 +46,7 @@ int txfilter = 3;
 int rxmute = 0;
 int refoffset = 0;
 int resetqrgs = 0;
+int beaconlock = 0;
 
 // fifos to send/receive samples with pluto run thread
 int RXfifo;
@@ -56,7 +57,7 @@ int pbidx = -1, capidx = -1;
 
 void udprxfunc(uint8_t *pdata, int len, struct sockaddr_in* sender)
 {
-	//printf("UDP command from GUI: %d\n",pdata[0]);
+	printf("UDP command from GUI: %d: %d\n",pdata[0],pdata[1]);
 
 	if(pdata[0] == 0)
 	{
@@ -203,6 +204,9 @@ void udprxfunc(uint8_t *pdata, int len, struct sockaddr_in* sender)
 
 		resetqrgs = 1;
 	}
+
+	if(pdata[0] == 16)
+		beaconlock = pdata[1];
 }
 
 void close_program()
@@ -330,7 +334,7 @@ int main ()
 		{
 			resetqrgs = 0;
 
-			setRXfrequency((long long)TX_FREQ);
+			// set pluto tuner frequency if user changed offset
 			setRXfrequency((long long)RX_FREQ);
 		}
 

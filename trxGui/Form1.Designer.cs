@@ -47,6 +47,8 @@ namespace trxGui
             this.panel_rfloop = new System.Windows.Forms.Panel();
             this.panel_audioloop = new System.Windows.Forms.Panel();
             this.panel_pavucontrol = new System.Windows.Forms.Panel();
+            this.panel_sync = new System.Windows.Forms.Panel();
+            this.panel_beaconlock = new System.Windows.Forms.Panel();
             this.panel_rxline = new trxGui.DoubleBufferedPanel();
             this.panel_bigspec = new trxGui.DoubleBufferedPanel();
             this.panel_bigwf = new trxGui.DoubleBufferedPanel();
@@ -76,7 +78,7 @@ namespace trxGui
             this.panel_qrg.BackColor = System.Drawing.Color.Gray;
             this.panel_qrg.Location = new System.Drawing.Point(12, 3);
             this.panel_qrg.Name = "panel_qrg";
-            this.panel_qrg.Size = new System.Drawing.Size(1120, 41);
+            this.panel_qrg.Size = new System.Drawing.Size(1087, 41);
             this.panel_qrg.TabIndex = 5;
             this.panel_qrg.Paint += new System.Windows.Forms.PaintEventHandler(this.panel_qrg_Paint);
             // 
@@ -223,6 +225,26 @@ namespace trxGui
             this.panel_pavucontrol.TabIndex = 21;
             this.panel_pavucontrol.Click += new System.EventHandler(this.panel_pavucontrol_Click);
             // 
+            // panel_sync
+            // 
+            this.panel_sync.BackColor = System.Drawing.Color.White;
+            this.panel_sync.Location = new System.Drawing.Point(1106, 3);
+            this.panel_sync.Name = "panel_sync";
+            this.panel_sync.Size = new System.Drawing.Size(26, 17);
+            this.panel_sync.TabIndex = 22;
+            this.panel_sync.Click += new System.EventHandler(this.panel_sync_Click);
+            this.panel_sync.Paint += new System.Windows.Forms.PaintEventHandler(this.panel_sync_Paint);
+            // 
+            // panel_beaconlock
+            // 
+            this.panel_beaconlock.BackColor = System.Drawing.Color.White;
+            this.panel_beaconlock.Location = new System.Drawing.Point(1108, 27);
+            this.panel_beaconlock.Name = "panel_beaconlock";
+            this.panel_beaconlock.Size = new System.Drawing.Size(26, 17);
+            this.panel_beaconlock.TabIndex = 23;
+            this.panel_beaconlock.Click += new System.EventHandler(this.panel_beaconlock_Click);
+            this.panel_beaconlock.Paint += new System.Windows.Forms.PaintEventHandler(this.panel_beaconlock_Paint);
+            // 
             // panel_rxline
             // 
             this.panel_rxline.BackColor = System.Drawing.Color.Gray;
@@ -308,6 +330,8 @@ namespace trxGui
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Gray;
             this.ClientSize = new System.Drawing.Size(1147, 775);
+            this.Controls.Add(this.panel_beaconlock);
+            this.Controls.Add(this.panel_sync);
             this.Controls.Add(this.panel_rxline);
             this.Controls.Add(this.panel_pavucontrol);
             this.Controls.Add(this.panel1);
@@ -364,6 +388,8 @@ namespace trxGui
         private System.Windows.Forms.Panel panel_audioloop;
         private System.Windows.Forms.Panel panel_pavucontrol;
         private DoubleBufferedPanel panel_rxline;
+        private System.Windows.Forms.Panel panel_sync;
+        private System.Windows.Forms.Panel panel_beaconlock;
     }
 }
 

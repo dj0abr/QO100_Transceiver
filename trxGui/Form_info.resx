@@ -119,7 +119,7 @@
   </resheader>
   <data name="textBox1.Text" xml:space="preserve">
     <value>QO-100 DSP Transceiver for Adalm-Pluto and Linux
-by DJ0ABR, Version 1.0
+by DJ0ABR
 
 Open Source: https://github.com/dj0abr/QO100_Transceiver
 
@@ -127,16 +127,17 @@ Mouse usage:
 ---------------
 upper Spectrum / Waterfall:
 
-left  click ... set RX    frequency: 100 Hz steps
-right click ... set RX+TX frequency: 100 Hz steps
-
+left  click ... set RX   
+right click ... set RX+TX
+mouse wheel: tune 100 Hz steps
 hold ALT  -key ... 1 kHz steps
 hold SHIFT-key ... 10kHz steps
 
 lower Spectrum / Waterfall:
 
-left  click ... set RX    frequency: 10 Hz steps
-right click ... set RX+TX frequency: 10 Hz steps
+left  click ... set RX 
+right click ... set RX+TX
+mouse wheel: tune 10 Hz steps
 
 PTT:
 ===

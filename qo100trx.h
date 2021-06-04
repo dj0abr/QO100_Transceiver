@@ -48,3 +48,4 @@ extern int txfilter;
 extern int rxmute;
 extern int refoffset;
 extern int bcnoffset;
+extern int beaconlock;

@@ -97,9 +97,13 @@ void tune_downmixer()
 {
 static int lastoffset = -1;
 
-    if(lastoffset != (RXoffsetfreq + bcnoffset))
+    int newoffset = RXoffsetfreq;
+    if(beaconlock) 
+        newoffset += bcnoffset;
+
+    if(lastoffset != newoffset)
     {
-        lastoffset = RXoffsetfreq + bcnoffset;
+        lastoffset = newoffset;
         //printf("offset: %d, tune RX to %f\n",lastoffset,BASEQRG*1e3 + lastoffset);
         float RADIANS_PER_SAMPLE   = ((2.0f * (float)M_PI * lastoffset)/(float)SAMPRATE);
         nco_crcf_set_phase(dnnco, 0.0f);
@@ -153,6 +157,7 @@ void downmix(liquid_float_complex *samples, int len)
 
     for(int i=0; i<len; i++)
     {
+        
         exec_beaconlock(samples[i]);
 
         // down mix SSB channel into baseband
@@ -201,9 +206,8 @@ Downmix x,499200 to baseband
 input:  1,12MS/s
 output: 4000S/s which gives the required 2kHz range 
 
-4) run an FFT with a resolution of 0,5Hz.
-this give new FFT bins every 2s, which is the mean value
-over this 2s which should eliminate the CW information (except the long pause)
+4) run an FFT with a resolution of bcn_resolution.
+this give new FFT bins every 1/bcn_resolution seconds
 */
 
 // FFT
@@ -211,7 +215,7 @@ fftw_complex *bcn_din = NULL;				// input data for  fft, output data from ifft
 fftw_complex *bcn_cpout = NULL;	            // ouput data from fft, input data to ifft
 fftw_plan bcn_plan = NULL;
 const int bcn_FFTsamprate = 4000;           // sample rate for FFT (required range * 2)
-const int bcn_resolution = 5;               // Hz per bin
+const int bcn_resolution = 2;               // Hz per bin
 const int bcn_fftlength = bcn_FFTsamprate / bcn_resolution; // 4kS/s / 5 = 800
 
 // down mixer
@@ -354,7 +358,7 @@ static int bcn_din_idx = 0;
         int bcnqrg = minqrg + diff/2;
         int bcnqrgsoll = 500200;    // expected frequency
         bcnoffset = (bcnqrg - bcnqrgsoll);
-        //printf("lower beacon %d .. %d: mid QRG: %d kHz. Offset: %d Hz\n",minqrg,maxqrg,bcnqrg,bcnoffset);
+        printf("lower beacon %d .. %d: mid QRG: %d kHz. Offset: %d Hz\n",minqrg,maxqrg,bcnqrg,bcnoffset);
         newoffset = 1;
     }
     else

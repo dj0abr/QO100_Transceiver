@@ -9,6 +9,7 @@ namespace trxGui
     public partial class Form1 : Form
     {
         bool setref = false;
+        int rxstore = -1, txstore = -1;
 
         public Form1()
         {
@@ -28,8 +29,15 @@ namespace trxGui
             this.Width = 1155;
             this.Height = 790;
 
-            panel_qrg.Width = 1120;
+            panel_qrg.Width = 1092;
             panel_qrg.Height = 40;
+
+            panel_sync.Location = new Point(panel_qrg.Location.X + panel_qrg.Width + 4, panel_qrg.Location.Y);
+            panel_sync.Width = 1120 - (panel_qrg.Location.X + panel_qrg.Width-4);
+
+            panel_beaconlock.Location = new Point(panel_qrg.Location.X + panel_qrg.Width + 4, panel_sync.Location.Y + panel_sync.Height + 4);
+            panel_beaconlock.Width = panel_sync.Width;
+            panel_beaconlock.Height = panel_sync.Height;
 
             panel_bigspec.Width = 1120;
             panel_bigspec.Height = 150;
@@ -149,12 +157,6 @@ namespace trxGui
             if (Udp.getSmallWFBitmap_avail())
                 panel_smallwf.Invalidate();
 
-            // detect Shift+Alt+Ctrol Key: set reference frequency to mid beacon by left mouse click
-            if ((Control.ModifierKeys & Keys.Shift) != 0 && (Control.ModifierKeys & Keys.Alt) != 0 && (Control.ModifierKeys & Keys.Control) != 0)
-                setref = true;
-            else
-                setref = false;
-
             if (Control.ModifierKeys == Keys.Shift && !statics.pttkey)
             {
                 // PTT pressed (shift key)
@@ -223,6 +225,7 @@ namespace trxGui
                 panel_rxfilter_Click(null, null);
                 panel_txfilter_Click(null, null);
                 sendReferenceOffset(statics.rfoffset);
+                panel_beaconlock.Invalidate();
             }
 
             if(statics.beaconoffset != oldbcnoffset)
@@ -320,7 +323,9 @@ namespace trxGui
             if (hz > 12000) hz = 12000;
 
             statics.rfoffset = hz;
-            Console.WriteLine("--------------------------- set " + statics.rfoffset);
+
+            //Console.WriteLine("Set Clock Reference: " + statics.rfoffset);
+
             int val = hz + 12000;   // make it always positive
 
             Byte[] txb = new Byte[5];
@@ -331,6 +336,14 @@ namespace trxGui
             txb[4] = (Byte)(val & 0xff);
 
             Udp.UdpSendData(txb);
+
+            setref = false;
+
+            if (rxstore != -1 && txstore != -1)
+            {
+                statics.RXoffset = rxstore;
+                statics.TXoffset = txstore;
+            }
         }
 
         private void tuneBig(MouseEventArgs e)
@@ -365,7 +378,7 @@ namespace trxGui
                 else
                 {
                     // set offset to Pluto reference frequency
-                    Console.WriteLine("hz : " + hz);
+                    //Console.WriteLine("hz : " + hz);
                     sendReferenceOffset(statics.rfoffset + hz);
                 }
             }
@@ -550,7 +563,7 @@ namespace trxGui
         Font bigfnt = new Font("Verdana", 24.0f);
         Font smlfnt = new Font("Verdana", 10.0f);
         int titrightpos = 10;
-        int mouserightpos = 880;
+        int mouserightpos = 820;
         int bigy = 2;
         private void panel_qrg_Paint(object sender, PaintEventArgs e)
         {
@@ -562,7 +575,7 @@ namespace trxGui
 
                 val = (double)(statics.TXoffset + 10489470000) / 1e6 - 8089.5;
                 s = String.Format("TX:" + "{0:0.000000}" + " MHz", val);
-                gr.DrawString(s, bigfnt, Brushes.DarkRed, 450+ titrightpos, bigy);
+                gr.DrawString(s, bigfnt, Brushes.DarkRed, 420+ titrightpos, bigy);
 
                 if(statics.rxmouse != -1)
                 {
@@ -733,7 +746,7 @@ namespace trxGui
                     statics.rit = ReadString(sr) == "1";
                     statics.xit = ReadString(sr) == "1";
                     statics.rfoffset = ReadInt(sr);
-                    Console.WriteLine("--------------------------- read " + statics.rfoffset);
+                    statics.beaconlock = ReadString(sr) == "1";
                 }
             }
             catch
@@ -762,7 +775,7 @@ namespace trxGui
                     sw.WriteLine(statics.rit ? "1" : "0");
                     sw.WriteLine(statics.xit ? "1" : "0");
                     sw.WriteLine(statics.rfoffset.ToString());
-                    Console.WriteLine("--------------------------- save " + statics.rfoffset);
+                    sw.WriteLine(statics.beaconlock ? "1" : "0");
                 }
             }
             catch { }
@@ -1058,6 +1071,53 @@ namespace trxGui
             {
                 gr.DrawLine(cline, panel_rxline.Width / 2, panel_rxline.Height, x, 0);
             }
+        }
+
+        private void panel_sync_Paint(object sender, PaintEventArgs e)
+        {
+            using (Graphics gr = e.Graphics)
+            {
+                Font syfont = new Font("Verdana", 7.0f);
+                gr.DrawString("REF", syfont, Brushes.Black, -1, 2);
+            }
+        }
+
+        
+
+        private void panel_beaconlock_Paint(object sender, PaintEventArgs e)
+        {
+            String s = "FRE";
+            if (statics.beaconlock) s = "LCK";
+
+            using (Graphics gr = e.Graphics)
+            {
+                Font syfont = new Font("Verdana", 7.0f);
+                gr.DrawString(s, syfont, Brushes.Black, -1, 2);
+            }
+
+            Byte[] txb = new Byte[2];
+            txb[0] = 16;
+            txb[1] = (Byte)(statics.beaconlock ? 1 : 0);
+            Udp.UdpSendData(txb);
+        }
+
+        private void panel_beaconlock_Click(object sender, EventArgs e)
+        {
+            statics.beaconlock = !statics.beaconlock;
+            panel_beaconlock.Invalidate();
+        }
+
+        private void panel_sync_Click(object sender, EventArgs e)
+        {
+            rxstore = statics.RXoffset;
+            txstore = statics.TXoffset;
+
+            statics.RXoffset = 560 * 500;
+            statics.TXoffset = 560 * 500;
+            sendRXTXoffset();
+
+            MessageBox.Show("Left-Click with the mouse into the center of the BPSK-Beacon", "CLOCK SYNCHRONISATION", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            setref = true;
         }
     }
 

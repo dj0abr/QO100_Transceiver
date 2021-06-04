@@ -131,7 +131,9 @@ for an LNB running with 24 MHz Reference enter: 1129.5
 the Amsat-Donwconverter runs with 24 MHz LNB Reference
 so you enter: 1129.5
 
-to receive a down-converted signal AFTER the down-converter enter the downconverter's output frequency of the lower beacon at 10489.500 MHz</value>
+or enter the output frequency of a down-converter (corresponding to 10489.500 MHz)
+
+Correction/Tuning: if the LNB has a large offset, add it to the frequency. To compensate small offsets use the REF button  (see top, right)</value>
   </data>
   <data name="textBox1.Text" xml:space="preserve">
     <value>Examples for TX:

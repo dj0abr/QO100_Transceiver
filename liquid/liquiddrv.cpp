@@ -358,7 +358,7 @@ static int bcn_din_idx = 0;
         int bcnqrg = minqrg + diff/2;
         int bcnqrgsoll = 500200;    // expected frequency
         bcnoffset = (bcnqrg - bcnqrgsoll);
-        printf("lower beacon %d .. %d: mid QRG: %d kHz. Offset: %d Hz\n",minqrg,maxqrg,bcnqrg,bcnoffset);
+        //printf("lower beacon %d .. %d: mid QRG: %d kHz. Offset: %d Hz\n",minqrg,maxqrg,bcnqrg,bcnoffset);
         newoffset = 1;
     }
     else

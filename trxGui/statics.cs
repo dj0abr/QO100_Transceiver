@@ -46,6 +46,7 @@ namespace trxGui
         public static int rfoffset = 0;
         public static int beaconoffset = 0;
         public static bool beaconlock = false;
+        public static double txvolume = 0;
 
         static Process cmdtrx = null;
         public static bool StartQO100trx(bool start = true)

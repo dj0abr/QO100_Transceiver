@@ -3,6 +3,7 @@
 void tune_upmixer(int offset);
 void sendToPluto();
 void createBandpass();
+void measureTxAudioVolume(float f);
 
 // Modulator
 float mod_index  = 0.9f;                // modulation index (bandwidth)
@@ -200,6 +201,8 @@ float gain = 1;
             }
         }
 
+        measureTxAudioVolume(fcompr);
+
         // modulator, at 48k audio sample rate
         liquid_float_complex y;
         ampmodem_modulate(mod, fcompr, &y);
@@ -248,8 +251,6 @@ int32_t xq;
 uint8_t txbuf[PLUTOBUFSIZE * 4];
 int txbufidx = 0;
 
-
-
     for(int i=0; i<PLUTOBUFSIZE; i++)
     {
         // convert complex to pluto format
@@ -263,4 +264,30 @@ int txbufidx = 0;
     }
 
     write_fifo(TXfifo,txbuf,PLUTOBUFSIZE*4);
+}
+
+void measureTxAudioVolume(float f)
+{
+static float max = 0.0f;
+static int samples = 0;
+
+    // measure max volume
+    if(f > max) max = f;
+
+    if(++samples >= 12000) // every 250ms at 48k rate
+    {
+        samples = 0;
+
+        // send to GUI
+        uint32_t maxi = (uint32_t)(max * 100000.0f);
+        uint8_t vol[5];
+        vol[0] = 7;
+        vol[1] = maxi >> 24;
+        vol[2] = maxi >> 16;
+        vol[3] = maxi >> 8;
+        vol[4] = maxi & 0xff;
+        sendUDP(gui_ip, GUI_UDPPORT, vol, 5);
+
+        max = 0.0f;
+    }
 }

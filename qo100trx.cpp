@@ -57,7 +57,7 @@ int pbidx = -1, capidx = -1;
 
 void udprxfunc(uint8_t *pdata, int len, struct sockaddr_in* sender)
 {
-	printf("UDP command from GUI: %d: %d\n",pdata[0],pdata[1]);
+	//printf("UDP command from GUI: %d: %d\n",pdata[0],pdata[1]);
 
 	if(pdata[0] == 0)
 	{

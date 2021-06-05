@@ -29,6 +29,7 @@ namespace trxGui
             this.Width = 1155;
             this.Height = 790;
 
+            panel_qrg.Location = new Point(13, 4);
             panel_qrg.Width = 1092;
             panel_qrg.Height = 40;
 
@@ -38,6 +39,10 @@ namespace trxGui
             panel_beaconlock.Location = new Point(panel_qrg.Location.X + panel_qrg.Width + 4, panel_sync.Location.Y + panel_sync.Height + 4);
             panel_beaconlock.Width = panel_sync.Width;
             panel_beaconlock.Height = panel_sync.Height;
+
+            panel_txaudio.Width = 500;
+            panel_txaudio.Height = 6;
+            panel_txaudio.Location = new Point(panel_qrg.Location.X + 430, panel_qrg.Location.Y + panel_qrg.Height);
 
             panel_bigspec.Width = 1120;
             panel_bigspec.Height = 150;
@@ -60,8 +65,8 @@ namespace trxGui
             panel_smallwf.Width = 1120;
             panel_smallwf.Height = 150;
 
-            panel_qrg.Location = new Point(13, 4);
-            panel_bigspec.Location = new Point(13, panel_qrg.Location.Y + panel_qrg.Height+5);
+            
+            panel_bigspec.Location = new Point(13, panel_txaudio.Location.Y + panel_txaudio.Height);
             panel_bandplan.Location = new Point(13, panel_bigspec.Location.Y + panel_bigspec.Height);
             panel_bigwf.Location = new Point(13, panel_bandplan.Location.Y + panel_bandplan.Height);
 
@@ -233,6 +238,8 @@ namespace trxGui
                 oldbcnoffset = statics.beaconoffset;
                 panel_qrg.Invalidate();
             }
+
+            panel_txaudio.Invalidate();
         }
 
         int oldbcnoffset = -1;
@@ -1105,6 +1112,45 @@ namespace trxGui
         {
             statics.beaconlock = !statics.beaconlock;
             panel_beaconlock.Invalidate();
+        }
+
+        Pen gen_audio_green = new Pen(Brushes.Green, 4);
+        Pen gen_audio_yellow = new Pen(Brushes.Yellow, 4);
+        Pen gen_audio_red = new Pen(Brushes.Red, 4);
+        int aline = 3;
+
+        private void panel_txaudio_Paint(object sender, PaintEventArgs e)
+        {
+            double f = Math.Pow(statics.txvolume, 2);
+            //Console.WriteLine(statics.txvolume + "  " + f);
+            int x = (int)(f * (float)panel_txaudio.Width);
+
+            using (Graphics gr = e.Graphics)
+            {
+                if (statics.ptt || statics.pttkey)
+                {
+                    gr.FillRectangle(Brushes.White, 0, 0, panel_txaudio.Width, panel_txaudio.Height);
+
+                    int xa1 = panel_txaudio.Width * 6 / 8;
+                    int xa2 = panel_txaudio.Width * 7 / 8;
+
+                    if (x <= xa1)
+                        gr.DrawLine(gen_audio_green, 0, aline, x, aline);
+                    else if (x <= xa2)
+                    {
+                        gr.DrawLine(gen_audio_green, 0, aline, xa1, aline);
+                        gr.DrawLine(gen_audio_yellow, xa1, aline, x, aline);
+                    }
+                    else
+                    {
+                        gr.DrawLine(gen_audio_green, 0, aline, xa1, aline);
+                        gr.DrawLine(gen_audio_yellow, xa1, aline, xa2, aline);
+                        gr.DrawLine(gen_audio_red, xa2, aline, x, aline);
+                    }
+                }
+                else
+                    gr.FillRectangle(Brushes.Gray, 0, 0, panel_txaudio.Width, panel_txaudio.Height);
+            }
         }
 
         private void panel_sync_Click(object sender, EventArgs e)

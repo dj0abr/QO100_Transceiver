@@ -49,6 +49,7 @@ namespace trxGui
             this.panel_pavucontrol = new System.Windows.Forms.Panel();
             this.panel_sync = new System.Windows.Forms.Panel();
             this.panel_beaconlock = new System.Windows.Forms.Panel();
+            this.panel_txaudio = new trxGui.DoubleBufferedPanel();
             this.panel_rxline = new trxGui.DoubleBufferedPanel();
             this.panel_bigspec = new trxGui.DoubleBufferedPanel();
             this.panel_bigwf = new trxGui.DoubleBufferedPanel();
@@ -245,6 +246,15 @@ namespace trxGui
             this.panel_beaconlock.Click += new System.EventHandler(this.panel_beaconlock_Click);
             this.panel_beaconlock.Paint += new System.Windows.Forms.PaintEventHandler(this.panel_beaconlock_Paint);
             // 
+            // panel_txaudio
+            // 
+            this.panel_txaudio.BackColor = System.Drawing.Color.Gray;
+            this.panel_txaudio.Location = new System.Drawing.Point(14, 44);
+            this.panel_txaudio.Name = "panel_txaudio";
+            this.panel_txaudio.Size = new System.Drawing.Size(560, 6);
+            this.panel_txaudio.TabIndex = 2;
+            this.panel_txaudio.Paint += new System.Windows.Forms.PaintEventHandler(this.panel_txaudio_Paint);
+            // 
             // panel_rxline
             // 
             this.panel_rxline.BackColor = System.Drawing.Color.Gray;
@@ -330,6 +340,7 @@ namespace trxGui
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Gray;
             this.ClientSize = new System.Drawing.Size(1147, 775);
+            this.Controls.Add(this.panel_txaudio);
             this.Controls.Add(this.panel_beaconlock);
             this.Controls.Add(this.panel_sync);
             this.Controls.Add(this.panel_rxline);
@@ -357,7 +368,7 @@ namespace trxGui
             this.Controls.Add(this.panel_smallqrg);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Name = "Form1";
-            this.Text = "QO100 Linux - Pluto Transceiver (by DJ0ABR) V1.2";
+            this.Text = "QO100 Linux - Pluto Transceiver (by DJ0ABR) V1.3";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.ResumeLayout(false);
 
@@ -390,6 +401,7 @@ namespace trxGui
         private DoubleBufferedPanel panel_rxline;
         private System.Windows.Forms.Panel panel_sync;
         private System.Windows.Forms.Panel panel_beaconlock;
+        private DoubleBufferedPanel panel_txaudio;
     }
 }
 

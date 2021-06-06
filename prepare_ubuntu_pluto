@@ -13,6 +13,15 @@ make -j$(nproc)
 sudo make install
 cd ..
 cd ..
+git clone https://github.com/analogdevicesinc/libad9361-iio
+cd libad9361-iio
+mkdir -p build
+cd build
+cmake ../
+make -j$(nproc)
+sudo make install
+cd ..
+cd ..
 if [ ! -d "liquid-dsp" ] ; then
     git clone https://github.com/jgaeddert/liquid-dsp
     cd liquid-dsp

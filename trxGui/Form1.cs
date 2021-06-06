@@ -8,9 +8,6 @@ namespace trxGui
 {
     public partial class Form1 : Form
     {
-        bool setref = false;
-        int rxstore = -1, txstore = -1;
-
         public Form1()
         {
             InitializeComponent();
@@ -40,10 +37,6 @@ namespace trxGui
             panel_beaconlock.Width = panel_sync.Width;
             panel_beaconlock.Height = panel_sync.Height;
 
-            panel_txaudio.Width = 500;
-            panel_txaudio.Height = 6;
-            panel_txaudio.Location = new Point(panel_qrg.Location.X + 430, panel_qrg.Location.Y + panel_qrg.Height);
-
             panel_bigspec.Width = 1120;
             panel_bigspec.Height = 150;
 
@@ -66,7 +59,7 @@ namespace trxGui
             panel_smallwf.Height = 150;
 
             
-            panel_bigspec.Location = new Point(13, panel_txaudio.Location.Y + panel_txaudio.Height);
+            panel_bigspec.Location = new Point(13, panel_qrg.Location.Y + panel_qrg.Height+5);
             panel_bandplan.Location = new Point(13, panel_bigspec.Location.Y + panel_bigspec.Height);
             panel_bigwf.Location = new Point(13, panel_bandplan.Location.Y + panel_bandplan.Height);
 
@@ -132,7 +125,7 @@ namespace trxGui
 
             timer_draw.Start();
 
-            sendRXTXoffset();
+            sendAndRefreshRXTXoffset();
         }
 
         private void panel_bigspec_Paint(object sender, PaintEventArgs e)
@@ -222,14 +215,14 @@ namespace trxGui
 
                 statics.newaudiodevs = true;
                 sendAudioDevs();
-                sendBaseQRG();
+                statics.sendBaseQRG();
                 sendPlutoAddress();
                 panel_comp_Click(null, null);   // send "compress"
                 panel_agc_Click(null, null);   // send "AGC"
                 panel_txmute_Click(null, null);
                 panel_rxfilter_Click(null, null);
                 panel_txfilter_Click(null, null);
-                sendReferenceOffset(statics.rfoffset);
+                statics.sendReferenceOffset(statics.rfoffset);
                 panel_beaconlock.Invalidate();
             }
 
@@ -238,8 +231,6 @@ namespace trxGui
                 oldbcnoffset = statics.beaconoffset;
                 panel_qrg.Invalidate();
             }
-
-            panel_txaudio.Invalidate();
         }
 
         int oldbcnoffset = -1;
@@ -300,75 +291,52 @@ namespace trxGui
             tuneSmall(e);
         }
 
-        private void sendRXTXoffset()
-        {
-            if (statics.RXoffset < 0) statics.RXoffset = 0;
-            if (statics.RXoffset > 560000) statics.RXoffset = 560000;
-            if (statics.TXoffset < 0) statics.RXoffset = 0;
-            if (statics.TXoffset > 560000) statics.TXoffset = 560000;
-
-            Byte[] txb = new Byte[9];
-            txb[0] = 0;
-            txb[1] = (Byte)(statics.RXoffset >> 24);
-            txb[2] = (Byte)(statics.RXoffset >> 16);
-            txb[3] = (Byte)(statics.RXoffset >> 8);
-            txb[4] = (Byte)(statics.RXoffset & 0xff);
-            txb[5] = (Byte)(statics.TXoffset >> 24);
-            txb[6] = (Byte)(statics.TXoffset >> 16);
-            txb[7] = (Byte)(statics.TXoffset >> 8);
-            txb[8] = (Byte)(statics.TXoffset & 0xff);
-
-            Udp.UdpSendData(txb);
-
-            panel_qrg.Invalidate(); // show qrg
-            panel_rxline.Invalidate();
-        }
-
-        private void sendReferenceOffset(int hz)
-        {
-            if (hz < -12000) hz = -12000;
-            if (hz > 12000) hz = 12000;
-
-            statics.rfoffset = hz;
-
-            //Console.WriteLine("Set Clock Reference: " + statics.rfoffset);
-
-            int val = hz + 12000;   // make it always positive
-
-            Byte[] txb = new Byte[5];
-            txb[0] = 15;
-            txb[1] = (Byte)(val >> 24);
-            txb[2] = (Byte)(val >> 16);
-            txb[3] = (Byte)(val >> 8);
-            txb[4] = (Byte)(val & 0xff);
-
-            Udp.UdpSendData(txb);
-
-            setref = false;
-
-            if (rxstore != -1 && txstore != -1)
-            {
-                statics.RXoffset = rxstore;
-                statics.TXoffset = txstore;
-            }
-        }
-
         private void tuneBig(MouseEventArgs e)
         {
             
 
             if (e.Button == MouseButtons.Left)
             {
-                statics.RXoffset = e.X * 500;
-                sendRXTXoffset();
+                if (statics.calmode == 0)
+                {
+                    statics.RXoffset = e.X * 500;
+                    sendAndRefreshRXTXoffset();
+                }
+                else if (statics.calmode == 1)
+                {
+                    // cal to BPSK beacon
+                    int off = e.X * 500 - 280000;
+                    //Console.WriteLine("Pluto offset: " + off + " Hz");
+                    if(off > 0)
+                        statics.calfreq += (UInt32)off;
+                    else if (off < 0)
+                        statics.calfreq -= (UInt32)(-off);
+
+                    statics.sendBaseQRG(statics.calfreq);
+                }
+                else if (statics.calmode == 2)
+                {
+                    int off = e.X * 500 - 280000;
+                    Console.WriteLine("offset: " + off);
+                    statics.lnboffset += off;
+                    statics.sendBaseQRG();
+                }
             }
 
             if (e.Button == MouseButtons.Right)
             {
                 statics.RXoffset = e.X * 500;
                 statics.TXoffset = e.X * 500;
-                sendRXTXoffset();
+                sendAndRefreshRXTXoffset();
             }
+        }
+
+        private void sendAndRefreshRXTXoffset()
+        {
+            statics.sendRXTXoffset();
+
+            panel_qrg.Invalidate();
+            panel_rxline.Invalidate();
         }
 
         private void tuneSmall(MouseEventArgs e)
@@ -379,14 +347,27 @@ namespace trxGui
 
             if (e.Button == MouseButtons.Left)
             {
-                statics.RXoffset += hz;
-                if(!setref)
-                    sendRXTXoffset();
-                else
+                if (statics.calmode == 0)
                 {
-                    // set offset to Pluto reference frequency
-                    //Console.WriteLine("hz : " + hz);
-                    sendReferenceOffset(statics.rfoffset + hz);
+                    statics.RXoffset += hz;
+                    sendAndRefreshRXTXoffset();
+                }
+                else if (statics.calmode == 1)
+                {
+                    //Console.WriteLine("Pluto offset: " + hz);
+                    if (hz > 0)
+                        statics.calfreq += (UInt32)hz;
+                    else if (hz < 0)
+                        statics.calfreq -= (UInt32)(-hz);
+
+                    statics.sendBaseQRG(statics.calfreq);
+                    //Console.WriteLine("calfreq: " + statics.calfreq);
+                }
+                else if (statics.calmode == 2)
+                {
+                    Console.WriteLine("offset: " + hz);
+                    statics.lnboffset += hz;
+                    statics.sendBaseQRG();
                 }
             }
 
@@ -394,7 +375,7 @@ namespace trxGui
             {
                 statics.RXoffset += hz;
                 statics.TXoffset += hz;
-                sendRXTXoffset();
+                sendAndRefreshRXTXoffset();
             }
         }
 
@@ -421,7 +402,7 @@ namespace trxGui
             }
 
             if (statics.rit || statics.xit)
-                sendRXTXoffset();
+                sendAndRefreshRXTXoffset();
         }
 
         private void panel_smallwf_MouseWheel(object sender, MouseEventArgs e)
@@ -443,7 +424,7 @@ namespace trxGui
             }
 
             if (statics.rit || statics.xit)
-                sendRXTXoffset();
+                sendAndRefreshRXTXoffset();
         }
 
         private void panel_bigwf_MouseHover(object sender, EventArgs e)
@@ -647,9 +628,10 @@ namespace trxGui
             if(res == DialogResult.OK)
             {
                 sendAudioDevs();
-                sendBaseQRG();
+                statics.sendBaseQRG();
+                statics.sendReferenceOffset(statics.rfoffset);
 
-                if(oldpluto != statics.plutousb || oldpladr != statics.plutoaddress)
+                if (oldpluto != statics.plutousb || oldpladr != statics.plutoaddress)
                 {
                     // pluto setting has been changed, restart required
                     MessageBox.Show("Pluto settings changed. Press OK to close this software, then start it again", "RESTART REQUIRED", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -683,22 +665,7 @@ namespace trxGui
                 // no audio devs
             }
         }
-
-        private void sendBaseQRG()
-        {
-            Byte[] txb = new Byte[9];
-            txb[0] = 8;
-            //Console.WriteLine("*********************************** " + statics.rxqrg + " * " + statics.txqrg);
-            txb[1] = (Byte)(statics.rxqrg >> 24);
-            txb[2] = (Byte)(statics.rxqrg >> 16);
-            txb[3] = (Byte)(statics.rxqrg >> 8);
-            txb[4] = (Byte)(statics.rxqrg & 0xff);
-            txb[5] = (Byte)(statics.txqrg >> 24);
-            txb[6] = (Byte)(statics.txqrg >> 16);
-            txb[7] = (Byte)(statics.txqrg >> 8);
-            txb[8] = (Byte)(statics.txqrg & 0xff);
-            Udp.UdpSendData(txb);
-        }
+              
 
         private String ReadString(StreamReader sr)
         {
@@ -731,6 +698,40 @@ namespace trxGui
             return 0;
         }
 
+        private UInt32 ReadUInt32(StreamReader sr)
+        {
+            UInt32 v;
+
+            try
+            {
+                String s = sr.ReadLine();
+                if (s != null)
+                {
+                    v = Convert.ToUInt32(s);
+                    return v;
+                }
+            }
+            catch { }
+            return 0;
+        }
+
+        private double ReadMyDouble(StreamReader sr)
+        {
+            double v;
+
+            try
+            {
+                String s = sr.ReadLine();
+                if (s != null)
+                {
+                    v = statics.MyToDouble(s);
+                    return v;
+                }
+            }
+            catch { }
+            return 0;
+        }
+
         void load_Setup()
         {
             try
@@ -740,8 +741,8 @@ namespace trxGui
                 {
                     statics.AudioPBdev = ReadString(sr);
                     statics.AudioCAPdev = ReadString(sr);
-                    statics.rxqrg = ReadInt(sr);
-                    statics.txqrg = ReadInt(sr);
+                    String dummy2 = ReadString(sr);
+                    String dummy3 = ReadString(sr);
                     statics.plutousb = ReadInt(sr);
                     statics.plutoaddress = ReadString(sr);
                     String dummy1 = ReadString(sr);
@@ -752,8 +753,12 @@ namespace trxGui
                     statics.rxmute = ReadString(sr) == "1";
                     statics.rit = ReadString(sr) == "1";
                     statics.xit = ReadString(sr) == "1";
-                    statics.rfoffset = ReadInt(sr);
+                    String dummy4 = ReadString(sr);
                     statics.beaconlock = ReadString(sr) == "1";
+                    statics.rxqrg = ReadUInt32(sr);
+                    statics.txqrg = ReadUInt32(sr);
+                    statics.rfoffset = ReadInt(sr);
+                    statics.lnboffset = ReadInt(sr);
                 }
             }
             catch
@@ -769,8 +774,8 @@ namespace trxGui
                 {
                     sw.WriteLine(statics.AudioPBdev);
                     sw.WriteLine(statics.AudioCAPdev);
-                    sw.WriteLine(statics.rxqrg.ToString());
-                    sw.WriteLine(statics.txqrg.ToString());
+                    sw.WriteLine("");
+                    sw.WriteLine("");
                     sw.WriteLine(statics.plutousb.ToString());
                     sw.WriteLine(statics.plutoaddress);
                     sw.WriteLine("");
@@ -781,8 +786,12 @@ namespace trxGui
                     sw.WriteLine(statics.rxmute ? "1" : "0");
                     sw.WriteLine(statics.rit ? "1" : "0");
                     sw.WriteLine(statics.xit ? "1" : "0");
-                    sw.WriteLine(statics.rfoffset.ToString());
+                    sw.WriteLine("");
                     sw.WriteLine(statics.beaconlock ? "1" : "0");
+                    sw.WriteLine(statics.rxqrg.ToString());
+                    sw.WriteLine(statics.txqrg.ToString());
+                    sw.WriteLine(statics.rfoffset.ToString());
+                    sw.WriteLine(statics.lnboffset.ToString());
                 }
             }
             catch { }
@@ -863,7 +872,7 @@ namespace trxGui
         private void panel_copyRtoT_Click(object sender, EventArgs e)
         {
             statics.TXoffset = statics.RXoffset;
-            sendRXTXoffset();
+            sendAndRefreshRXTXoffset();
             panel_copyRtoT.Invalidate();
         }
 
@@ -939,7 +948,7 @@ namespace trxGui
         private void panel_copyTtoR_Click(object sender, EventArgs e)
         {
             statics.RXoffset = statics.TXoffset;
-            sendRXTXoffset();
+            sendAndRefreshRXTXoffset();
             panel_copyTtoR.Invalidate();
         }
 
@@ -1085,7 +1094,7 @@ namespace trxGui
             using (Graphics gr = e.Graphics)
             {
                 Font syfont = new Font("Verdana", 7.0f);
-                gr.DrawString("REF", syfont, Brushes.Black, -1, 2);
+                gr.DrawString("CAL", syfont, Brushes.Black, -1, 2);
             }
         }
 
@@ -1117,53 +1126,21 @@ namespace trxGui
         Pen gen_audio_green = new Pen(Brushes.Green, 4);
         Pen gen_audio_yellow = new Pen(Brushes.Yellow, 4);
         Pen gen_audio_red = new Pen(Brushes.Red, 4);
-        int aline = 3;
-
-        private void panel_txaudio_Paint(object sender, PaintEventArgs e)
-        {
-            double f = Math.Pow(statics.txvolume, 2);
-            //Console.WriteLine(statics.txvolume + "  " + f);
-            int x = (int)(f * (float)panel_txaudio.Width);
-
-            using (Graphics gr = e.Graphics)
-            {
-                if (statics.ptt || statics.pttkey)
-                {
-                    gr.FillRectangle(Brushes.White, 0, 0, panel_txaudio.Width, panel_txaudio.Height);
-
-                    int xa1 = panel_txaudio.Width * 6 / 8;
-                    int xa2 = panel_txaudio.Width * 7 / 8;
-
-                    if (x <= xa1)
-                        gr.DrawLine(gen_audio_green, 0, aline, x, aline);
-                    else if (x <= xa2)
-                    {
-                        gr.DrawLine(gen_audio_green, 0, aline, xa1, aline);
-                        gr.DrawLine(gen_audio_yellow, xa1, aline, x, aline);
-                    }
-                    else
-                    {
-                        gr.DrawLine(gen_audio_green, 0, aline, xa1, aline);
-                        gr.DrawLine(gen_audio_yellow, xa1, aline, xa2, aline);
-                        gr.DrawLine(gen_audio_red, xa2, aline, x, aline);
-                    }
-                }
-                else
-                    gr.FillRectangle(Brushes.Gray, 0, 0, panel_txaudio.Width, panel_txaudio.Height);
-            }
-        }
 
         private void panel_sync_Click(object sender, EventArgs e)
         {
-            rxstore = statics.RXoffset;
+            /*rxstore = statics.RXoffset;
             txstore = statics.TXoffset;
 
             statics.RXoffset = 560 * 500;
             statics.TXoffset = 560 * 500;
-            sendRXTXoffset();
+            sendAndRefreshRXTXoffset();
 
             MessageBox.Show("Left-Click with the mouse into the center of the BPSK-Beacon", "CLOCK SYNCHRONISATION", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            setref = true;
+            setref = true;*/
+
+            Form_reference fr = new Form_reference();
+            fr.Show();
         }
     }
 

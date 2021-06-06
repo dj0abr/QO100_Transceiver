@@ -1,9 +1,9 @@
 #define SAMPRATE  		1120000			// 1.12MS/s
 
-#define LNB_REF			24000			// kHz
-#define BASEQRG			10489470		// kHz, spectrum range ist 10489.470 - 10490.03
-#define RXBASEQRG		((BASEQRG - 390*LNB_REF)*1000)
-#define TXBASEQRG		(2400000 - 30)
+#define LNB_REF			24000UL			// kHz
+#define BASEQRG			10489470UL		// kHz, spectrum range ist 10489.470 - 10490.03
+#define RXBASEQRG		((BASEQRG - 390UL*LNB_REF)*1000UL)
+#define TXBASEQRG		((2400000UL - 30UL)*1000UL)
 #define PLUTOBUFSIZE  	(SAMPRATE/10)
 
 #define MHZ(x) ((long long)(x*1000000.0 + .5))

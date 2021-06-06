@@ -136,7 +136,7 @@ void udprxfunc(uint8_t *pdata, int len, struct sockaddr_in* sender)
 		rxbaseqrg <<= 8;
 		rxbaseqrg += pdata[4];
 
-		rxbaseqrg -= 30;
+		rxbaseqrg -= 30000UL;
 
 		uint32_t txbaseqrg;
 		txbaseqrg = pdata[5];
@@ -147,10 +147,12 @@ void udprxfunc(uint8_t *pdata, int len, struct sockaddr_in* sender)
 		txbaseqrg <<= 8;
 		txbaseqrg += pdata[8];
 
-		txbaseqrg -= 30;
+		txbaseqrg -= 30000UL;
 
-		RX_FREQ = (double)rxbaseqrg * 1000.0f;
-		TX_FREQ = (double)txbaseqrg * 1000.0f;
+		RX_FREQ = (double)rxbaseqrg;
+		TX_FREQ = (double)txbaseqrg;
+
+		resetqrgs = 1;
 	}
 
 	if(pdata[0] == 9)

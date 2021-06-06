@@ -49,6 +49,12 @@ namespace trxGui
             this.rb_plutoeth = new System.Windows.Forms.RadioButton();
             this.tb_plutoip = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.tb_plutooffset = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.tb_lnboffset = new System.Windows.Forms.TextBox();
+            this.label12 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // button1
@@ -75,7 +81,7 @@ namespace trxGui
             // cb_audioPB
             // 
             this.cb_audioPB.FormattingEnabled = true;
-            this.cb_audioPB.Location = new System.Drawing.Point(154, 69);
+            this.cb_audioPB.Location = new System.Drawing.Point(154, 47);
             this.cb_audioPB.Name = "cb_audioPB";
             this.cb_audioPB.Size = new System.Drawing.Size(538, 21);
             this.cb_audioPB.TabIndex = 2;
@@ -83,7 +89,7 @@ namespace trxGui
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(12, 72);
+            this.label10.Location = new System.Drawing.Point(12, 50);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(133, 13);
             this.label10.TabIndex = 11;
@@ -92,7 +98,7 @@ namespace trxGui
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(12, 96);
+            this.label11.Location = new System.Drawing.Point(12, 74);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(66, 13);
             this.label11.TabIndex = 12;
@@ -101,14 +107,14 @@ namespace trxGui
             // cb_audioCAP
             // 
             this.cb_audioCAP.FormattingEnabled = true;
-            this.cb_audioCAP.Location = new System.Drawing.Point(154, 93);
+            this.cb_audioCAP.Location = new System.Drawing.Point(154, 71);
             this.cb_audioCAP.Name = "cb_audioCAP";
             this.cb_audioCAP.Size = new System.Drawing.Size(538, 21);
             this.cb_audioCAP.TabIndex = 13;
             // 
             // tb_txqrg
             // 
-            this.tb_txqrg.Location = new System.Drawing.Point(154, 152);
+            this.tb_txqrg.Location = new System.Drawing.Point(154, 125);
             this.tb_txqrg.Name = "tb_txqrg";
             this.tb_txqrg.Size = new System.Drawing.Size(177, 20);
             this.tb_txqrg.TabIndex = 21;
@@ -116,7 +122,7 @@ namespace trxGui
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(12, 155);
+            this.label6.Location = new System.Drawing.Point(12, 128);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(115, 13);
             this.label6.TabIndex = 20;
@@ -125,7 +131,7 @@ namespace trxGui
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(337, 133);
+            this.label2.Location = new System.Drawing.Point(337, 106);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(361, 13);
             this.label2.TabIndex = 27;
@@ -133,7 +139,7 @@ namespace trxGui
             // 
             // tb_rxqrg
             // 
-            this.tb_rxqrg.Location = new System.Drawing.Point(154, 129);
+            this.tb_rxqrg.Location = new System.Drawing.Point(154, 102);
             this.tb_rxqrg.Name = "tb_rxqrg";
             this.tb_rxqrg.Size = new System.Drawing.Size(177, 20);
             this.tb_rxqrg.TabIndex = 26;
@@ -141,7 +147,7 @@ namespace trxGui
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(12, 132);
+            this.label3.Location = new System.Drawing.Point(12, 105);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(106, 13);
             this.label3.TabIndex = 25;
@@ -150,7 +156,7 @@ namespace trxGui
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(337, 159);
+            this.label1.Location = new System.Drawing.Point(337, 129);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(355, 13);
             this.label1.TabIndex = 28;
@@ -159,18 +165,18 @@ namespace trxGui
             // textBox3
             // 
             this.textBox3.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.textBox3.Location = new System.Drawing.Point(15, 191);
+            this.textBox3.Location = new System.Drawing.Point(12, 216);
             this.textBox3.Multiline = true;
             this.textBox3.Name = "textBox3";
             this.textBox3.ReadOnly = true;
-            this.textBox3.Size = new System.Drawing.Size(435, 247);
+            this.textBox3.Size = new System.Drawing.Size(435, 230);
             this.textBox3.TabIndex = 29;
             this.textBox3.Text = resources.GetString("textBox3.Text");
             // 
             // textBox1
             // 
             this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.textBox1.Location = new System.Drawing.Point(483, 211);
+            this.textBox1.Location = new System.Drawing.Point(473, 216);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
             this.textBox1.ReadOnly = true;
@@ -181,7 +187,7 @@ namespace trxGui
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(12, 23);
+            this.label4.Location = new System.Drawing.Point(12, 15);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(75, 13);
             this.label4.TabIndex = 31;
@@ -191,7 +197,7 @@ namespace trxGui
             // 
             this.rb_plutousb.AutoSize = true;
             this.rb_plutousb.Checked = true;
-            this.rb_plutousb.Location = new System.Drawing.Point(154, 23);
+            this.rb_plutousb.Location = new System.Drawing.Point(154, 15);
             this.rb_plutousb.Name = "rb_plutousb";
             this.rb_plutousb.Size = new System.Drawing.Size(72, 17);
             this.rb_plutousb.TabIndex = 32;
@@ -203,7 +209,7 @@ namespace trxGui
             // rb_plutoeth
             // 
             this.rb_plutoeth.AutoSize = true;
-            this.rb_plutoeth.Location = new System.Drawing.Point(259, 23);
+            this.rb_plutoeth.Location = new System.Drawing.Point(259, 15);
             this.rb_plutoeth.Name = "rb_plutoeth";
             this.rb_plutoeth.Size = new System.Drawing.Size(65, 17);
             this.rb_plutoeth.TabIndex = 33;
@@ -214,7 +220,7 @@ namespace trxGui
             // tb_plutoip
             // 
             this.tb_plutoip.Enabled = false;
-            this.tb_plutoip.Location = new System.Drawing.Point(330, 22);
+            this.tb_plutoip.Location = new System.Drawing.Point(330, 14);
             this.tb_plutoip.Name = "tb_plutoip";
             this.tb_plutoip.Size = new System.Drawing.Size(142, 20);
             this.tb_plutoip.TabIndex = 34;
@@ -222,17 +228,73 @@ namespace trxGui
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(480, 25);
+            this.label5.Location = new System.Drawing.Point(480, 17);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(141, 13);
             this.label5.TabIndex = 35;
             this.label5.Text = "enter IP address of the Pluto";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(337, 159);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(347, 13);
+            this.label7.TabIndex = 38;
+            this.label7.Text = "Hz (correction value for the Pluto TCXO, or use CAL calibration function)";
+            // 
+            // tb_plutooffset
+            // 
+            this.tb_plutooffset.Location = new System.Drawing.Point(154, 155);
+            this.tb_plutooffset.Name = "tb_plutooffset";
+            this.tb_plutooffset.Size = new System.Drawing.Size(177, 20);
+            this.tb_plutooffset.TabIndex = 37;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(12, 158);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(65, 13);
+            this.label8.TabIndex = 36;
+            this.label8.Text = "Pluto Offset:";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(337, 185);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(312, 13);
+            this.label9.TabIndex = 41;
+            this.label9.Text = "Hz (correction value for the LNB, or use CAL calibration function)";
+            // 
+            // tb_lnboffset
+            // 
+            this.tb_lnboffset.Location = new System.Drawing.Point(154, 181);
+            this.tb_lnboffset.Name = "tb_lnboffset";
+            this.tb_lnboffset.Size = new System.Drawing.Size(177, 20);
+            this.tb_lnboffset.TabIndex = 40;
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(12, 184);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(62, 13);
+            this.label12.TabIndex = 39;
+            this.label12.Text = "LNB Offset:";
             // 
             // Form_setup
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.label9);
+            this.Controls.Add(this.tb_lnboffset);
+            this.Controls.Add(this.label12);
+            this.Controls.Add(this.label7);
+            this.Controls.Add(this.tb_plutooffset);
+            this.Controls.Add(this.label8);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.tb_plutoip);
             this.Controls.Add(this.rb_plutoeth);
@@ -281,5 +343,11 @@ namespace trxGui
         private System.Windows.Forms.RadioButton rb_plutoeth;
         private System.Windows.Forms.TextBox tb_plutoip;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.TextBox tb_plutooffset;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.TextBox tb_lnboffset;
+        private System.Windows.Forms.Label label12;
     }
 }

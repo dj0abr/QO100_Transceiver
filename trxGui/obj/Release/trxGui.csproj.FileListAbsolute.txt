@@ -16,3 +16,4 @@ E:\funk\sat\QO100_Transceiver\Release\qo100trx.exe
 E:\funk\sat\QO100_Transceiver\Release\qo100trx.pdb
 E:\funk\sat\QO100_Transceiver\trxGui\obj\Release\qo100trx.exe
 E:\funk\sat\QO100_Transceiver\trxGui\obj\Release\qo100trx.pdb
+E:\funk\sat\QO100_Transceiver\trxGui\obj\Release\trxGui.Form_reference.resources

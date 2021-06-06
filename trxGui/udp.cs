@@ -177,20 +177,6 @@ namespace trxGui
                             statics.beaconoffset = v;
                             //Console.WriteLine("beaconoffset: " + statics.beaconoffset);
                         }
-
-                        if (rxtype == 7)
-                        {
-                            int v = b[0];
-                            v <<= 8;
-                            v |= b[1];
-                            v <<= 8;
-                            v |= b[2];
-                            v <<= 8;
-                            v |= b[3];
-
-                            statics.txvolume = (double)v / 100000.0;
-                            //Console.WriteLine("tx vol: " + statics.txvolume);
-                        }
                     }
                 }
                 catch { }

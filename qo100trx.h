@@ -7,14 +7,14 @@
 #include <stdint.h>
 #include <signal.h>
 #include <pthread.h>
-#include <iio.h>
-#include <ad9361.h>
 #include <arpa/inet.h>
 #include <errno.h>
 #include <fcntl.h>
 #include <sys/ioctl.h>
 #include <sys/time.h>
 
+#include "iio.h"
+#include "ad9361.h"
 #include "kmlib/km_helper.h"
 #include "kmlib/kmfifo.h"
 #include "kmlib/kmtimer.h"

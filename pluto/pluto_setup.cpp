@@ -99,9 +99,9 @@ void pluto_setup()
     }
 
 	ret = get_ad9361_stream_dev(ctx, TX, &tx);
-	if(!ret) {printf("TX streaming device not found. Pluto error\n"); exit(0);}
+	if(!ret) {printf("TX streaming device not found. Pluto error %d\n",errno); exit(0);}
 	ret = get_ad9361_stream_dev(ctx, RX, &rx);
-	if(!ret) {printf("RX streaming device not found. Pluto error\n"); exit(0);}
+	if(!ret) {printf("RX streaming device not found. Pluto error %d\n",errno); exit(0);}
 
 	cfg_ad9361_streaming_ch(ctx, &rxcfg, RX, 0);
 	cfg_ad9361_streaming_ch(ctx, &txcfg, TX, 0);

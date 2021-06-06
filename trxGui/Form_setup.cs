@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace trxGui
@@ -16,8 +9,10 @@ namespace trxGui
         {
             InitializeComponent();
 
-            tb_rxqrg.Text = ((double)statics.rxqrg / 1000).ToString();
-            tb_txqrg.Text = ((double)statics.txqrg / 1000).ToString();
+            tb_rxqrg.Text = ((double)statics.rxqrg / 1000000.0).ToString();
+            tb_txqrg.Text = ((double)statics.txqrg / 1000000.0).ToString();
+            tb_plutooffset.Text = statics.rfoffset.ToString();
+            tb_lnboffset.Text = statics.lnboffset.ToString();
 
             cb_audioPB.Text = statics.AudioPBdev;
             cb_audioCAP.Text = statics.AudioCAPdev;
@@ -97,8 +92,12 @@ namespace trxGui
                 statics.newaudiodevs = true;
             }
 
-            statics.rxqrg = (int)(statics.MyToDouble(tb_rxqrg.Text) * 1000);
-            statics.txqrg = (int)(statics.MyToDouble(tb_txqrg.Text) * 1000);
+            statics.rxqrg = (UInt32)(statics.MyToDouble(tb_rxqrg.Text) * 1000000.0);
+            statics.txqrg = (UInt32)(statics.MyToDouble(tb_txqrg.Text) * 1000000.0);
+            double dv = statics.MyToDouble(tb_plutooffset.Text);
+            statics.rfoffset = (int)dv;
+            dv = statics.MyToDouble(tb_lnboffset.Text);
+            statics.lnboffset = (int)dv;
 
             statics.plutousb = rb_plutousb.Checked?1:0;
             statics.plutoaddress = tb_plutoip.Text;

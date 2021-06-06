@@ -16,8 +16,6 @@ namespace trxGui
         public static String ModemIP;
         public static int UdpTXport = 40821;
         public static int UdpRXport = 40820;
-        public static int RXoffset = 280000;    // Tuner: 470 + Offset: 280 = 750kHz (mid Beacon)
-        public static int TXoffset = 280000;    // Tuner: 470 + Offset: 280 = 750kHz (mid Beacon)
         public static bool ptt = false;
         public static bool pttkey = false;
         public static int GotAudioDevices = 0;
@@ -27,8 +25,6 @@ namespace trxGui
         public static String AudioCAPdev;
         public static bool newaudiodevs = false;
         public static int ostype;
-        public static int rxqrg;
-        public static int txqrg;
         public static int noiselevel = 1000;
         public static int maxlevel = 32000;
         public static int plutousb = 1;
@@ -43,10 +39,20 @@ namespace trxGui
         public static int txfilter = 3;
         public static bool audioloop = false;
         public static bool rfloop = false;
-        public static int rfoffset = 0;
         public static int beaconoffset = 0;
         public static bool beaconlock = false;
-        public static double txvolume = 0;
+        public static int calmode = 0;  // 0=off, 1=439MHz cal
+
+        // Pluto frequency settings
+        public static UInt32 rxqrg;             // baseband QRG of lower beacon, RX tuner = this value - 30kHz
+        public static UInt32 txqrg;             // baseband QRG of lower beacon, TX tuner = this value - 30kHz
+        public static int RXoffset = 280000;    // Tuner: 470 + Offset: 280 = 750kHz (mid Beacon)
+        public static int TXoffset = 280000;    // Tuner: 470 + Offset: 280 = 750kHz (mid Beacon)
+        public static UInt32 calbasefreq = 439000000; // base frequency for calibration
+        public static UInt32 calfreq;           // same as rxqrg, but used during offset calibration
+        public static int rfoffset = 0;         // Pluto's TCXO offset to RX/TX frequency
+        public static int lnboffset = 0;        // LNB offset to RX frequency
+
 
         static Process cmdtrx = null;
         public static bool StartQO100trx(bool start = true)
@@ -196,6 +202,85 @@ namespace trxGui
             }
             return r;
 
+        }
+
+        public static void sendBaseQRG(UInt32 newrx = 0)
+        {
+            UInt32 baserx = rxqrg;
+            if (lnboffset > 0)
+                baserx += (UInt32)lnboffset;
+            if (lnboffset < 0)
+                baserx -= (UInt32)(-lnboffset);
+
+                Byte[] txb = new Byte[9];
+            txb[0] = 8;
+            if (newrx == 0)
+            {
+                Console.WriteLine("*********************************** " + statics.rxqrg + " * " + statics.txqrg);
+                txb[1] = (Byte)(baserx >> 24);
+                txb[2] = (Byte)(baserx >> 16);
+                txb[3] = (Byte)(baserx >> 8);
+                txb[4] = (Byte)(baserx & 0xff);
+            }
+            else
+            {
+                Console.WriteLine("*********************************** " + newrx + " * " + statics.txqrg);
+                txb[1] = (Byte)(newrx >> 24);
+                txb[2] = (Byte)(newrx >> 16);
+                txb[3] = (Byte)(newrx >> 8);
+                txb[4] = (Byte)(newrx & 0xff);
+            }
+            txb[5] = (Byte)(txqrg >> 24);
+            txb[6] = (Byte)(txqrg >> 16);
+            txb[7] = (Byte)(txqrg >> 8);
+            txb[8] = (Byte)(txqrg & 0xff);
+            Udp.UdpSendData(txb);
+        }
+
+        // Pluto TCXO correction value, for RX and TX
+        public static void sendReferenceOffset(int hz = 0)
+        {
+            if (hz < -12000) hz = -12000;
+            if (hz > 12000) hz = 12000;
+
+            statics.rfoffset = hz;
+
+            //Console.WriteLine("Set Clock Reference: " + statics.rfoffset);
+
+            int val = hz + 12000;   // make it always positive
+
+            Byte[] txb = new Byte[5];
+            txb[0] = 15;
+            txb[1] = (Byte)(val >> 24);
+            txb[2] = (Byte)(val >> 16);
+            txb[3] = (Byte)(val >> 8);
+            txb[4] = (Byte)(val & 0xff);
+
+            Udp.UdpSendData(txb);
+        }
+
+        // send tuned RX and TX offsets
+        public static void sendRXTXoffset()
+        {
+            if (RXoffset < 0) RXoffset = 0;
+            if (RXoffset > 560000) RXoffset = 560000;
+            if (TXoffset < 0) TXoffset = 0;
+            if (TXoffset > 560000) TXoffset = 560000;
+
+            int rxoff = RXoffset;
+
+            Byte[] txb = new Byte[9];
+            txb[0] = 0;
+            txb[1] = (Byte)(rxoff >> 24);
+            txb[2] = (Byte)(rxoff >> 16);
+            txb[3] = (Byte)(rxoff >> 8);
+            txb[4] = (Byte)(rxoff & 0xff);
+            txb[5] = (Byte)(TXoffset >> 24);
+            txb[6] = (Byte)(TXoffset >> 16);
+            txb[7] = (Byte)(TXoffset >> 8);
+            txb[8] = (Byte)(TXoffset & 0xff);
+
+            Udp.UdpSendData(txb);
         }
     }
 

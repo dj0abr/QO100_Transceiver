@@ -20,6 +20,11 @@ V1.4 ... June,6 2021 ... calibration for Pluto and LNB
 * USB sound stick (if the SBC does not have a microphone connector)
 * Satellite-Dish, QO-100 Feed and 2,4 GHz Amplifier (i.e. Amsat-DL 46dB Amp)
 
+## Documentation
+
+this software was developed for Amsat-DL. You can find the detailed documentation in the Amsat-Wiki: 
+http://wiki.amsat-dl.org/doku.php?id=en:plutotrx:overview
+
 ## Installation
 
 open a terminal and run these commands:

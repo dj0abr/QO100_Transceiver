@@ -130,6 +130,9 @@
   <data name="audioloop_inact" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>audioloop_inact.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="bcn_center" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>bcn_center.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="comp_high" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>comp_high.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>

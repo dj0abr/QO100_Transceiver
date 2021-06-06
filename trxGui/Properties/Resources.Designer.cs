@@ -103,6 +103,16 @@ namespace trxGui.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap bcn_center {
+            get {
+                object obj = ResourceManager.GetObject("bcn_center", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap comp_high {
             get {
                 object obj = ResourceManager.GetObject("comp_high", resourceCulture);

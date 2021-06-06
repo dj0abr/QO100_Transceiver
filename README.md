@@ -72,4 +72,4 @@ The script prepare_ubuntu_pluto contains the installation for all required libra
 
 But different distributions may use different names for their libraries. The script was developed für Debian based systems, like Ubuntu, Mint, Raspbery-OS and many others.
 
-If you try to install this software on different platforms like Suse, Fedora... you maybe need to change the name of some libraries.
+If you try to run prepare_ubuntu_pluto on different platforms like Suse, Fedora... you maybe need to change the name of some libraries.

@@ -59,3 +59,12 @@ click the SETUP button
 
 Raspi OS shows many many audio devices nobody really needs.\
 It is highly recommended to choose Pulseaudio for loudspeaker and microphone and then use the sound mixer pavucontrol (is installed) to select devices and control volume.
+
+## Linux OS issues
+
+In general this software runs on all linux distributions.
+The script prepare_ubuntu_pluto contains the installation for all required libraries.
+
+But different distributions may use different names for their libraries. The script was developed für Debian based systems, like Ubuntu, Mint, Raspbery-OS and many others.
+
+If you try to install this software on different platforms like Suse, Fedora... you maybe need to change the name of some libraries.

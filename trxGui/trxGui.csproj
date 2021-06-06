@@ -227,5 +227,14 @@
   <ItemGroup>
     <None Include="Properties\bcn_center.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\ai.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\amsat_logo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\amsat_icon.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

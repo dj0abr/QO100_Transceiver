@@ -46,6 +46,7 @@ namespace trxGui
             this.label11 = new System.Windows.Forms.Label();
             this.button_close = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.label8 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
@@ -146,7 +147,7 @@ namespace trxGui
             // 
             // button_lnbfinished
             // 
-            this.button_lnbfinished.Location = new System.Drawing.Point(298, 422);
+            this.button_lnbfinished.Location = new System.Drawing.Point(298, 366);
             this.button_lnbfinished.Name = "button_lnbfinished";
             this.button_lnbfinished.Size = new System.Drawing.Size(114, 23);
             this.button_lnbfinished.TabIndex = 15;
@@ -167,11 +168,11 @@ namespace trxGui
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(17, 426);
+            this.label9.Location = new System.Drawing.Point(17, 370);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(269, 13);
             this.label9.TabIndex = 13;
-            this.label9.Text = "4. when you are done, click the LNB FINISHED button:";
+            this.label9.Text = "3. when you are done, click the LNB FINISHED button:";
             // 
             // button_caliblnb
             // 
@@ -194,7 +195,7 @@ namespace trxGui
             // 
             // button_close
             // 
-            this.button_close.Location = new System.Drawing.Point(378, 465);
+            this.button_close.Location = new System.Drawing.Point(378, 409);
             this.button_close.Name = "button_close";
             this.button_close.Size = new System.Drawing.Size(75, 23);
             this.button_close.TabIndex = 17;
@@ -206,17 +207,27 @@ namespace trxGui
             // 
             this.panel1.BackgroundImage = global::trxGui.Properties.Resources.bcn_center;
             this.panel1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.panel1.Location = new System.Drawing.Point(17, 229);
+            this.panel1.Location = new System.Drawing.Point(20, 245);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(440, 187);
+            this.panel1.Size = new System.Drawing.Size(155, 114);
             this.panel1.TabIndex = 18;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(17, 229);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(50, 13);
+            this.label8.TabIndex = 19;
+            this.label8.Text = "Example:";
             // 
             // Form_reference
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(470, 501);
+            this.ClientSize = new System.Drawing.Size(466, 444);
             this.ControlBox = false;
+            this.Controls.Add(this.label8);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.button_close);
             this.Controls.Add(this.label7);
@@ -265,5 +276,6 @@ namespace trxGui
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Button button_close;
         private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Label label8;
     }
 }

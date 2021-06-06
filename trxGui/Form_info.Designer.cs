@@ -33,6 +33,7 @@ namespace trxGui
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.button_ok = new System.Windows.Forms.Button();
             this.textBox2 = new System.Windows.Forms.TextBox();
+            this.panel1 = new System.Windows.Forms.Panel();
             this.SuspendLayout();
             // 
             // textBox1
@@ -40,18 +41,18 @@ namespace trxGui
             this.textBox1.BackColor = System.Drawing.SystemColors.Control;
             this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.textBox1.Font = new System.Drawing.Font("Courier New", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox1.Location = new System.Drawing.Point(4, 4);
+            this.textBox1.Location = new System.Drawing.Point(4, 96);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
             this.textBox1.ReadOnly = true;
-            this.textBox1.Size = new System.Drawing.Size(410, 434);
+            this.textBox1.Size = new System.Drawing.Size(410, 432);
             this.textBox1.TabIndex = 0;
             this.textBox1.Text = resources.GetString("textBox1.Text");
             // 
             // button_ok
             // 
             this.button_ok.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.button_ok.Location = new System.Drawing.Point(713, 415);
+            this.button_ok.Location = new System.Drawing.Point(708, 483);
             this.button_ok.Name = "button_ok";
             this.button_ok.Size = new System.Drawing.Size(75, 23);
             this.button_ok.TabIndex = 1;
@@ -63,20 +64,30 @@ namespace trxGui
             this.textBox2.BackColor = System.Drawing.SystemColors.Control;
             this.textBox2.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.textBox2.Font = new System.Drawing.Font("Courier New", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox2.Location = new System.Drawing.Point(420, 4);
+            this.textBox2.Location = new System.Drawing.Point(420, 96);
             this.textBox2.Multiline = true;
             this.textBox2.Name = "textBox2";
             this.textBox2.ReadOnly = true;
-            this.textBox2.Size = new System.Drawing.Size(359, 405);
+            this.textBox2.Size = new System.Drawing.Size(359, 298);
             this.textBox2.TabIndex = 2;
             this.textBox2.Text = resources.GetString("textBox2.Text");
+            // 
+            // panel1
+            // 
+            this.panel1.BackgroundImage = global::trxGui.Properties.Resources.amsat_logo;
+            this.panel1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.panel1.Location = new System.Drawing.Point(13, 7);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(775, 84);
+            this.panel1.TabIndex = 3;
             // 
             // Form_info
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(800, 520);
+            this.Controls.Add(this.panel1);
             this.Controls.Add(this.textBox2);
             this.Controls.Add(this.button_ok);
             this.Controls.Add(this.textBox1);
@@ -93,5 +104,6 @@ namespace trxGui
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Button button_ok;
         private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.Panel panel1;
     }
 }

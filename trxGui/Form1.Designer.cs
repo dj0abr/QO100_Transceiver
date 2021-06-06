@@ -30,6 +30,7 @@ namespace trxGui
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.timer_draw = new System.Windows.Forms.Timer(this.components);
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel_qrg = new System.Windows.Forms.Panel();
@@ -40,15 +41,15 @@ namespace trxGui
             this.panel_agc = new System.Windows.Forms.Panel();
             this.panel_txmute = new System.Windows.Forms.Panel();
             this.panel_comp = new System.Windows.Forms.Panel();
-            this.panel_info = new System.Windows.Forms.Panel();
-            this.panel_setup = new System.Windows.Forms.Panel();
             this.panel_rxfilter = new System.Windows.Forms.Panel();
             this.panel_txfilter = new System.Windows.Forms.Panel();
             this.panel_rfloop = new System.Windows.Forms.Panel();
             this.panel_audioloop = new System.Windows.Forms.Panel();
-            this.panel_pavucontrol = new System.Windows.Forms.Panel();
             this.panel_sync = new System.Windows.Forms.Panel();
             this.panel_beaconlock = new System.Windows.Forms.Panel();
+            this.panel_pavucontrol = new System.Windows.Forms.Panel();
+            this.panel_info = new System.Windows.Forms.Panel();
+            this.panel_setup = new System.Windows.Forms.Panel();
             this.panel_rxline = new trxGui.DoubleBufferedPanel();
             this.panel_bigspec = new trxGui.DoubleBufferedPanel();
             this.panel_bigwf = new trxGui.DoubleBufferedPanel();
@@ -152,28 +153,6 @@ namespace trxGui
             this.panel_comp.Click += new System.EventHandler(this.panel_comp_Click);
             this.panel_comp.Paint += new System.Windows.Forms.PaintEventHandler(this.panel_comp_Paint);
             // 
-            // panel_info
-            // 
-            this.panel_info.BackColor = System.Drawing.Color.White;
-            this.panel_info.BackgroundImage = global::trxGui.Properties.Resources.info;
-            this.panel_info.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.panel_info.Location = new System.Drawing.Point(1084, 710);
-            this.panel_info.Name = "panel_info";
-            this.panel_info.Size = new System.Drawing.Size(48, 48);
-            this.panel_info.TabIndex = 15;
-            this.panel_info.Click += new System.EventHandler(this.bt_info_click);
-            // 
-            // panel_setup
-            // 
-            this.panel_setup.BackColor = System.Drawing.Color.White;
-            this.panel_setup.BackgroundImage = global::trxGui.Properties.Resources.setup;
-            this.panel_setup.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.panel_setup.Location = new System.Drawing.Point(1030, 710);
-            this.panel_setup.Name = "panel_setup";
-            this.panel_setup.Size = new System.Drawing.Size(48, 48);
-            this.panel_setup.TabIndex = 14;
-            this.panel_setup.Click += new System.EventHandler(this.butto_setup_click);
-            // 
             // panel_rxfilter
             // 
             this.panel_rxfilter.BackColor = System.Drawing.Color.White;
@@ -214,17 +193,6 @@ namespace trxGui
             this.panel_audioloop.Click += new System.EventHandler(this.panel_audioloop_Click);
             this.panel_audioloop.Paint += new System.Windows.Forms.PaintEventHandler(this.panel_audioloop_Paint);
             // 
-            // panel_pavucontrol
-            // 
-            this.panel_pavucontrol.BackColor = System.Drawing.Color.White;
-            this.panel_pavucontrol.BackgroundImage = global::trxGui.Properties.Resources.mixer;
-            this.panel_pavucontrol.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.panel_pavucontrol.Location = new System.Drawing.Point(976, 710);
-            this.panel_pavucontrol.Name = "panel_pavucontrol";
-            this.panel_pavucontrol.Size = new System.Drawing.Size(48, 48);
-            this.panel_pavucontrol.TabIndex = 21;
-            this.panel_pavucontrol.Click += new System.EventHandler(this.panel_pavucontrol_Click);
-            // 
             // panel_sync
             // 
             this.panel_sync.BackColor = System.Drawing.Color.White;
@@ -244,6 +212,39 @@ namespace trxGui
             this.panel_beaconlock.TabIndex = 23;
             this.panel_beaconlock.Click += new System.EventHandler(this.panel_beaconlock_Click);
             this.panel_beaconlock.Paint += new System.Windows.Forms.PaintEventHandler(this.panel_beaconlock_Paint);
+            // 
+            // panel_pavucontrol
+            // 
+            this.panel_pavucontrol.BackColor = System.Drawing.Color.White;
+            this.panel_pavucontrol.BackgroundImage = global::trxGui.Properties.Resources.mixer;
+            this.panel_pavucontrol.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.panel_pavucontrol.Location = new System.Drawing.Point(976, 710);
+            this.panel_pavucontrol.Name = "panel_pavucontrol";
+            this.panel_pavucontrol.Size = new System.Drawing.Size(48, 48);
+            this.panel_pavucontrol.TabIndex = 21;
+            this.panel_pavucontrol.Click += new System.EventHandler(this.panel_pavucontrol_Click);
+            // 
+            // panel_info
+            // 
+            this.panel_info.BackColor = System.Drawing.Color.White;
+            this.panel_info.BackgroundImage = global::trxGui.Properties.Resources.amsat_icon;
+            this.panel_info.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.panel_info.Location = new System.Drawing.Point(1084, 710);
+            this.panel_info.Name = "panel_info";
+            this.panel_info.Size = new System.Drawing.Size(48, 48);
+            this.panel_info.TabIndex = 15;
+            this.panel_info.Click += new System.EventHandler(this.bt_info_click);
+            // 
+            // panel_setup
+            // 
+            this.panel_setup.BackColor = System.Drawing.Color.White;
+            this.panel_setup.BackgroundImage = global::trxGui.Properties.Resources.setup;
+            this.panel_setup.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.panel_setup.Location = new System.Drawing.Point(1030, 710);
+            this.panel_setup.Name = "panel_setup";
+            this.panel_setup.Size = new System.Drawing.Size(48, 48);
+            this.panel_setup.TabIndex = 14;
+            this.panel_setup.Click += new System.EventHandler(this.butto_setup_click);
             // 
             // panel_rxline
             // 
@@ -356,7 +357,11 @@ namespace trxGui
             this.Controls.Add(this.panel_smallspec);
             this.Controls.Add(this.panel_smallqrg);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "Form1";
+            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.Text = "QO100 Linux - Pluto Transceiver (by DJ0ABR) V1.4";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.ResumeLayout(false);

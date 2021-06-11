@@ -298,12 +298,13 @@ namespace trxGui
         }
         static void drawBigWF(int[] arr)
         {
+            int lineincrement = statics.cpuspeed+1;
             // create a new bitmap
             Bitmap bmnew = new Bitmap(bigWFW, bigWFH);
             using (Graphics gr = Graphics.FromImage(bmnew))
             {
-                // copy existing bitmap into bmnew, one line lower
-                gr.DrawImage(bmBigWF, 0, 1);
+                // copy existing bitmap into bmnew, n lines lower
+                gr.DrawImage(bmBigWF, 0, lineincrement);
 
                 for (int i = 0; i < arr.Length; i++)
                 {
@@ -312,7 +313,7 @@ namespace trxGui
                     //Console.WriteLine(arr[i] + ": " + v);
 
                     SolidBrush br = new SolidBrush(col.getColor(v));
-                    gr.FillRectangle(br, i, 0, i, 1);
+                    gr.FillRectangle(br, i, 0, i, lineincrement);
                 }
             }
 
@@ -366,12 +367,14 @@ namespace trxGui
 
         static void drawSmallWF(int[] arr)
         {
+            int lineincrement = statics.cpuspeed + 1;
+
             // create a new bitmap
             Bitmap bmnew = new Bitmap(smallWFW, smallWFH);
             using (Graphics gr = Graphics.FromImage(bmnew))
             {
                 // copy existing bitmap into bmnew, one line lower
-                gr.DrawImage(bmSmallWF, 0, 1);
+                gr.DrawImage(bmSmallWF, 0, lineincrement);
 
                 for (int i = 0; i < arr.Length; i++)
                 {
@@ -380,7 +383,7 @@ namespace trxGui
                     //Console.WriteLine(arr[i] + ": " + v);
 
                     SolidBrush br = new SolidBrush(col.getColor(v));
-                    gr.FillRectangle(br, i, 0, i, 1);
+                    gr.FillRectangle(br, i, 0, i, lineincrement);
                 }
             }
 

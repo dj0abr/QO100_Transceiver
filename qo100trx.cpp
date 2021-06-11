@@ -41,12 +41,14 @@ int newaudiodevs = 0;
 int compressor = 0;
 int audioagc = 0;
 int gotPlutoID = 0;
-int rxfilter = 2;
+int rxfilter = 3;
 int txfilter = 3;
 int rxmute = 0;
 int refoffset = 0;
 int resetqrgs = 0;
 int beaconlock = 0;
+int fftspeed = 0;
+int audiohighpass = 0;
 
 // fifos to send/receive samples with pluto run thread
 int RXfifo;
@@ -136,8 +138,6 @@ void udprxfunc(uint8_t *pdata, int len, struct sockaddr_in* sender)
 		rxbaseqrg <<= 8;
 		rxbaseqrg += pdata[4];
 
-		rxbaseqrg -= 30000UL;
-
 		uint32_t txbaseqrg;
 		txbaseqrg = pdata[5];
 		txbaseqrg <<= 8;
@@ -146,8 +146,6 @@ void udprxfunc(uint8_t *pdata, int len, struct sockaddr_in* sender)
 		txbaseqrg += pdata[7];
 		txbaseqrg <<= 8;
 		txbaseqrg += pdata[8];
-
-		txbaseqrg -= 30000UL;
 
 		RX_FREQ = (double)rxbaseqrg;
 		TX_FREQ = (double)txbaseqrg;
@@ -209,6 +207,12 @@ void udprxfunc(uint8_t *pdata, int len, struct sockaddr_in* sender)
 
 	if(pdata[0] == 16)
 		beaconlock = pdata[1];
+
+	if(pdata[0] == 17)
+		fftspeed = pdata[1];
+
+	if(pdata[0] == 18)
+		audiohighpass = pdata[1];
 }
 
 void close_program()
@@ -265,7 +269,6 @@ int main ()
 	int to=0;
 	while(gotPlutoID == 0)
 	{
-		printf("to:%d\n",to);
 		usleep(100000);
 		if(++to >= 50)
 		{
@@ -320,11 +323,11 @@ int main ()
 				if(capidx!=-1) close_stream(capidx);
 				printf("init streams\n");
 
-				pbidx = kmaudio_startPlayback(pbdevname, 48000);
+				pbidx = kmaudio_startPlayback(pbdevname, AUDIOSAMPRATE);
 				if(pbidx == -1)
 					printf("NO AUDIO play device: <%s>\n",pbdevname);
 
-				capidx = kmaudio_startCapture(capdevname, 48000);
+				capidx = kmaudio_startCapture(capdevname, AUDIOSAMPRATE);
 				if(capidx == -1)
 					printf("NO AUDIO record device: <%s>\n",capdevname);
 
@@ -336,8 +339,9 @@ int main ()
 		{
 			resetqrgs = 0;
 
-			// set pluto tuner frequency if user changed offset
+			// set pluto tuner frequency if changed by user
 			setRXfrequency((long long)RX_FREQ);
+			setTXfrequency((long long)TX_FREQ);
 		}
 
 		usleep(100);

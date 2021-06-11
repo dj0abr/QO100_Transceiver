@@ -1,4 +1,4 @@
-#define SAMPRATE  		1120000			// 1.12MS/s
+#define SAMPRATE  		560000			// 1.12MS/s
 
 #define LNB_REF			24000UL			// kHz
 #define BASEQRG			10489470UL		// kHz, spectrum range ist 10489.470 - 10490.03

@@ -120,27 +120,21 @@
   <data name="textBox3.Text" xml:space="preserve">
     <value>Examples for RX:
 
-Receiver Frequency = 10489.5 - 390 x LNB-Reference-Frequency
+Receiver Frequency = 10489.75 - 390 x LNB-Reference-Frequency
 
-for an LNB running with 25 MHz Reference enter: 739.5 
-( 10489.500 - 390 * 25 = 739.5 )
-
-for an LNB running with 24 MHz Reference enter: 1129.5
-( 10489.500 - 390 * 24 = 1129.5 )
+for an LNB running with 25 MHz Reference enter: 739.75 
+( 10489.750 - 390 * 25 = 739.75 )
 
 the Amsat-Donwconverter runs with 24 MHz LNB Reference
-so you enter: 1129.5
+so you enter: 1129.75
 
-or enter the output frequency of a down-converter (corresponding to 10489.500 MHz)
-
-Correction/Tuning: if the LNB has a large offset, add it to the frequency. To compensate small offsets use the REF button  (see top, right)</value>
+or enter the output frequency of a down-converter (corresponding to 10489.750 MHz)</value>
   </data>
   <data name="textBox1.Text" xml:space="preserve">
     <value>Examples for TX:
 
-Enter the TX frequency of the lower beacon which is at 2400.000 MHz
-
-to send directly into a 2.4GHz Amplifier enter: 2400.000
+Enter the TX frequency of center which is at 2400.250 MHz
+to send directly into a 2.4GHz Amplifier enter: 2400.250
 
 If using an Up-Converter, enter the Up-Converter's input frequency</value>
   </data>

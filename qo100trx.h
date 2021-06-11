@@ -13,18 +13,20 @@
 #include <sys/ioctl.h>
 #include <sys/time.h>
 
-#include "iio.h"
-#include "ad9361.h"
+#include "libs/include/iio.h"
+#include "libs/include/ad9361.h"
+#include "libs/include/liquid.h"
 #include "kmlib/km_helper.h"
 #include "kmlib/kmfifo.h"
 #include "kmlib/kmtimer.h"
 #include "udp/udp.h"
-#include "liquid.h"
 #include "liquid/liquiddrv.h"
 #include "pluto/pluto.h"
 #include "libkmaudio/libkmaudio.h"
 
 #define GUI_UDPPORT 40820
+
+#define AUDIOSAMPRATE 48000   // internal audio rate (not the soundcard rate)
 
 void init_rx();
 void init_tx();
@@ -49,3 +51,5 @@ extern int rxmute;
 extern int refoffset;
 extern int bcnoffset;
 extern int beaconlock;
+extern int fftspeed;
+extern int audiohighpass;

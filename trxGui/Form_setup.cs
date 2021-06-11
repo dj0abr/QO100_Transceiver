@@ -21,6 +21,8 @@ namespace trxGui
             rb_plutoeth.Checked = statics.plutousb == 1 ? false : true;
             tb_plutoip.Text = statics.plutoaddress;
 
+            comboBox_cpuspeed.SelectedIndex = statics.cpuspeed;
+
             // populate combo boxes
             if (statics.AudioPBdevs != null)
             {
@@ -101,6 +103,7 @@ namespace trxGui
 
             statics.plutousb = rb_plutousb.Checked?1:0;
             statics.plutoaddress = tb_plutoip.Text;
+            statics.cpuspeed = comboBox_cpuspeed.SelectedIndex;
         }
 
         private void rb_plutousb_CheckedChanged(object sender, EventArgs e)

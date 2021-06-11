@@ -55,6 +55,9 @@ namespace trxGui
             this.label9 = new System.Windows.Forms.Label();
             this.tb_lnboffset = new System.Windows.Forms.TextBox();
             this.label12 = new System.Windows.Forms.Label();
+            this.comboBox_cpuspeed = new System.Windows.Forms.ComboBox();
+            this.label13 = new System.Windows.Forms.Label();
+            this.label14 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // button1
@@ -133,9 +136,9 @@ namespace trxGui
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(337, 106);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(361, 13);
+            this.label2.Size = new System.Drawing.Size(312, 13);
             this.label2.TabIndex = 27;
-            this.label2.Text = "MHz ( enter Frequency corresponding to lower beacon at 10489.500 MHz )";
+            this.label2.Text = "MHz ( enter center frequency corresponding to 10489.750 MHz )";
             // 
             // tb_rxqrg
             // 
@@ -158,29 +161,29 @@ namespace trxGui
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(337, 129);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(355, 13);
+            this.label1.Size = new System.Drawing.Size(306, 13);
             this.label1.TabIndex = 28;
-            this.label1.Text = "MHz ( enter Frequency corresponding to lower beacon at 2400.000 MHz )";
+            this.label1.Text = "MHz ( enter center frequency corresponding to 2400.250 MHz )";
             // 
             // textBox3
             // 
             this.textBox3.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.textBox3.Location = new System.Drawing.Point(12, 216);
+            this.textBox3.Location = new System.Drawing.Point(12, 272);
             this.textBox3.Multiline = true;
             this.textBox3.Name = "textBox3";
             this.textBox3.ReadOnly = true;
-            this.textBox3.Size = new System.Drawing.Size(435, 230);
+            this.textBox3.Size = new System.Drawing.Size(435, 157);
             this.textBox3.TabIndex = 29;
             this.textBox3.Text = resources.GetString("textBox3.Text");
             // 
             // textBox1
             // 
             this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.textBox1.Location = new System.Drawing.Point(473, 216);
+            this.textBox1.Location = new System.Drawing.Point(470, 272);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
             this.textBox1.ReadOnly = true;
-            this.textBox1.Size = new System.Drawing.Size(300, 193);
+            this.textBox1.Size = new System.Drawing.Size(300, 108);
             this.textBox1.TabIndex = 30;
             this.textBox1.Text = resources.GetString("textBox1.Text");
             // 
@@ -284,11 +287,45 @@ namespace trxGui
             this.label12.TabIndex = 39;
             this.label12.Text = "LNB Offset:";
             // 
+            // comboBox_cpuspeed
+            // 
+            this.comboBox_cpuspeed.FormattingEnabled = true;
+            this.comboBox_cpuspeed.Items.AddRange(new object[] {
+            "fast CPU (RPI4...)",
+            "normal CPU",
+            "very slow CPU (RPI3...)"});
+            this.comboBox_cpuspeed.Location = new System.Drawing.Point(154, 212);
+            this.comboBox_cpuspeed.Name = "comboBox_cpuspeed";
+            this.comboBox_cpuspeed.Size = new System.Drawing.Size(177, 21);
+            this.comboBox_cpuspeed.TabIndex = 42;
+            this.comboBox_cpuspeed.Text = "normal CPU";
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(11, 216);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(136, 13);
+            this.label13.TabIndex = 43;
+            this.label13.Text = "Spectrum/Waterfall Speed:";
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(338, 216);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(200, 13);
+            this.label14.TabIndex = 44;
+            this.label14.Text = "to reduce CPU load on slower computers";
+            // 
             // Form_setup
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.label14);
+            this.Controls.Add(this.label13);
+            this.Controls.Add(this.comboBox_cpuspeed);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.tb_lnboffset);
             this.Controls.Add(this.label12);
@@ -349,5 +386,8 @@ namespace trxGui
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.TextBox tb_lnboffset;
         private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.ComboBox comboBox_cpuspeed;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.Label label14;
     }
 }

@@ -15,7 +15,7 @@ ampmodem demod = NULL;
 
 // Low pass
 unsigned int lp_order =   4;       // filter order
-float        lp_fc    =   0.0025f;    // cutoff frequency
+float        lp_fc    =   0.0050f; // cutoff frequency
 float        lp_f0    =   0.0f;    // center frequency
 float        lp_Ap    =   1.0f;    // pass-band ripple
 float        lp_As    =  40.0f;    // stop-band attenuation
@@ -24,7 +24,7 @@ iirfilt_crcf lp_q = NULL;
 
 // Down-Sampler
 unsigned int decim_h_len = 13;    // filter semi-length (filter delay)
-float decim_r = (float)((double)48000 / (double)SAMPRATE); // resampling rate (output/input)
+float decim_r = (float)((double)AUDIOSAMPRATE / (double)SAMPRATE); // resampling rate (output/input)
 float decim_bw=0.1f;              // cutoff frequency
 float decim_slsl= 60.0f;          // resampling filter sidelobe suppression level
 unsigned int decim_npfb=32;       // number of filters in bank (timing resolution)
@@ -82,11 +82,12 @@ static int lastrxfilter = -1;
 
         switch(rxfilter)
         {
-            case 0: lp_fc    =   0.001f; break;
-            case 1: lp_fc    =   0.0018f; break;
-            case 2: lp_fc    =   0.0022f; break;
-            case 3: lp_fc    =   0.0025f; break;
+            case 0: lp_fc    =   0.002f; break;
+            case 1: lp_fc    =   0.0036f; break;
+            case 2: lp_fc    =   0.0044f; break;
+            case 3: lp_fc    =   0.0050f; break;
         }
+
 
         lp_q = iirfilt_crcf_create_prototype(LIQUID_IIRDES_ELLIP, LIQUID_IIRDES_LOWPASS, LIQUID_IIRDES_SOS,
                                          lp_order, lp_fc, lp_f0, lp_Ap, lp_As);
@@ -104,8 +105,8 @@ static int lastoffset = -1;
     if(lastoffset != newoffset)
     {
         lastoffset = newoffset;
-        //printf("offset: %d, tune RX to %f\n",lastoffset,BASEQRG*1e3 + lastoffset);
-        float RADIANS_PER_SAMPLE   = ((2.0f * (float)M_PI * lastoffset)/(float)SAMPRATE);
+        printf("tune RX to %f\n",BASEQRG*1e3 + lastoffset);
+        float RADIANS_PER_SAMPLE   = ((2.0f * (float)M_PI * (lastoffset-280000))/(float)SAMPRATE);
         nco_crcf_set_phase(dnnco, 0.0f);
         nco_crcf_set_frequency(dnnco, RADIANS_PER_SAMPLE);
     }
@@ -244,7 +245,7 @@ void init_beaconlock()
     // Downmixer
     bcn_dnnco = nco_crcf_create(LIQUID_NCO);
     int offset = startqrg - 470000;
-    float RADIANS_PER_SAMPLE   = ((2.0f * (float)M_PI * offset)/(float)SAMPRATE);
+    float RADIANS_PER_SAMPLE   = ((2.0f * (float)M_PI * (offset-280000))/(float)SAMPRATE);
     nco_crcf_set_phase(bcn_dnnco, 0.0f);
     nco_crcf_set_frequency(bcn_dnnco, RADIANS_PER_SAMPLE);
 

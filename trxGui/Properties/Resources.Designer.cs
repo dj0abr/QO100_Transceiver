@@ -373,6 +373,26 @@ namespace trxGui.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap tx_bass {
+            get {
+                object obj = ResourceManager.GetObject("tx_bass", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap tx_bass_inact {
+            get {
+                object obj = ResourceManager.GetObject("tx_bass_inact", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap tx_filter_1 {
             get {
                 object obj = ResourceManager.GetObject("tx_filter_1", resourceCulture);

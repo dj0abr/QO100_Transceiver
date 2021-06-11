@@ -42,6 +42,8 @@ namespace trxGui
         public static int beaconoffset = 0;
         public static bool beaconlock = false;
         public static int calmode = 0;  // 0=off, 1=439MHz cal
+        public static int cpuspeed = 0;
+        public static bool audioHighpass = false;
 
         // Pluto frequency settings
         public static UInt32 rxqrg;             // baseband QRG of lower beacon, RX tuner = this value - 30kHz

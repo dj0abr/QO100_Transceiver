@@ -72,7 +72,7 @@ namespace trxGui
             // button panel positions
             int xspace = 4;
 
-            panel_pavucontrol.Size = panel_rxfilter.Size = panel_txfilter.Size = panel_rfloop.Size = panel_audioloop.Size = panel_comp.Size = panel_setup.Size = panel_info.Size = panel_rit.Size = panel_xit.Size = panel_copyRtoT.Size = panel_copyTtoR.Size = panel_agc.Size = panel_txmute.Size =new Size(48, 48);
+            panel_txhighpass.Size = panel_pavucontrol.Size = panel_rxfilter.Size = panel_txfilter.Size = panel_rfloop.Size = panel_audioloop.Size = panel_comp.Size = panel_setup.Size = panel_info.Size = panel_rit.Size = panel_xit.Size = panel_copyRtoT.Size = panel_copyTtoR.Size = panel_agc.Size = panel_txmute.Size =new Size(48, 48);
             panel_rit.Location = new Point(13, panel_smallwf.Location.Y + panel_smallwf.Height + 4);
             panel_xit.Location = new Point(panel_rit.Location.X + panel_rit.Width + xspace, panel_rit.Location.Y);
 
@@ -85,8 +85,9 @@ namespace trxGui
 
             panel_rxfilter.Location = new Point(panel_comp.Location.X + panel_comp.Width + xspace+6, panel_rit.Location.Y);
             panel_txfilter.Location = new Point(panel_rxfilter.Location.X + panel_rxfilter.Width + xspace, panel_rit.Location.Y);
+            panel_txhighpass.Location = new Point(panel_txfilter.Location.X + panel_txfilter.Width + xspace, panel_rit.Location.Y);
 
-            panel_audioloop.Location = new Point(panel_txfilter.Location.X + panel_txfilter.Width + xspace+6, panel_rit.Location.Y);
+            panel_audioloop.Location = new Point(panel_txhighpass.Location.X + panel_txhighpass.Width + xspace+6, panel_rit.Location.Y);
             panel_rfloop.Location = new Point(panel_audioloop.Location.X + panel_audioloop.Width + xspace, panel_rit.Location.Y);
 
             panel_info.Location = new Point(panel_bigspec.Location.X + panel_bigspec.Width - panel_info.Width, panel_rit.Location.Y);
@@ -223,6 +224,7 @@ namespace trxGui
                 panel_rxfilter_Click(null, null);
                 panel_txfilter_Click(null, null);
                 statics.sendReferenceOffset(statics.rfoffset);
+                sendCpuSpeed();
                 panel_beaconlock.Invalidate();
             }
 
@@ -553,6 +555,9 @@ namespace trxGui
         int titrightpos = 10;
         int mouserightpos = 820;
         int bigy = 2;
+
+        // insert a space betwenn each char:
+        // string.Join(" ", s.ToCharArray())
         private void panel_qrg_Paint(object sender, PaintEventArgs e)
         {
             using (Graphics gr = e.Graphics)
@@ -630,6 +635,7 @@ namespace trxGui
                 sendAudioDevs();
                 statics.sendBaseQRG();
                 statics.sendReferenceOffset(statics.rfoffset);
+                sendCpuSpeed();
 
                 if (oldpluto != statics.plutousb || oldpladr != statics.plutoaddress)
                 {
@@ -759,6 +765,7 @@ namespace trxGui
                     statics.txqrg = ReadUInt32(sr);
                     statics.rfoffset = ReadInt(sr);
                     statics.lnboffset = ReadInt(sr);
+                    statics.cpuspeed = ReadInt(sr);
                 }
             }
             catch
@@ -792,6 +799,7 @@ namespace trxGui
                     sw.WriteLine(statics.txqrg.ToString());
                     sw.WriteLine(statics.rfoffset.ToString());
                     sw.WriteLine(statics.lnboffset.ToString());
+                    sw.WriteLine(statics.cpuspeed.ToString());
                 }
             }
             catch { }
@@ -888,6 +896,14 @@ namespace trxGui
             using (Bitmap bm = new Bitmap(Properties.Resources.mute))
                 using (Bitmap bminact = new Bitmap(Properties.Resources.mute_inact))
                     drawButtonPanel(e.Graphics, statics.rxmute, bm, bminact);
+        }
+
+        void sendCpuSpeed()
+        {
+            Byte[] txb = new Byte[2];
+            txb[0] = 17;
+            txb[1] = (Byte)statics.cpuspeed;
+            Udp.UdpSendData(txb);
         }
 
         private void panel_agc_Click(object sender, EventArgs e)
@@ -992,6 +1008,7 @@ namespace trxGui
                         e.Graphics.DrawImage(bm, 0, 0);
                     break;
                 case 3:
+                case 4:
                     using (Bitmap bm = new Bitmap(Properties.Resources.tx_filter_27))
                         e.Graphics.DrawImage(bm, 0, 0);
                     break;
@@ -1123,24 +1140,28 @@ namespace trxGui
             panel_beaconlock.Invalidate();
         }
 
-        Pen gen_audio_green = new Pen(Brushes.Green, 4);
-        Pen gen_audio_yellow = new Pen(Brushes.Yellow, 4);
-        Pen gen_audio_red = new Pen(Brushes.Red, 4);
-
         private void panel_sync_Click(object sender, EventArgs e)
         {
-            /*rxstore = statics.RXoffset;
-            txstore = statics.TXoffset;
-
-            statics.RXoffset = 560 * 500;
-            statics.TXoffset = 560 * 500;
-            sendAndRefreshRXTXoffset();
-
-            MessageBox.Show("Left-Click with the mouse into the center of the BPSK-Beacon", "CLOCK SYNCHRONISATION", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            setref = true;*/
-
             Form_reference fr = new Form_reference();
             fr.Show();
+        }
+
+        private void panel_txhighpass_Click(object sender, EventArgs e)
+        {
+            statics.audioHighpass = !statics.audioHighpass;
+
+            Byte[] txb = new Byte[2];
+            txb[0] = 18;
+            txb[1] = (Byte)(statics.audioHighpass ? 1 : 0);
+            Udp.UdpSendData(txb);
+            panel_txhighpass.Invalidate();
+        }
+
+        private void panel_txhighpass_Paint(object sender, PaintEventArgs e)
+        {
+            using (Bitmap bm = new Bitmap(Properties.Resources.tx_bass_inact))
+                using (Bitmap bminact = new Bitmap(Properties.Resources.tx_bass))
+                    drawButtonPanel(e.Graphics, statics.audioHighpass, bm, bminact);
         }
     }
 

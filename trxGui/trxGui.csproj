@@ -236,5 +236,11 @@
   <ItemGroup>
     <None Include="Properties\amsat_icon.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\tx_bass.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\tx_bass_inact.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

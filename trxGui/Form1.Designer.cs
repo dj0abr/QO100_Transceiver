@@ -50,6 +50,7 @@ namespace trxGui
             this.panel_pavucontrol = new System.Windows.Forms.Panel();
             this.panel_info = new System.Windows.Forms.Panel();
             this.panel_setup = new System.Windows.Forms.Panel();
+            this.panel_txhighpass = new System.Windows.Forms.Panel();
             this.panel_rxline = new trxGui.DoubleBufferedPanel();
             this.panel_bigspec = new trxGui.DoubleBufferedPanel();
             this.panel_bigwf = new trxGui.DoubleBufferedPanel();
@@ -67,9 +68,9 @@ namespace trxGui
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.Yellow;
-            this.panel1.Location = new System.Drawing.Point(610, 724);
+            this.panel1.Location = new System.Drawing.Point(748, 724);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(325, 33);
+            this.panel1.Size = new System.Drawing.Size(187, 33);
             this.panel1.TabIndex = 11;
             this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
             this.panel1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseClick);
@@ -176,7 +177,7 @@ namespace trxGui
             // panel_rfloop
             // 
             this.panel_rfloop.BackColor = System.Drawing.Color.White;
-            this.panel_rfloop.Location = new System.Drawing.Point(554, 710);
+            this.panel_rfloop.Location = new System.Drawing.Point(610, 710);
             this.panel_rfloop.Name = "panel_rfloop";
             this.panel_rfloop.Size = new System.Drawing.Size(48, 48);
             this.panel_rfloop.TabIndex = 20;
@@ -186,7 +187,7 @@ namespace trxGui
             // panel_audioloop
             // 
             this.panel_audioloop.BackColor = System.Drawing.Color.White;
-            this.panel_audioloop.Location = new System.Drawing.Point(500, 710);
+            this.panel_audioloop.Location = new System.Drawing.Point(556, 710);
             this.panel_audioloop.Name = "panel_audioloop";
             this.panel_audioloop.Size = new System.Drawing.Size(48, 48);
             this.panel_audioloop.TabIndex = 21;
@@ -245,6 +246,16 @@ namespace trxGui
             this.panel_setup.Size = new System.Drawing.Size(48, 48);
             this.panel_setup.TabIndex = 14;
             this.panel_setup.Click += new System.EventHandler(this.butto_setup_click);
+            // 
+            // panel_txhighpass
+            // 
+            this.panel_txhighpass.BackColor = System.Drawing.Color.White;
+            this.panel_txhighpass.Location = new System.Drawing.Point(500, 709);
+            this.panel_txhighpass.Name = "panel_txhighpass";
+            this.panel_txhighpass.Size = new System.Drawing.Size(48, 48);
+            this.panel_txhighpass.TabIndex = 20;
+            this.panel_txhighpass.Click += new System.EventHandler(this.panel_txhighpass_Click);
+            this.panel_txhighpass.Paint += new System.Windows.Forms.PaintEventHandler(this.panel_txhighpass_Paint);
             // 
             // panel_rxline
             // 
@@ -331,6 +342,7 @@ namespace trxGui
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Gray;
             this.ClientSize = new System.Drawing.Size(1147, 775);
+            this.Controls.Add(this.panel_txhighpass);
             this.Controls.Add(this.panel_beaconlock);
             this.Controls.Add(this.panel_sync);
             this.Controls.Add(this.panel_rxline);
@@ -362,7 +374,7 @@ namespace trxGui
             this.MinimizeBox = false;
             this.Name = "Form1";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
-            this.Text = "QO100 Linux - Pluto Transceiver (by DJ0ABR) V1.4";
+            this.Text = "QO100 Linux - Pluto Transceiver (by DJ0ABR) V1.5";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.ResumeLayout(false);
 
@@ -395,6 +407,7 @@ namespace trxGui
         private DoubleBufferedPanel panel_rxline;
         private System.Windows.Forms.Panel panel_sync;
         private System.Windows.Forms.Panel panel_beaconlock;
+        private System.Windows.Forms.Panel panel_txhighpass;
     }
 }
 

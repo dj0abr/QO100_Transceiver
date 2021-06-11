@@ -29,7 +29,7 @@
 #include "../qo100trx.h"
 
 // ============= Configuration ============= 
-float RX_BW =    	8;					// MHz
+float RX_BW =    	1;					// MHz
 float TX_BW =    	0.1;				// MHz
 double RX_FREQ =	(double)RXBASEQRG;	// Hz
 double TX_FREQ =	(double)TXBASEQRG;	// Hz

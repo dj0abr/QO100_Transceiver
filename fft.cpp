@@ -68,17 +68,13 @@ int ph = 0;
     return NULL;
 }
 
-/*
-With the samplerate pf 1.12 MS/s we have a spectrum of 560kHz
-the FFT is calculated with a resolution of 10 Hz = 56kbins
-*/
 
 fftw_complex *din = NULL;				// input data for  fft, output data from ifft
 fftw_complex *cpout = NULL;	            // ouput data from fft, input data to ifft
 fftw_plan plan = NULL;
 
 #define FFT_RESOLUTION  25             // Hz per bin
-#define FFT_LENGTH (SAMPRATE / FFT_RESOLUTION)  // 1.12MS/s / 25 = 44800
+#define FFT_LENGTH (SAMPRATE / FFT_RESOLUTION)  // 560kS/s / 25 = 22400
 
 void fftinit()
 {
@@ -110,10 +106,23 @@ void close_fft()
     cpout = NULL;
 }
 
+// convert a frequency offset (starting at ,470 and the kHz part only) to the bin index
+int FreqToBinIdx(int freq)
+{
+    // bins: 0.. 22400
+    // freq: 0..560000
+    return freq * 224 / 5600;
+}
+
 void calc_fft(uint8_t *data, int len)
 {
 static int din_idx = 0;
 double real, imag;
+
+    // values for small WF, calculate only once per loop
+    int span = FFT_RESOLUTION*1120;   // size of small waterfall in kHz (28kHz, +/-14kHz)
+    int start = FreqToBinIdx(RXoffsetfreq - span/2);
+    int end = FreqToBinIdx(RXoffsetfreq + span/2);
 
     for(int i=0; i<len; i+=4)
     {
@@ -139,11 +148,23 @@ double real, imag;
             // the FFT delivers FFT_LENGTH values (44800 bins)
             // but we only use the first half of them, which is the full range with the 
             // requested resolution of 25 Hz per bin (22400 bins)
-            int numbins = FFT_LENGTH/2; // 22400 (22400*25=560k)
+            int numbins = FFT_LENGTH; // 22400 (22400*25=560k)
+            // the FFT generates the upper half folloed by the lower half
+            // the tuned freq is in the center
 
-            // calculate the absolute level from I and Q values
+            // if fftspeed > 0 then ignore every n fft line
+            // this helps to run this software on slow SBCs
+            static int fdel = 0;
+            if(fdel++ < fftspeed) continue;
+            fdel = 0;
+
+            // range centerfreq(,750) - 560k/2 to +560k/2
+            // is ,470 ... 1,030
+
             float bin[numbins];
-            for(int i=0; i<numbins; i++)
+            int binidx = 0;
+            // lower half
+            for(int i=numbins/2; i<numbins; i++)
             {
                 real = cpout[i][0];
                 imag = cpout[i][1];
@@ -151,9 +172,24 @@ double real, imag;
                 double v = sqrt((real * real) + (imag * imag));
                 // convert to dB scale
                 if(v <=0) v=0.01;
-                bin[i] = log(v);
-                bin[i] *= 1000;
-                if(bin[i] > 32768) printf("reduce multiplicator %f\n",bin[i]);
+                bin[binidx] = log(v);
+                bin[binidx] *= 1000;
+                if(bin[binidx] > 32768) printf("reduce multiplicator %f\n",bin[binidx]);
+                binidx++;
+            }
+            // upper half
+            for(int i=0; i<numbins/2; i++)
+            {
+                real = cpout[i][0];
+                imag = cpout[i][1];
+                // calc magnitude
+                double v = sqrt((real * real) + (imag * imag));
+                // convert to dB scale
+                if(v <=0) v=0.01;
+                bin[binidx] = log(v);
+                bin[binidx] *= 1000;
+                if(bin[binidx] > 32768) printf("reduce multiplicator %f\n",bin[binidx]);
+                binidx++;
             }
             // bins are in the range 0..32767 (16 bit)
 
@@ -163,11 +199,14 @@ double real, imag;
             // ,475 is index 200 and ,490 is index 800
             // so we calc the mid value if this range
             float gval = 0;
-            int gstart = ((475-470)*1000)/25;
-            int gend = ((490-470)*1000)/25;
+            int gstart = FreqToBinIdx(485000 - 470000);
+            int gend = FreqToBinIdx(495000 - 470000);
             for(int g=gstart; g<gend; g++)
                 gval += bin[g];
             gval /= (gend-gstart);
+
+            // bring down a little, looks nicer
+            gval = gval * 100 / 99;
 
             // and make the mid value over 10 values
             #define GMIDLEN 10
@@ -183,11 +222,11 @@ double real, imag;
             //printf("noise level: %f\n",gvalmid);
 
             // ======== beacon level ==========
-            // measure the max beacon level
+            // measure the max beacon level of BPSK beacon
             // max of 749 - 751
             float mval = 0;
-            int mstart = ((749-470)*1000)/25;
-            int mend = ((751-470)*1000)/25;
+            int mstart = FreqToBinIdx(749000 - 470000);
+            int mend = FreqToBinIdx(751000 - 470000);
             for(int m=mstart; m<mend; m++)
                 if(bin[m] > mval) mval = bin[m];
 
@@ -218,12 +257,13 @@ double real, imag;
             sendUDP(gui_ip, GUI_UDPPORT, levels, 9);
 
             // ======== BIG Waterfall ========
-            // the big waterfall has a resulution of numbins/5 = 1120 pixel
-            // take the maximum value of 5 "bigres" bins
-            // and make a mid value with length "midlen" to reduce flickering
-            static const int bigres = 500/FFT_RESOLUTION;
+            // the big waterfall has a screen resulution of 1120 pixel
+            // FFT_RESOLUTION=25 Hz/bin
+            // the FFT delivers 1,12MS/s / 25 / 2 = 22400 values
+            // so the BIG WF resolution is 22400 / 1120 = 20
+            static const int bigres = numbins / 1120;
             static const int midlen = 15;
-            static uint32_t bigmid[midlen][FFT_LENGTH/2];
+            static uint32_t bigmid[midlen][FFT_LENGTH];
             static int bmididx = 0;
 
             int didx = 0;
@@ -238,7 +278,7 @@ double real, imag;
                 bigmid[bmididx][didx++] = (uint32_t)max;
                 if(max > 32768) printf("16bit overflow %f\n",max);
             }
-            
+
             uint8_t bigline[1 + 2 * (numbins/bigres)];
             uint8_t biglineraw[1 + 2 * (numbins/bigres)];
             int bigidx = 0;
@@ -276,29 +316,28 @@ double real, imag;
 
             // ======== SMALL Waterfall ========
             // the small waterfall is  a piece of some kHz around the mid RX frequency "RXoffsetfreq"
-            // RXoffsetfreq is in kHz above the tuner qrg
+            // RXoffsetfreq is in kHz above the left margin which is 750-280= 470k
             // the bin-index of RXoffsetfreq is: RXoffsetfreq/10
-            int span = FFT_RESOLUTION*1120;   // size of small waterfall in kHz
-            int start = RXoffsetfreq/FFT_RESOLUTION - span/2/FFT_RESOLUTION;
-            int end = RXoffsetfreq/FFT_RESOLUTION + span/2/FFT_RESOLUTION;
-            if(start >= 1 && end < (SAMPRATE/2/FFT_RESOLUTION-1))
-            {
-                static uint32_t smallmid[midlen][FFT_LENGTH/2];
-                static int smididx = 0;
-                for(int i=start; i<end; i++)
-                {
-                    smallmid[smididx][i] =  (uint32_t)bin[i];
-                }
 
-                uint8_t smallline[1+(end-start)*2];
-                uint8_t smalllineraw[1+(end-start)*2];
-                int smallidx = 0;
-                smallline[smallidx] = 1;  // ID for small waterfall
-                smalllineraw[smallidx] = 3;  // ID for small waterfall
-                smallidx++;
-                for(int i=start; i<end; i++)
+            static uint32_t smallmid[midlen][FFT_LENGTH];
+            static int smididx = 0;
+            for(int i=start; i<end; i++)
+            {
+                if(i>=0 && i<FFT_LENGTH)
+                    smallmid[smididx][i] =  (uint32_t)bin[i];
+            }
+
+            uint8_t smallline[1+(end-start)*2];
+            uint8_t smalllineraw[1+(end-start)*2];
+            int smallidx = 0;
+            smallline[smallidx] = 1;  // ID for small waterfall
+            smalllineraw[smallidx] = 3;  // ID for small waterfall
+            smallidx++;
+            for(int i=start; i<end; i++)
+            {
+                uint32_t uv = 0;
+                if(i>=0 && i<FFT_LENGTH)
                 {
-                    uint32_t uv = 0;
                     for(int j=0; j<midlen; j++)
                         uv = uv + smallmid[j][i]+smallmid[j][i-1]+smallmid[j][i+1];
                     uv /= (midlen*3);
@@ -310,18 +349,26 @@ double real, imag;
 
                     smallline[smallidx] = uv >> 8;
                     smallline[smallidx+1] = uv & 0xff;
+                }
+                else
+                {
+                    smalllineraw[smallidx] = 0;
+                    smalllineraw[smallidx+1] = 0;
 
-                    smallidx += 2;
+                    smallline[smallidx] = 0;
+                    smallline[smallidx+1] = 0;
                 }
 
-                if(++smididx >= midlen) smididx = 0;
-
-                // send the small fft bins to the GUI
-                sendUDP(gui_ip, GUI_UDPPORT, smalllineraw, smallidx);
-
-                // send the small fft bins to the GUI
-                sendUDP(gui_ip, GUI_UDPPORT, smallline, smallidx);
+                smallidx += 2;
             }
+
+            if(++smididx >= midlen) smididx = 0;
+
+            // send the small fft bins to the GUI
+            sendUDP(gui_ip, GUI_UDPPORT, smalllineraw, smallidx);
+
+            // send the small fft bins to the GUI
+            sendUDP(gui_ip, GUI_UDPPORT, smallline, smallidx);
         }
     }
 }

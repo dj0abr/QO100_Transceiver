@@ -7,7 +7,7 @@ Version Status:\
 V1.0 ... May,28 2021 ... Now fully working, Setup via Setup Menu.\
 V1.1 ... May,31 2021 ... Pluto USB/ETH setup, speech compressor\
 V1.2 ... June,2 2021 ... Audio Filter, Muting, new user interface\
-V1.4 ... June,6 2021 ... calibration for Pluto and LNB
+V1.4 ... June,6 2021 ... calibration for Pluto and LNB\
 V1.5 ... June,11 2021 ... Major Upgrade (!) PLEASE CHECK YOUR SETUP (frequencies have been changed)
 
 

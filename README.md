@@ -8,7 +8,7 @@ V1.0 ... May,28 2021 ... Now fully working, Setup via Setup Menu.\
 V1.1 ... May,31 2021 ... Pluto USB/ETH setup, speech compressor\
 V1.2 ... June,2 2021 ... Audio Filter, Muting, new user interface\
 V1.4 ... June,6 2021 ... calibration for Pluto and LNB\
-V1.5 ... June,11 2021 ... Major Upgrade (!) PLEASE CHECK YOUR SETUP (frequencies have been changed)
+V1.5 ... June,11 2021 ... Major Upgrade (!) PLEASE CHECK YOUR SETUP (frequencies have been changed)\
 V1.6 ... June,12 2021 ... various bug fixes (Sound card name, now working on 64bit Raspi)
 
 ![alt text](https://github.com/dj0abr/QO100_Transceiver/blob/main/trxGui/Properties/sampleGUI.png)

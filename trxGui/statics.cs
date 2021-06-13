@@ -12,6 +12,8 @@ namespace trxGui
 {
     public static class statics
     {
+        public static UInt16 gui_serno = 160;   // 123 means: V1.23
+        public static UInt16 driver_serno = 0;
         public static bool running = true;
         public static String ModemIP;
         public static int UdpTXport = 40821;
@@ -44,6 +46,7 @@ namespace trxGui
         public static int calmode = 0;  // 0=off, 1=439MHz cal
         public static int cpuspeed = 0;
         public static bool audioHighpass = false;
+       
 
         // Pluto frequency settings
         public static UInt32 rxqrg;             // baseband QRG of lower beacon, RX tuner = this value - 30kHz
@@ -218,7 +221,7 @@ namespace trxGui
             txb[0] = 8;
             if (newrx == 0)
             {
-                Console.WriteLine("*********************************** " + statics.rxqrg + " * " + statics.txqrg);
+                //Console.WriteLine("*********************************** " + statics.rxqrg + " * " + statics.txqrg);
                 txb[1] = (Byte)(baserx >> 24);
                 txb[2] = (Byte)(baserx >> 16);
                 txb[3] = (Byte)(baserx >> 8);
@@ -226,7 +229,7 @@ namespace trxGui
             }
             else
             {
-                Console.WriteLine("*********************************** " + newrx + " * " + statics.txqrg);
+                //Console.WriteLine("*********************************** " + newrx + " * " + statics.txqrg);
                 txb[1] = (Byte)(newrx >> 24);
                 txb[2] = (Byte)(newrx >> 16);
                 txb[3] = (Byte)(newrx >> 8);

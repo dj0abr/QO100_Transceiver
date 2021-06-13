@@ -225,6 +225,11 @@ namespace trxGui
                 panel_txfilter_Click(null, null);
                 statics.sendReferenceOffset(statics.rfoffset);
                 sendCpuSpeed();
+                this.Text += " GUI: " + formatSN(statics.gui_serno) + " Driver: " + formatSN(statics.driver_serno);
+                if(statics.gui_serno != statics.driver_serno)
+                {
+                    MessageBox.Show("Warning!\nGUI and Driver have different serial numbers. Please re-install this software", "Version Number Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
                 panel_beaconlock.Invalidate();
             }
 
@@ -233,6 +238,17 @@ namespace trxGui
                 oldbcnoffset = statics.beaconoffset;
                 panel_qrg.Invalidate();
             }
+        }
+
+        private String formatSN(int sn)
+        {
+            String s = "V";
+
+            s += (sn / 100).ToString();
+            s += ".";
+            s += (sn - (sn / 100) * 100).ToString();
+
+            return s;
         }
 
         int oldbcnoffset = -1;

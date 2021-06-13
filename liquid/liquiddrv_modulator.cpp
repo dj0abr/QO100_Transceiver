@@ -31,11 +31,11 @@ unsigned int tx_lp_n     = 128;       // number of samples
 iirfilt_crcf tx_lp_q = NULL;
 
 // audio high pass
-unsigned int au_lp_order =   4;       // filter order
-float        au_lp_fc    =   0.15f;    // cutoff frequency
+unsigned int au_lp_order =   2;       // filter order
+float        au_lp_fc    =   0.1f;    // cutoff frequency
 float        au_lp_f0    =   0.2f;    // center frequency
 float        au_lp_Ap    =   1.0f;    // pass-band ripple
-float        au_lp_As    =  20.0f;    // stop-band attenuation
+float        au_lp_As    =  10.0f;    // stop-band attenuation
 unsigned int au_lp_n     = 128;       // number of samples
 iirfilt_crcf au_lp_q = NULL;
 
@@ -85,7 +85,7 @@ void init_liquid_modulator()
     createBandpass();
 
     // create audio filter
-    au_lp_q = iirfilt_crcf_create_prototype(LIQUID_IIRDES_BESSEL, LIQUID_IIRDES_HIGHPASS, LIQUID_IIRDES_SOS,
+    au_lp_q = iirfilt_crcf_create_prototype(LIQUID_IIRDES_ELLIP, LIQUID_IIRDES_HIGHPASS, LIQUID_IIRDES_SOS,
                                          au_lp_order, au_lp_fc, au_lp_f0, au_lp_Ap, au_lp_As);
 
     // agc
@@ -247,8 +247,8 @@ float gain = 1;
         if(audiohighpass)
         {
             iirfilt_crcf_execute(au_lp_q, cfilt, &aufiltout);
-            aufiltout.real *= 3;
-            aufiltout.imag *= 3;
+            aufiltout.real *= 2;
+            aufiltout.imag *= 2;
         }
         else
             aufiltout = cfilt;

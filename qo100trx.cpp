@@ -256,10 +256,12 @@ int main ()
 	// send audio devices to GUI
 	int len;
 	uint8_t *s = io_getAudioDevicelist(&len);
-	uint8_t ub[len+1];
+	uint8_t ub[len+1+2];
 	ub[0] = 4; // ID for sound device string
-	memcpy(ub+1,s,len);
-	sendUDP(gui_ip, GUI_UDPPORT, ub, len+1);
+	ub[1] = ((uint16_t)DRIVER_SERIAL) >> 8;		// driver serial number
+	ub[2] = ((uint16_t)DRIVER_SERIAL) & 0xff;
+	memcpy(ub+3,s,len);
+	sendUDP(gui_ip, GUI_UDPPORT, ub, len+1+2);
 
 	// wait for initial configuration from GUI
 	// the GUI sends now:
@@ -297,11 +299,13 @@ int main ()
 	//  Pluto found, now initialize it
 	printf("Pluto IP/USB ID      : <%s>\n",pluto_context_name);
 	pluto_setup();
-
-	// init FFT
+	
+ 	// init FFT
 	init_fft();
+
 	// init DSP demodulator
 	init_liquid();
+
 	// init DSP modulator
 	init_liquid_modulator();
 	

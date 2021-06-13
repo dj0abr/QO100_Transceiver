@@ -24,6 +24,8 @@
 #include "pluto/pluto.h"
 #include "libkmaudio/libkmaudio.h"
 
+#define DRIVER_SERIAL  160   // V1.60
+
 #define GUI_UDPPORT 40820
 
 #define AUDIOSAMPRATE 48000   // internal audio rate (not the soundcard rate)

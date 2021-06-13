@@ -374,7 +374,7 @@ namespace trxGui
             this.MinimizeBox = false;
             this.Name = "Form1";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
-            this.Text = "QO100 Linux - Pluto Transceiver (by DJ0ABR) V1.5";
+            this.Text = "QO100 Linux - Pluto Transceiver (by DJ0ABR)";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.ResumeLayout(false);
 

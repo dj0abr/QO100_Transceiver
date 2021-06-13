@@ -133,7 +133,12 @@ namespace trxGui
                         if(rxtype == 4)
                         {
                             // b contains audio devices and init status
-                            String s = statics.ByteArrayToStringUtf8(b, 4);
+                            UInt16 driversn = b[0];
+                            driversn <<= 8;
+                            driversn += b[1];
+                            //Console.WriteLine("Driver SN:" + driversn);
+                            statics.driver_serno = driversn;
+                            String s = statics.ByteArrayToStringUtf8(b, 6);
                             //Console.WriteLine("Audio Devices:" + s);
                             String[] sa1 = s.Split(new char[] { '^' });
                             statics.AudioPBdevs = sa1[0].Split(new char[] { '~' });

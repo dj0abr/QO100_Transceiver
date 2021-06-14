@@ -117,25 +117,4 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="textBox3.Text" xml:space="preserve">
-    <value>Examples for RX:
-
-Receiver Frequency = 10489.75 - 390 x LNB-Reference-Frequency
-
-for an LNB running with 25 MHz Reference enter: 739.75 
-( 10489.750 - 390 * 25 = 739.75 )
-
-the Amsat-Donwconverter runs with 24 MHz LNB Reference
-so you enter: 1129.75
-
-or enter the output frequency of a down-converter (corresponding to 10489.750 MHz)</value>
-  </data>
-  <data name="textBox1.Text" xml:space="preserve">
-    <value>Examples for TX:
-
-Enter the TX frequency of center which is at 2400.250 MHz
-to send directly into a 2.4GHz Amplifier enter: 2400.250
-
-If using an Up-Converter, enter the Up-Converter's input frequency</value>
-  </data>
 </root>

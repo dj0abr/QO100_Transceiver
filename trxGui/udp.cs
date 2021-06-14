@@ -216,7 +216,10 @@ namespace trxGui
         static Pen penline = new Pen(Brushes.LightGreen, 1);
         static Pen penmarker = new Pen(Brushes.Green, 2);
         static Pen penmarkerTX = new Pen(Brushes.Red, 2);
+        static Brush brs = new SolidBrush(Color.FromArgb(60,60,60));
+        static Pen penmarkerLN = new Pen(brs, 2);
         static Font rxtx = new Font("Verdana", 8.0f);
+        static private Bandplan bp = new Bandplan();
         static void drawBigSpec(int[] arr)
         {
             int noiselevel = statics.noiselevel * 54/50;
@@ -238,6 +241,26 @@ namespace trxGui
                 gr.FillRectangle(Brushes.Black, 0, 0, bigSpecW, bigSpecH);
                 gr.FillPolygon(Brushes.Blue, poly);
                 gr.DrawPolygon(penline, poly);
+
+                // vertical lines at specific frequencies
+                penmarkerLN.DashPattern = new float[] { 1.0f, 1.0f };
+                if (statics.bandplan_mode == 0)
+                {
+                    for (int i = 0; i < bp.be.Length - 1; i++)
+                    {
+                        int xs = qrgToPixelpos(bp.be[i].from);
+                        int ws = qrgToPixelpos(bp.be[i + 1].from) - xs;
+                        gr.DrawLine(penmarkerLN, xs,0,xs, bigSpecH);
+                    }
+                }
+                else
+                {
+                    for (int qrg = 10489500; qrg <= 10490000; qrg += 50)
+                    {
+                        int spos = qrgToPixelpos(qrg);
+                        gr.DrawLine(penmarkerLN, spos, 0, spos, bigSpecH);
+                    }
+                }
 
                 // green vertical line at RX frequency
                 // red vertical line at TX frequency
@@ -265,9 +288,15 @@ namespace trxGui
             bigspecQ.Add(bmbigspec);
         }
 
-    
 
-    static void drawSmallSpec(int[] arr)
+        static int qrgToPixelpos(int qrg)
+        {
+            qrg -= 10489000;   // rest is kHz
+            qrg -= 470;
+            return qrg * 2;
+        }
+
+        static void drawSmallSpec(int[] arr)
         {
             Pen dotpen = new Pen(Brushes.Yellow, 1);
             dotpen.DashPattern = new float[] { 2.0f, 2.0f };

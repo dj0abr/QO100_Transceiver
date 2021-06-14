@@ -123,26 +123,8 @@ by DJ0ABR
 
 Open Source: https://github.com/dj0abr/QO100_Transceiver
 
-Mouse usage:
----------------
-upper Spectrum / Waterfall:
-
-left  click ... set RX   
-right click ... set RX+TX
-mouse wheel: tune 100 Hz steps
-hold ALT  -key ... 1 kHz steps
-hold SHIFT-key ... 10kHz steps
-
-lower Spectrum / Waterfall:
-
-left  click ... set RX 
-right click ... set RX+TX
-mouse wheel: tune 10 Hz steps
-
-PTT:
-===
-Mouse click or SHIFT-key
-</value>
+Manual (English / German):
+https://wiki.amsat-dl.org/doku.php?id=en:plutotrx:overview</value>
   </data>
   <data name="textBox2.Text" xml:space="preserve">
     <value>Credits:

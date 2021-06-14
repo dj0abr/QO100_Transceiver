@@ -12,7 +12,7 @@ namespace trxGui
 {
     public static class statics
     {
-        public static UInt16 gui_serno = 160;   // 123 means: V1.23
+        public static UInt16 gui_serno = 161;   // 123 means: V1.23
         public static UInt16 driver_serno = 0;
         public static bool running = true;
         public static String ModemIP;
@@ -46,7 +46,9 @@ namespace trxGui
         public static int calmode = 0;  // 0=off, 1=439MHz cal
         public static int cpuspeed = 0;
         public static bool audioHighpass = false;
-       
+        public static int bandplan_mode = 0; // 0=QO100-Bandplan, 1=QO100-RX-QRGs, 2=QO100-TX-QRGs, 3=Pluto-RX-QRGs, 4=Pluto-TX-QRGs
+        public static int language = 1;     // 0=en, 1=de
+
 
         // Pluto frequency settings
         public static UInt32 rxqrg;             // baseband QRG of lower beacon, RX tuner = this value - 30kHz
@@ -286,6 +288,18 @@ namespace trxGui
             txb[8] = (Byte)(TXoffset & 0xff);
 
             Udp.UdpSendData(txb);
+        }
+
+        static public void OpenUrl(string url)
+        {
+            try
+            {
+                Process.Start(url);
+            }
+            catch
+            {
+                Process.Start("xdg-open", url);
+            }
         }
     }
 

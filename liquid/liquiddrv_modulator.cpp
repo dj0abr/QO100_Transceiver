@@ -85,6 +85,7 @@ void init_liquid_modulator()
     createBandpass();
 
     // create audio filter
+    // LIQUID_IIRDES_BESSEL has a memory overflow error, only ELLIP works
     au_lp_q = iirfilt_crcf_create_prototype(LIQUID_IIRDES_ELLIP, LIQUID_IIRDES_HIGHPASS, LIQUID_IIRDES_SOS,
                                          au_lp_order, au_lp_fc, au_lp_f0, au_lp_Ap, au_lp_As);
 

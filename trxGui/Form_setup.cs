@@ -9,6 +9,11 @@ namespace trxGui
         {
             InitializeComponent();
 
+            comboBox1.SelectedIndex = statics.language;
+
+            foreach (Control c in Controls)
+                c.Text = language.GetText(c.Text);
+
             tb_rxqrg.Text = ((double)statics.rxqrg / 1000000.0).ToString();
             tb_txqrg.Text = ((double)statics.txqrg / 1000000.0).ToString();
             tb_plutooffset.Text = statics.rfoffset.ToString();
@@ -120,6 +125,19 @@ namespace trxGui
             {
                 tb_plutoip.Enabled = true;
             }
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            statics.OpenUrl("https://wiki.amsat-dl.org/doku.php?id=en:plutotrx:config");
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            statics.language = comboBox1.SelectedIndex;
+
+            foreach (Control c in Controls)
+                c.Text = language.GetText(c.Text);
         }
     }
 }

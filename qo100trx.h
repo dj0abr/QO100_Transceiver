@@ -24,7 +24,7 @@
 #include "pluto/pluto.h"
 #include "libkmaudio/libkmaudio.h"
 
-#define DRIVER_SERIAL  160   // V1.60
+#define DRIVER_SERIAL  161   // V1.61
 
 #define GUI_UDPPORT 40820
 

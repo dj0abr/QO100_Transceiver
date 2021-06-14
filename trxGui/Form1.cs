@@ -40,9 +40,12 @@ namespace trxGui
             panel_bigspec.Width = 1120;
             panel_bigspec.Height = 150;
 
-            panel_bandplan.Width = 1120;
+            panel_bandplan.Width = 1120 - 16;
             panel_bandplan.Height = 16;
-            
+
+            panel_switchbandplan.Width = 16;
+            panel_switchbandplan.Height = 16;
+
             panel_bigwf.Width = 1120;
             panel_bigwf.Height = 150;
 
@@ -61,6 +64,7 @@ namespace trxGui
             
             panel_bigspec.Location = new Point(13, panel_qrg.Location.Y + panel_qrg.Height+5);
             panel_bandplan.Location = new Point(13, panel_bigspec.Location.Y + panel_bigspec.Height);
+            panel_switchbandplan.Location = new Point(panel_bandplan.Location.X + panel_bandplan.Width, panel_bigspec.Location.Y + panel_bigspec.Height);
             panel_bigwf.Location = new Point(13, panel_bandplan.Location.Y + panel_bandplan.Height);
 
             panel_rxline.Location = new Point(13, panel_bigwf.Location.Y + panel_bigwf.Height);
@@ -552,16 +556,100 @@ namespace trxGui
             Bandplan bp = new Bandplan();
             using (Graphics gr = e.Graphics)
             {
-                gr.FillRectangle(new SolidBrush(Color.DarkBlue), 0, 0, panel_bandplan.Width, panel_bandplan.Height);
-                for (int i=0; i < bp.be.Length-1; i++)
+                if (statics.bandplan_mode == 0)
                 {
-                    int x = qrgToPixelpos(bp.be[i].from);
-                    int w = qrgToPixelpos(bp.be[i + 1].from) - x;
-                    Color col = bp.be[i].col;
-                    gr.FillRectangle(new SolidBrush(col), x, 0, w, panel_bandplan.Height);
-                    String s = bp.be[i].text;
-                    int spos = qrgToPixelpos(bp.be[i].textpos);
-                    gr.DrawString(s, qrgfnt, Brushes.White, spos, -1);
+                    gr.FillRectangle(new SolidBrush(Color.DarkBlue), 0, 0, panel_bandplan.Width, panel_bandplan.Height);
+                    gr.DrawString("Bandplan", qrgfnt, Brushes.White, 0, -1);
+                    for (int i = 0; i < bp.be.Length - 1; i++)
+                    {
+                        int x = qrgToPixelpos(bp.be[i].from);
+                        int w = qrgToPixelpos(bp.be[i + 1].from) - x;
+                        Color col = bp.be[i].col;
+                        gr.FillRectangle(new SolidBrush(col), x, 0, w, panel_bandplan.Height);
+                        String s = bp.be[i].text;
+                        int spos = qrgToPixelpos(bp.be[i].textpos);
+                        gr.DrawString(s, qrgfnt, Brushes.White, spos, -1);
+                    }
+                }
+                else if (statics.bandplan_mode == 1)
+                {
+                    // QO100 RX qrgs
+                    gr.FillRectangle(new SolidBrush(Color.DarkBlue), 0, 0, panel_bandplan.Width, panel_bandplan.Height);
+                    gr.DrawString("RX", qrgfnt, Brushes.White, 0, -1);
+                    for (int qrg = 10489500; qrg <= 10490000; qrg += 50)
+                    {
+                        int spos = qrgToPixelpos(qrg);
+                        if (qrg > 10489500)
+                        {
+                            String sqrg = (qrg - 10489000).ToString();
+                            gr.DrawString(sqrg, qrgfnt, Brushes.White, spos - 12, 0);
+                        }
+                        else
+                        {
+                            String sqrg = String.Format("{0:0.000}", (double)qrg / 1000.0);
+                            gr.DrawString(sqrg, qrgfnt, Brushes.White, spos - 30, 0);
+                        }
+                    }
+                }
+                else if (statics.bandplan_mode == 2)
+                {
+                    // QO100 TX qrgs
+                    gr.FillRectangle(new SolidBrush(Color.DarkBlue), 0, 0, panel_bandplan.Width, panel_bandplan.Height);
+                    gr.DrawString("TX", qrgfnt, Brushes.White, 0, -1);
+                    for (int qrg = 10489500; qrg <= 10490000; qrg += 50)
+                    {
+                        int spos = qrgToPixelpos(qrg);
+                        if (qrg > 10489500)
+                        {
+                            String sqrg = (qrg - 2400000- 8089500).ToString();
+                            gr.DrawString(sqrg, qrgfnt, Brushes.White, spos - 12, 0);
+                        }
+                        else
+                        {
+                            String sqrg = String.Format("{0:0.000}", (qrg - 8089500) / 1000.0);
+                            gr.DrawString(sqrg, qrgfnt, Brushes.White, spos - 30, 0);
+                        }
+                    }
+                }
+                else if (statics.bandplan_mode == 3)
+                {
+                    // Pluto RX qrgs
+                    gr.FillRectangle(new SolidBrush(Color.DarkBlue), 0, 0, panel_bandplan.Width, panel_bandplan.Height);
+                    gr.DrawString("RX", qrgfnt, Brushes.White, 0, -1);
+                    for (int qrg = (int)statics.rxqrg - 250000; qrg <= (int)statics.rxqrg + 250000; qrg += 50000)
+                    {
+                        int spos = qrgToPixelpos(qrg/1000 + 10489000 - (qrg/1000000)*1000);
+                        if (qrg > ((int)statics.rxqrg - 250000))
+                        {
+                            String sqrg = ((qrg - (((int)statics.rxqrg) / 1000000) * 1000000)/1000).ToString();
+                            gr.DrawString(sqrg, qrgfnt, Brushes.White, spos - 12, 0);
+                        }
+                        else
+                        {
+                            String sqrg = String.Format("{0:0.000}", (double)qrg / 1000000.0);
+                            gr.DrawString(sqrg, qrgfnt, Brushes.White, spos - 30, 0);
+                        }
+                    }
+                }
+                else if (statics.bandplan_mode == 4)
+                {
+                    // Pluto TX qrgs
+                    gr.FillRectangle(new SolidBrush(Color.DarkBlue), 0, 0, panel_bandplan.Width, panel_bandplan.Height);
+                    gr.DrawString("TX", qrgfnt, Brushes.White, 0, -1);
+                    for (int qrg = (int)statics.txqrg - 250000; qrg <= (int)statics.txqrg + 250000; qrg += 50000)
+                    {
+                        int spos = qrgToPixelpos(qrg / 1000 + 10489500 - (qrg / 1000000) * 1000);
+                        if (qrg > ((int)statics.txqrg - 250000))
+                        {
+                            String sqrg = ((qrg - (((int)statics.txqrg) / 1000000) * 1000000) / 1000).ToString();
+                            gr.DrawString(sqrg, qrgfnt, Brushes.White, spos - 12, 0);
+                        }
+                        else
+                        {
+                            String sqrg = String.Format("{0:0.000}", (double)qrg / 1000000.0);
+                            gr.DrawString(sqrg, qrgfnt, Brushes.White, spos - 30, 0);
+                        }
+                    }
                 }
             }
         }
@@ -589,7 +677,7 @@ namespace trxGui
                 if(statics.rxmouse != -1)
                 {
                     val = (double)(statics.rxmouse + 10489470000) / 1e6;
-                    s = String.Format("Mouse:  {0:0.000000}" + " MHz", val);
+                    s = String.Format(language.GetText("Mouse:") +  "  {0:0.000000}" + " MHz", val);
                     gr.DrawString(s, smlfnt, Brushes.Blue, mouserightpos + titrightpos, 0);
                 }
                 else
@@ -782,6 +870,8 @@ namespace trxGui
                     statics.rfoffset = ReadInt(sr);
                     statics.lnboffset = ReadInt(sr);
                     statics.cpuspeed = ReadInt(sr);
+                    statics.bandplan_mode = ReadInt(sr);
+                    statics.language = ReadInt(sr);
                 }
             }
             catch
@@ -816,6 +906,8 @@ namespace trxGui
                     sw.WriteLine(statics.rfoffset.ToString());
                     sw.WriteLine(statics.lnboffset.ToString());
                     sw.WriteLine(statics.cpuspeed.ToString());
+                    sw.WriteLine(statics.bandplan_mode.ToString());
+                    sw.WriteLine(statics.language.ToString());
                 }
             }
             catch { }
@@ -1178,6 +1270,12 @@ namespace trxGui
             using (Bitmap bm = new Bitmap(Properties.Resources.tx_bass_inact))
                 using (Bitmap bminact = new Bitmap(Properties.Resources.tx_bass))
                     drawButtonPanel(e.Graphics, statics.audioHighpass, bm, bminact);
+        }
+
+        private void panel_switchbandplan_Click(object sender, EventArgs e)
+        {
+            if (++statics.bandplan_mode >= 5) statics.bandplan_mode = 0;
+            panel_bandplan.Invalidate();
         }
     }
 

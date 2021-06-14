@@ -77,6 +77,15 @@ int kmaudio_playsamples(int id, float* psamp, int len, float volume)
 {
 	// check if resampling is required
 	//printf("%d %d len:%d\n", devlist[id].requested_samprate , devlist[id].real_samprate,len);
+
+	/* Diagnostic: print buffer usage
+	static int xxx=0;
+	if(++xxx >= 10000)
+	{
+		xxx = 0;
+		printf("Pluto->sndcard fifo usage: %d\n",io_fifo_usedspace(id));
+	}*/
+
 	if (devlist[id].requested_samprate == devlist[id].real_samprate)
 	{
 		// sampling rate is ok, just play samples

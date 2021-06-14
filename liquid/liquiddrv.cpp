@@ -25,7 +25,7 @@ iirfilt_crcf lp_q = NULL;
 // Down-Sampler
 unsigned int decim_h_len = 13;    // filter semi-length (filter delay)
 float decim_r = (float)((double)AUDIOSAMPRATE / (double)SAMPRATE); // resampling rate (output/input)
-float decim_bw=0.1f;              // cutoff frequency
+float decim_bw=0.001f;              // cutoff frequency
 float decim_slsl= 60.0f;          // resampling filter sidelobe suppression level
 unsigned int decim_npfb=32;       // number of filters in bank (timing resolution)
 resamp_crcf decim_q = NULL;

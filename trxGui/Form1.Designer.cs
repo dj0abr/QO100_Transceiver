@@ -51,6 +51,7 @@ namespace trxGui
             this.panel_info = new System.Windows.Forms.Panel();
             this.panel_setup = new System.Windows.Forms.Panel();
             this.panel_txhighpass = new System.Windows.Forms.Panel();
+            this.panel_switchbandplan = new System.Windows.Forms.Panel();
             this.panel_rxline = new trxGui.DoubleBufferedPanel();
             this.panel_bigspec = new trxGui.DoubleBufferedPanel();
             this.panel_bigwf = new trxGui.DoubleBufferedPanel();
@@ -257,6 +258,17 @@ namespace trxGui
             this.panel_txhighpass.Click += new System.EventHandler(this.panel_txhighpass_Click);
             this.panel_txhighpass.Paint += new System.Windows.Forms.PaintEventHandler(this.panel_txhighpass_Paint);
             // 
+            // panel_switchbandplan
+            // 
+            this.panel_switchbandplan.BackColor = System.Drawing.Color.White;
+            this.panel_switchbandplan.BackgroundImage = global::trxGui.Properties.Resources.swband;
+            this.panel_switchbandplan.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.panel_switchbandplan.Location = new System.Drawing.Point(1106, 200);
+            this.panel_switchbandplan.Name = "panel_switchbandplan";
+            this.panel_switchbandplan.Size = new System.Drawing.Size(26, 10);
+            this.panel_switchbandplan.TabIndex = 24;
+            this.panel_switchbandplan.Click += new System.EventHandler(this.panel_switchbandplan_Click);
+            // 
             // panel_rxline
             // 
             this.panel_rxline.BackColor = System.Drawing.Color.Gray;
@@ -297,7 +309,7 @@ namespace trxGui
             this.panel_bandplan.BackColor = System.Drawing.Color.Silver;
             this.panel_bandplan.Location = new System.Drawing.Point(14, 200);
             this.panel_bandplan.Name = "panel_bandplan";
-            this.panel_bandplan.Size = new System.Drawing.Size(1120, 12);
+            this.panel_bandplan.Size = new System.Drawing.Size(1095, 10);
             this.panel_bandplan.TabIndex = 1;
             this.panel_bandplan.Paint += new System.Windows.Forms.PaintEventHandler(this.panel_bandplan_Paint);
             // 
@@ -342,6 +354,7 @@ namespace trxGui
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Gray;
             this.ClientSize = new System.Drawing.Size(1147, 775);
+            this.Controls.Add(this.panel_switchbandplan);
             this.Controls.Add(this.panel_txhighpass);
             this.Controls.Add(this.panel_beaconlock);
             this.Controls.Add(this.panel_sync);
@@ -408,6 +421,7 @@ namespace trxGui
         private System.Windows.Forms.Panel panel_sync;
         private System.Windows.Forms.Panel panel_beaconlock;
         private System.Windows.Forms.Panel panel_txhighpass;
+        private System.Windows.Forms.Panel panel_switchbandplan;
     }
 }
 

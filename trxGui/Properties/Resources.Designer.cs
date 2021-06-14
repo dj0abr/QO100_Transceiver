@@ -353,6 +353,16 @@ namespace trxGui.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap swband {
+            get {
+                object obj = ResourceManager.GetObject("swband", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap tr_button {
             get {
                 object obj = ResourceManager.GetObject("tr_button", resourceCulture);

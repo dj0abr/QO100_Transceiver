@@ -249,6 +249,7 @@ namespace trxGui
                             MessageBox.Show("a new Version is avialable at Github:" + actver.ToString(), "NEW VERSION", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         }
                     }
+                    File.Delete("version.txt");
                 }
                 catch { }
 

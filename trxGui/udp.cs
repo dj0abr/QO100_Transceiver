@@ -213,13 +213,21 @@ namespace trxGui
             return sa;
         }
 
-        static Pen penline = new Pen(Brushes.LightGreen, 1);
+        
         static Pen penmarker = new Pen(Brushes.Green, 2);
         static Pen penmarkerTX = new Pen(Brushes.Red, 2);
         static Brush brs = new SolidBrush(Color.FromArgb(60,60,60));
         static Pen penmarkerLN = new Pen(brs, 2);
         static Font rxtx = new Font("Verdana", 8.0f);
         static private Bandplan bp = new Bandplan();
+
+        // palette
+        static Color[] col_specfill = { Color.Blue, Color.FromArgb(255, 80, 80), Color.Green, Color.LightGray };
+        static Color[] col_specline = { Color.LightGreen, Color.Yellow, Color.Cyan, Color.White };
+
+        static SolidBrush[] br_spedFill = { new SolidBrush(col_specfill[0]), new SolidBrush(col_specfill[1]), new SolidBrush(col_specfill[2]), new SolidBrush(col_specfill[3]) };
+        static Pen[] penline = { new Pen(col_specline[0], 1), new Pen(col_specline[1], 1), new Pen(col_specline[2], 1), new Pen(col_specline[3], 1) };
+
         static void drawBigSpec(int[] arr)
         {
             int noiselevel = statics.noiselevel * 54/50;
@@ -239,8 +247,8 @@ namespace trxGui
                 }
 
                 gr.FillRectangle(Brushes.Black, 0, 0, bigSpecW, bigSpecH);
-                gr.FillPolygon(Brushes.Blue, poly);
-                gr.DrawPolygon(penline, poly);
+                gr.FillPolygon(br_spedFill[statics.palette], poly);
+                gr.DrawPolygon(penline[statics.palette], poly);
 
                 // vertical lines at specific frequencies
                 penmarkerLN.DashPattern = new float[] { 1.0f, 1.0f };
@@ -316,8 +324,8 @@ namespace trxGui
                 }
 
                 gr.FillRectangle(Brushes.Black, 0, 0, bigSpecW, smallSpecH);
-                gr.FillPolygon(Brushes.Blue, poly);
-                gr.DrawPolygon(penline, poly);
+                gr.FillPolygon(br_spedFill[statics.palette], poly);
+                gr.DrawPolygon(penline[statics.palette], poly);
 
                 // tuning (middle) line
                 gr.DrawLine(dotpen, smallSpecW / 2, 0, smallSpecW / 2, smallSpecH);

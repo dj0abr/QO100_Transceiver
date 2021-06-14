@@ -58,6 +58,8 @@ namespace trxGui
             this.button3 = new System.Windows.Forms.Button();
             this.label15 = new System.Windows.Forms.Label();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.label16 = new System.Windows.Forms.Label();
+            this.comboBox_color = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // button1
@@ -310,7 +312,7 @@ namespace trxGui
             // label15
             // 
             this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(11, 247);
+            this.label15.Location = new System.Drawing.Point(11, 273);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(58, 13);
             this.label15.TabIndex = 47;
@@ -322,18 +324,43 @@ namespace trxGui
             this.comboBox1.Items.AddRange(new object[] {
             "English",
             "German/Deutsch"});
-            this.comboBox1.Location = new System.Drawing.Point(154, 243);
+            this.comboBox1.Location = new System.Drawing.Point(154, 269);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(177, 21);
             this.comboBox1.TabIndex = 46;
             this.comboBox1.Text = "English";
             this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(11, 246);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(70, 13);
+            this.label16.TabIndex = 49;
+            this.label16.Text = "Color Palette:";
+            // 
+            // comboBox_color
+            // 
+            this.comboBox_color.FormattingEnabled = true;
+            this.comboBox_color.Items.AddRange(new object[] {
+            "blue / blau",
+            "red / rot",
+            "green / grün",
+            "white / weiß"});
+            this.comboBox_color.Location = new System.Drawing.Point(154, 242);
+            this.comboBox_color.Name = "comboBox_color";
+            this.comboBox_color.Size = new System.Drawing.Size(177, 21);
+            this.comboBox_color.TabIndex = 48;
+            this.comboBox_color.Text = "blue / blau";
+            // 
             // Form_setup
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 347);
+            this.Controls.Add(this.label16);
+            this.Controls.Add(this.comboBox_color);
             this.Controls.Add(this.label15);
             this.Controls.Add(this.comboBox1);
             this.Controls.Add(this.button3);
@@ -402,5 +429,7 @@ namespace trxGui
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.ComboBox comboBox_color;
     }
 }

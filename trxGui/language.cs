@@ -29,6 +29,7 @@ namespace trxGui
             "Language:",
             "Open Manual",
             "Mouse:",
+            "Color Palette:",
         };
 
         public static String[] de = new String[]
@@ -52,6 +53,7 @@ namespace trxGui
             "Sprache:",
             "Bedienungsanleitung",
             "Maus:",
+            "Farbpalette:",
         };
 
         public static String GetText(String s)

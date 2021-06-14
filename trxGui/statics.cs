@@ -12,7 +12,7 @@ namespace trxGui
 {
     public static class statics
     {
-        public static UInt16 gui_serno = 161;   // 123 means: V1.23
+        public static UInt16 gui_serno = 162;   // 123 means: V1.23
         public static UInt16 driver_serno = 0;
         public static bool running = true;
         public static String ModemIP;
@@ -48,6 +48,7 @@ namespace trxGui
         public static bool audioHighpass = false;
         public static int bandplan_mode = 0; // 0=QO100-Bandplan, 1=QO100-RX-QRGs, 2=QO100-TX-QRGs, 3=Pluto-RX-QRGs, 4=Pluto-TX-QRGs
         public static int language = 1;     // 0=en, 1=de
+        public static int palette = 1;      // colors: 0=blue, 1=red, 2=green, 3=white
 
 
         // Pluto frequency settings

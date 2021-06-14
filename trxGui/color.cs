@@ -269,8 +269,6 @@ namespace trxGui
             {0.0,1.0,0.0,0.0,1.0,0.0}
         };
 
-        public int palette = 1;
-
         public Color getColor(int val)
         {
             int r = 0, b = 0, g = 0;
@@ -279,19 +277,19 @@ namespace trxGui
             if (val < 0) val = 0;
 
             // we use the last 3 values only, these make much better contrast
-            if (palette == 0)
-            {
-                r = (int)(coltab[val, 3] * 255);
-                g = (int)(coltab[val, 4] * 255);
-                b = (int)(coltab[val, 5] * 255);
-            }
-            else if (palette == 1)
+            if (statics.palette == 0)
             {
                 b = (int)(coltab[val, 3] * 255);
                 g = (int)(coltab[val, 4] * 255);
                 r = (int)(coltab[val, 5] * 255);
             }
-            else if (palette == 2)
+            else if (statics.palette == 1)
+            {
+                r = (int)(coltab[val, 3] * 255);
+                g = (int)(coltab[val, 4] * 255);
+                b = (int)(coltab[val, 5] * 255);
+            }
+            else if (statics.palette == 2)
             {
                 g = (int)(coltab[val, 3] * 255);
                 b = (int)(coltab[val, 4] * 255);

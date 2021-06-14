@@ -891,6 +891,7 @@ namespace trxGui
                     statics.cpuspeed = ReadInt(sr);
                     statics.bandplan_mode = ReadInt(sr);
                     statics.language = ReadInt(sr);
+                    statics.palette = ReadInt(sr);
                 }
             }
             catch
@@ -927,6 +928,7 @@ namespace trxGui
                     sw.WriteLine(statics.cpuspeed.ToString());
                     sw.WriteLine(statics.bandplan_mode.ToString());
                     sw.WriteLine(statics.language.ToString());
+                    sw.WriteLine(statics.palette.ToString());
                 }
             }
             catch { }

@@ -235,7 +235,9 @@ int main ()
 	printf("<%s>\n",s1);
 	exit(0);*/
 
-	int sres = system("wget --no-check-certificate --no-cache --no-cookies -O version.txt https://raw.githubusercontent.com/dj0abr/QO100_Transceiver/main/version.txt");
+	char url[512];
+	sprintf(url,"wget --no-check-certificate --no-cache --no-cookies --no-http-keep-alive -O version.txt https://raw.githubusercontent.com/dj0abr/QO100_Transceiver/main/version.txt?cachekiller=%d",rand());
+	int sres = system(url);
 	if(sres < 0)
 	{
 		printf("error %d when reading actual serial number\n",sres);

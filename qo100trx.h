@@ -24,7 +24,9 @@
 #include "pluto/pluto.h"
 #include "libkmaudio/libkmaudio.h"
 
-#define DRIVER_SERIAL  161   // V1.61
+// is defined in the makefile !
+// don't define it here
+// #define DRIVER_SERIAL  161   // V1.61
 
 #define GUI_UDPPORT 40820
 

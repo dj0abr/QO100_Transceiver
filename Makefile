@@ -1,4 +1,5 @@
-CXXFLAGS = -Wall -O3 -std=c++0x -Wno-write-strings -Wno-narrowing
+VERSION := 161
+CXXFLAGS = -Wall -O3 -std=c++0x -Wno-write-strings -Wno-narrowing -DDRIVER_SERIAL=$(VERSION)
 LDFLAGS = -lpthread -lrt -lm -liio -lliquid -lad9361 -lfftw3 -lfftw3_threads -lsndfile -lasound -lsoundio
 OBJ = qo100trx.o rx.o tx.o fft.o\
 kmlib/kmtimer.o kmlib/km_helper.o kmlib/kmfifo.o\
@@ -11,6 +12,7 @@ libkmaudio/libkmaudio_playback_linux.o libkmaudio/libkmaudio_resampler.o
 
 default: $(OBJ)
 	g++ $(CXXFLAGS) -o Release/trxdriver $(OBJ) $(LDFLAGS)
+	echo $(VERSION) > version.txt
 	rm -rf  Release/*.config Release/*.pdb
 	echo "export LD_LIBRARY_PATH=\$LD_LIBRARY_PATH:/usr/local/lib" > Release/startQO100trx
 	echo "mono qo100trx.exe" >> Release/startQO100trx

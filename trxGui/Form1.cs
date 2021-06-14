@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Drawing;
 using System.IO;
-using System.Threading;
 using System.Windows.Forms;
 
 namespace trxGui
@@ -111,7 +110,7 @@ namespace trxGui
 
             // if this program was started from another loacation
             // set the working directory to the path of the .exe file
-            // so it can find hsmodem(.exe)
+            // so it can find trxdriver
             try
             {
                 String s = System.Reflection.Assembly.GetExecutingAssembly().Location;
@@ -176,6 +175,9 @@ namespace trxGui
 
             if (statics.GotAudioDevices == 1)
             {
+                // this is called once just after the trxdriver has started
+                // do all init jobs here which needs a running trxdriver
+
                 // just got the list of audio devices
                 statics.GotAudioDevices = 0;
 
@@ -230,10 +232,26 @@ namespace trxGui
                 statics.sendReferenceOffset(statics.rfoffset);
                 sendCpuSpeed();
                 this.Text += " GUI: " + formatSN(statics.gui_serno) + " Driver: " + formatSN(statics.driver_serno);
+                // check consistency
                 if(statics.gui_serno != statics.driver_serno)
                 {
                     MessageBox.Show("Warning!\nGUI and Driver have different serial numbers. Please re-install this software", "Version Number Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
+                // check for updates
+                try
+                {
+                    using (StreamReader sr = new StreamReader("version.txt"))
+                    {
+                        int actver = ReadInt(sr);
+                        Console.WriteLine("act version:" + actver);
+                        if(actver > statics.gui_serno)
+                        {
+                            MessageBox.Show("a new Version is avialable at Github:" + actver.ToString(), "NEW VERSION", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        }
+                    }
+                }
+                catch { }
+
                 panel_beaconlock.Invalidate();
             }
 

@@ -235,6 +235,12 @@ int main ()
 	printf("<%s>\n",s1);
 	exit(0);*/
 
+	int sres = system("wget -O version.txt https://raw.githubusercontent.com/dj0abr/QO100_Transceiver/main/version.txt");
+	if(sres < 0)
+	{
+		printf("error %d when reading actual serial number\n");
+	}
+
     install_signal_handler(close_program);
 
 	// Install FIFOs

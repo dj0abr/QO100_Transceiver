@@ -593,7 +593,8 @@ namespace trxGui
         private void panel_bigwf_MouseMove(object sender, MouseEventArgs e)
         {
             panel_bigwf.Focus();
-            statics.rxmouse = e.X * 500;
+            int x = e.X * 1120 / panel_bigspec.Width;
+            statics.rxmouse = x * 500;
             panel_qrg.Invalidate();
         }
 
@@ -606,7 +607,8 @@ namespace trxGui
         private void panel_bigspec_MouseMove(object sender, MouseEventArgs e)
         {
             panel_bigspec.Focus();
-            statics.rxmouse = e.X * 500;
+            int x = e.X * 1120 / panel_bigspec.Width;
+            statics.rxmouse = x * 500;
             panel_qrg.Invalidate();
         }
 
@@ -619,7 +621,8 @@ namespace trxGui
         private void panel_smallspec_MouseMove(object sender, MouseEventArgs e)
         {
             panel_smallspec.Focus();
-            int hz = (e.X - 560) * 25;
+            int x = e.X * 1120 / panel_bigspec.Width;
+            int hz = (x - 560) * 25;
             statics.rxmouse = statics.RXoffset + hz;
             panel_qrg.Invalidate();
         }
@@ -633,7 +636,8 @@ namespace trxGui
         private void panel_smallwf_MouseMove(object sender, MouseEventArgs e)
         {
             panel_smallwf.Focus();
-            int hz = (e.X - 560) * 25;
+            int x = e.X * 1120 / panel_bigspec.Width;
+            int hz = (x - 560) * 25;
             statics.rxmouse = statics.RXoffset + hz;
             panel_qrg.Invalidate();
         }
@@ -820,6 +824,10 @@ namespace trxGui
             {
                 if (panel_bigspec.Width > 900)
                 {
+                    int mrp = mouserightpos;
+                    if (panel_bigspec.Width > 1300)
+                        mrp = 1300;
+
                     double val = (double)(statics.RXoffset + 10489470000) / 1e6;
                     String s = String.Format("RX:" + "{0:0.000000}" + " MHz", val);
                     gr.DrawString(s, bigfnt, Brushes.Green, titrightpos, bigy);
@@ -832,15 +840,15 @@ namespace trxGui
                     {
                         val = (double)(statics.rxmouse + 10489470000) / 1e6;
                         s = String.Format(language.GetText("Mouse:") + "  {0:0.000000}", val);
-                        gr.DrawString(s, smlfnt, Brushes.Blue, mouserightpos + titrightpos, 0);
+                        gr.DrawString(s, smlfnt, Brushes.Blue, mrp + titrightpos, 0);
                     }
                     else
                     {
-                        gr.FillRectangle(Brushes.Gray, mouserightpos + titrightpos, 0, panel_qrg.Width - (mouserightpos + titrightpos), panel_qrg.Height);
+                        gr.FillRectangle(Brushes.Gray, mrp + titrightpos, 0, panel_qrg.Width - (mrp + titrightpos), panel_qrg.Height);
                     }
 
                     s = String.Format("Drift : {0:0}" + " Hz", statics.beaconoffset);
-                    gr.DrawString(s, smlfnt, Brushes.Blue, mouserightpos + titrightpos, 20);
+                    gr.DrawString(s, smlfnt, Brushes.Blue, mrp + titrightpos, 20);
                 }
                 else
                 {
@@ -852,23 +860,23 @@ namespace trxGui
                     s = String.Format("TX:" + "{0:0.000000}" + " MHz", val);
                     gr.DrawString(s, bigfnt, Brushes.DarkRed, titrightpos, bigy+16);
 
-                    mouserightpos = 420;
-                    if (panel_bigspec.Width < 700) mouserightpos = 390;
-                    if (panel_bigspec.Width < 500) mouserightpos = 250;
+                    int mrp = 420;
+                    if (panel_bigspec.Width < 700) mrp = 390;
+                    if (panel_bigspec.Width < 500) mrp = 250;
 
                     if (statics.rxmouse != -1)
                     {
                         val = (double)(statics.rxmouse + 10489470000) / 1e6;
                         s = String.Format(language.GetText("Mouse:") + "  {0:0.000000}", val);
-                        gr.DrawString(s, smlfnt, Brushes.Blue, mouserightpos + titrightpos, 0);
+                        gr.DrawString(s, smlfnt, Brushes.Blue, mrp + titrightpos, 0);
                     }
                     else
                     {
-                        gr.FillRectangle(Brushes.Gray, mouserightpos + titrightpos, 0, panel_qrg.Width - (mouserightpos + titrightpos), panel_qrg.Height);
+                        gr.FillRectangle(Brushes.Gray, mrp + titrightpos, 0, panel_qrg.Width - (mrp + titrightpos), panel_qrg.Height);
                     }
 
                     s = String.Format("Drift : {0:0}" + " Hz", statics.beaconoffset);
-                    gr.DrawString(s, smlfnt, Brushes.Blue, mouserightpos + titrightpos, 20);
+                    gr.DrawString(s, smlfnt, Brushes.Blue, mrp + titrightpos, 20);
                 }
             }
         }

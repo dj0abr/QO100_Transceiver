@@ -398,6 +398,7 @@ namespace trxGui
             // 
             this.cb_screensize.FormattingEnabled = true;
             this.cb_screensize.Items.AddRange(new object[] {
+            "1920x1080",
             "1280x800",
             "1280x480",
             "1024x768",

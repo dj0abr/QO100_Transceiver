@@ -64,7 +64,19 @@ namespace trxGui
 
         void scaleElements()
         {
-            if (statics.windowsize == 0)
+            int wsize = 0;
+            if (statics.windowsize == wsize++)
+            {
+                // sizes for screens 1920x1080 pixel
+                window_width = 1920;
+                window_height = 1080;
+                spec_height = 220;
+                wf_height = 220;
+                button_size = 64;
+                bigfnt = new Font("Verdana", 24.0f);
+            }
+
+            if (statics.windowsize == wsize++)
             {
                 // sizes for screens 1200x800 pixel
                 window_width = 1155;
@@ -75,7 +87,7 @@ namespace trxGui
                 bigfnt = new Font("Verdana", 24.0f);
             }
 
-            if (statics.windowsize == 1)
+            if (statics.windowsize == wsize++)
             {
                 // sizes for screens 1200x480 pixel
                 window_width = 1155;
@@ -86,7 +98,7 @@ namespace trxGui
                 bigfnt = new Font("Verdana", 24.0f);
             }
 
-            if (statics.windowsize == 2)
+            if (statics.windowsize == wsize++)
             {
                 // sizes for screens 1024x768 pixel
                 window_width = 1024;
@@ -97,7 +109,7 @@ namespace trxGui
                 bigfnt = new Font("Verdana", 24.0f);
             }
 
-            if (statics.windowsize == 3)
+            if (statics.windowsize == wsize++)
             {
                 // sizes for screens 800x600 pixel
                 window_width = 800;
@@ -108,7 +120,7 @@ namespace trxGui
                 bigfnt = new Font("Verdana", 14.0f);
             }
 
-            if (statics.windowsize == 4)
+            if (statics.windowsize == wsize++)
             {
                 // sizes for screens 800x480 pixel
                 window_width = 800;
@@ -119,7 +131,7 @@ namespace trxGui
                 bigfnt = new Font("Verdana", 14.0f);
             }
 
-            if (statics.windowsize == 5)
+            if (statics.windowsize == wsize++)
             {
                 // sizes for screens 640x480 pixel
                 window_width = 640;
@@ -130,7 +142,7 @@ namespace trxGui
                 bigfnt = new Font("Verdana", 14.0f);
             }
 
-            if (statics.windowsize == 6)
+            if (statics.windowsize == wsize++)
             {
                 // sizes for screens 480x320 pixel
                 window_width = 480;

@@ -50,7 +50,7 @@ namespace trxGui
         public static int language = 1;     // 0=en, 1=de
         public static int palette = 1;      // colors: 0=blue, 1=red, 2=green, 3=white
         public static int txpower = 0;
-        public static int windowsize = 4;
+        public static int windowsize = 5;
         public static int panel_bigspec_Width, panel_bigspec_Height, panel_bigwf_Width, panel_bigwf_Height,
                         panel_smallspec_Width, panel_smallspec_Height, panel_smallwf_Width, panel_smallwf_Height;
 

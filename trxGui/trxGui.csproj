@@ -65,6 +65,12 @@
     <Compile Include="Form_reference.Designer.cs">
       <DependentUpon>Form_reference.cs</DependentUpon>
     </Compile>
+    <Compile Include="Form_screen.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form_screen.Designer.cs">
+      <DependentUpon>Form_screen.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form_setup.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -84,6 +90,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Form_reference.resx">
       <DependentUpon>Form_reference.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form_screen.resx">
+      <DependentUpon>Form_screen.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form_setup.resx">
       <DependentUpon>Form_setup.cs</DependentUpon>
@@ -245,6 +254,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\swband.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\monitor.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

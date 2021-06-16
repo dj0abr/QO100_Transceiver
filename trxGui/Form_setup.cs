@@ -18,7 +18,6 @@ namespace trxGui
             button3.Location = new Point(button2.Location.X - button3.Width - 20, yb);
 
             comboBox1.SelectedIndex = statics.language;
-            cb_screensize.SelectedIndex = statics.windowsize;
 
             foreach (Control c in Controls)
                 c.Text = language.GetText(c.Text);
@@ -125,7 +124,6 @@ namespace trxGui
             statics.plutoaddress = tb_plutoip.Text;
             statics.cpuspeed = comboBox_cpuspeed.SelectedIndex;
             statics.palette = comboBox_color.SelectedIndex;
-            statics.windowsize = cb_screensize.SelectedIndex;
         }
 
         private void rb_plutousb_CheckedChanged(object sender, EventArgs e)

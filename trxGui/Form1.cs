@@ -18,9 +18,6 @@ namespace trxGui
         {
             InitializeComponent();
 
-            // set the position of the GUI elements
-            // this is required because "mono" does some strange/wrong scaling
-
             load_Setup();
 
             panel_bigwf.MouseWheel += panel_bigwf_MouseWheel;
@@ -29,6 +26,7 @@ namespace trxGui
             panel_smallwf.MouseWheel += panel_smallwf_MouseWheel;
             panel_smallspec.MouseWheel += panel_smallwf_MouseWheel;
 
+            // set the position of the GUI elements for various screen resolutions
             scaleElements();
 
             // test OS type
@@ -158,9 +156,13 @@ namespace trxGui
             this.Height = window_height;
             int panel_width = window_width - 35;
 
-            panel_qrg.Location = new Point(13, 4);
-            panel_qrg.Width = panel_width - 28;
-            panel_qrg.Height = 40;
+            panel_screen.Location = new Point(5, 4);
+            panel_screen.Width = 16;
+            panel_screen.Height = 16;
+
+            panel_qrg.Location = new Point(panel_screen.Width+4, 4);
+            panel_qrg.Width = panel_width - 28 - panel_screen.Width;
+            panel_qrg.Height = 40; 
 
             panel_sync.Location = new Point(panel_qrg.Location.X + panel_qrg.Width + 4, panel_qrg.Location.Y);
             panel_sync.Width = panel_width - (panel_qrg.Location.X + panel_qrg.Width - 4);
@@ -920,7 +922,6 @@ namespace trxGui
         {
             int oldpluto = statics.plutousb;
             String oldpladr = statics.plutoaddress;
-            int oldwin = statics.windowsize;
 
             Form_setup setupForm = new Form_setup();
 
@@ -939,12 +940,6 @@ namespace trxGui
                     // pluto setting has been changed, restart required
                     MessageBox.Show("Pluto settings changed. Press OK to close this software, then start it again", "RESTART REQUIRED", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     Close();
-                }
-
-                if(statics.windowsize != oldwin)
-                {
-                    scaleElements();
-                    Udp.UpdateSize();
                 }
             }
         }
@@ -1506,13 +1501,13 @@ namespace trxGui
             panel_bandplan.Invalidate();
         }
 
-        private void panel_qrg_DoubleClick(object sender, EventArgs e)
+        private void panel_screen_Click(object sender, EventArgs e)
         {
-            DialogResult dr = MessageBox.Show("set windows size to 640x480px", "SET WINDOW SIZE", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-
-            if(dr == DialogResult.Yes)
+            int ws = statics.windowsize;
+            Form_screen fs = new Form_screen();
+            fs.ShowDialog();
+            if(ws != statics.windowsize)
             {
-                statics.windowsize = 6;
                 scaleElements();
                 Udp.UpdateSize();
             }

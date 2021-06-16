@@ -63,8 +63,6 @@ namespace trxGui
             this.label17 = new System.Windows.Forms.Label();
             this.textBox_txpower = new System.Windows.Forms.TextBox();
             this.label18 = new System.Windows.Forms.Label();
-            this.label19 = new System.Windows.Forms.Label();
-            this.cb_screensize = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // button1
@@ -124,9 +122,9 @@ namespace trxGui
             // 
             // tb_txqrg
             // 
-            this.tb_txqrg.Location = new System.Drawing.Point(154, 125);
+            this.tb_txqrg.Location = new System.Drawing.Point(174, 125);
             this.tb_txqrg.Name = "tb_txqrg";
-            this.tb_txqrg.Size = new System.Drawing.Size(157, 20);
+            this.tb_txqrg.Size = new System.Drawing.Size(137, 20);
             this.tb_txqrg.TabIndex = 21;
             // 
             // label6
@@ -141,17 +139,18 @@ namespace trxGui
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(325, 106);
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(315, 106);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(312, 13);
+            this.label2.Size = new System.Drawing.Size(307, 13);
             this.label2.TabIndex = 27;
             this.label2.Text = "MHz ( enter center frequency corresponding to 10489.750 MHz )";
             // 
             // tb_rxqrg
             // 
-            this.tb_rxqrg.Location = new System.Drawing.Point(154, 102);
+            this.tb_rxqrg.Location = new System.Drawing.Point(174, 102);
             this.tb_rxqrg.Name = "tb_rxqrg";
-            this.tb_rxqrg.Size = new System.Drawing.Size(157, 20);
+            this.tb_rxqrg.Size = new System.Drawing.Size(137, 20);
             this.tb_rxqrg.TabIndex = 26;
             // 
             // label3
@@ -166,9 +165,10 @@ namespace trxGui
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(325, 129);
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(315, 129);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(306, 13);
+            this.label1.Size = new System.Drawing.Size(301, 13);
             this.label1.TabIndex = 28;
             this.label1.Text = "MHz ( enter center frequency corresponding to 2400.250 MHz )";
             // 
@@ -225,17 +225,18 @@ namespace trxGui
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(325, 159);
+            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label7.Location = new System.Drawing.Point(315, 159);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(347, 13);
+            this.label7.Size = new System.Drawing.Size(340, 13);
             this.label7.TabIndex = 38;
             this.label7.Text = "Hz (correction value for the Pluto TCXO, or use CAL calibration function)";
             // 
             // tb_plutooffset
             // 
-            this.tb_plutooffset.Location = new System.Drawing.Point(154, 155);
+            this.tb_plutooffset.Location = new System.Drawing.Point(174, 155);
             this.tb_plutooffset.Name = "tb_plutooffset";
-            this.tb_plutooffset.Size = new System.Drawing.Size(157, 20);
+            this.tb_plutooffset.Size = new System.Drawing.Size(137, 20);
             this.tb_plutooffset.TabIndex = 37;
             // 
             // label8
@@ -250,17 +251,18 @@ namespace trxGui
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(325, 185);
+            this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label9.Location = new System.Drawing.Point(315, 185);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(312, 13);
+            this.label9.Size = new System.Drawing.Size(306, 13);
             this.label9.TabIndex = 41;
             this.label9.Text = "Hz (correction value for the LNB, or use CAL calibration function)";
             // 
             // tb_lnboffset
             // 
-            this.tb_lnboffset.Location = new System.Drawing.Point(154, 181);
+            this.tb_lnboffset.Location = new System.Drawing.Point(174, 181);
             this.tb_lnboffset.Name = "tb_lnboffset";
-            this.tb_lnboffset.Size = new System.Drawing.Size(157, 20);
+            this.tb_lnboffset.Size = new System.Drawing.Size(137, 20);
             this.tb_lnboffset.TabIndex = 40;
             // 
             // label12
@@ -279,9 +281,9 @@ namespace trxGui
             "fast CPU (RPI4...)",
             "normal CPU",
             "very slow CPU (RPI3...)"});
-            this.comboBox_cpuspeed.Location = new System.Drawing.Point(154, 242);
+            this.comboBox_cpuspeed.Location = new System.Drawing.Point(174, 242);
             this.comboBox_cpuspeed.Name = "comboBox_cpuspeed";
-            this.comboBox_cpuspeed.Size = new System.Drawing.Size(157, 21);
+            this.comboBox_cpuspeed.Size = new System.Drawing.Size(137, 21);
             this.comboBox_cpuspeed.TabIndex = 42;
             this.comboBox_cpuspeed.Text = "normal CPU";
             // 
@@ -297,9 +299,10 @@ namespace trxGui
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(326, 246);
+            this.label14.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label14.Location = new System.Drawing.Point(316, 246);
             this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(200, 13);
+            this.label14.Size = new System.Drawing.Size(197, 13);
             this.label14.TabIndex = 44;
             this.label14.Text = "to reduce CPU load on slower computers";
             // 
@@ -328,10 +331,14 @@ namespace trxGui
             this.comboBox1.FormattingEnabled = true;
             this.comboBox1.Items.AddRange(new object[] {
             "English",
-            "German/Deutsch"});
-            this.comboBox1.Location = new System.Drawing.Point(154, 299);
+            "German/Deutsch",
+            "French/Français",
+            "Spanish/Español",
+            "Portuguese/Portugués",
+            "Italian/Italiano"});
+            this.comboBox1.Location = new System.Drawing.Point(174, 299);
             this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(157, 21);
+            this.comboBox1.Size = new System.Drawing.Size(137, 21);
             this.comboBox1.TabIndex = 46;
             this.comboBox1.Text = "English";
             this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
@@ -353,26 +360,27 @@ namespace trxGui
             "red / rot",
             "green / grün",
             "white / weiß"});
-            this.comboBox_color.Location = new System.Drawing.Point(154, 272);
+            this.comboBox_color.Location = new System.Drawing.Point(174, 272);
             this.comboBox_color.Name = "comboBox_color";
-            this.comboBox_color.Size = new System.Drawing.Size(157, 21);
+            this.comboBox_color.Size = new System.Drawing.Size(137, 21);
             this.comboBox_color.TabIndex = 48;
             this.comboBox_color.Text = "blue / blau";
             // 
             // label17
             // 
             this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(325, 215);
+            this.label17.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label17.Location = new System.Drawing.Point(315, 215);
             this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(228, 13);
+            this.label17.Size = new System.Drawing.Size(226, 13);
             this.label17.TabIndex = 52;
             this.label17.Text = "Pluto TX power [dBm], allowed values: -40 to 0";
             // 
             // textBox_txpower
             // 
-            this.textBox_txpower.Location = new System.Drawing.Point(154, 211);
+            this.textBox_txpower.Location = new System.Drawing.Point(174, 211);
             this.textBox_txpower.Name = "textBox_txpower";
-            this.textBox_txpower.Size = new System.Drawing.Size(157, 20);
+            this.textBox_txpower.Size = new System.Drawing.Size(137, 20);
             this.textBox_txpower.TabIndex = 51;
             this.textBox_txpower.Text = "0";
             // 
@@ -385,40 +393,11 @@ namespace trxGui
             this.label18.TabIndex = 50;
             this.label18.Text = "TX power:";
             // 
-            // label19
-            // 
-            this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(11, 330);
-            this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(67, 13);
-            this.label19.TabIndex = 54;
-            this.label19.Text = "Screen-Size:";
-            // 
-            // cb_screensize
-            // 
-            this.cb_screensize.FormattingEnabled = true;
-            this.cb_screensize.Items.AddRange(new object[] {
-            "1920x1080",
-            "1280x800",
-            "1280x480",
-            "1024x768",
-            "800x600",
-            "800x480",
-            "640x480",
-            "480x320"});
-            this.cb_screensize.Location = new System.Drawing.Point(154, 326);
-            this.cb_screensize.Name = "cb_screensize";
-            this.cb_screensize.Size = new System.Drawing.Size(157, 21);
-            this.cb_screensize.TabIndex = 53;
-            this.cb_screensize.Text = "1280x800";
-            // 
             // Form_setup
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 382);
-            this.Controls.Add(this.label19);
-            this.Controls.Add(this.cb_screensize);
             this.Controls.Add(this.label17);
             this.Controls.Add(this.textBox_txpower);
             this.Controls.Add(this.label18);
@@ -497,7 +476,5 @@ namespace trxGui
         private System.Windows.Forms.Label label17;
         private System.Windows.Forms.TextBox textBox_txpower;
         private System.Windows.Forms.Label label18;
-        private System.Windows.Forms.Label label19;
-        private System.Windows.Forms.ComboBox cb_screensize;
     }
 }

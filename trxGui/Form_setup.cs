@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace trxGui
@@ -9,7 +10,15 @@ namespace trxGui
         {
             InitializeComponent();
 
+            Width = 800;
+            Height = 480;
+            int yb = Height - 60;
+            button1.Location = new Point(Width - button1.Width - 20, yb);
+            button2.Location = new Point(button1.Location.X - button2.Width - 20, yb);
+            button3.Location = new Point(button2.Location.X - button3.Width - 20, yb);
+
             comboBox1.SelectedIndex = statics.language;
+            cb_screensize.SelectedIndex = statics.windowsize;
 
             foreach (Control c in Controls)
                 c.Text = language.GetText(c.Text);
@@ -25,6 +34,7 @@ namespace trxGui
             rb_plutousb.Checked = statics.plutousb == 1 ? true : false;
             rb_plutoeth.Checked = statics.plutousb == 1 ? false : true;
             tb_plutoip.Text = statics.plutoaddress;
+            textBox_txpower.Text = statics.txpower.ToString();
 
             comboBox_cpuspeed.SelectedIndex = statics.cpuspeed;
             comboBox_color.SelectedIndex = statics.palette;
@@ -106,11 +116,16 @@ namespace trxGui
             statics.rfoffset = (int)dv;
             dv = statics.MyToDouble(tb_lnboffset.Text);
             statics.lnboffset = (int)dv;
+            dv = statics.MyToDouble(textBox_txpower.Text);
+            statics.txpower = (int)dv;
+            if (statics.txpower > 0) statics.txpower = 0;
+            if (statics.txpower < -60) statics.txpower = -60;
 
             statics.plutousb = rb_plutousb.Checked?1:0;
             statics.plutoaddress = tb_plutoip.Text;
             statics.cpuspeed = comboBox_cpuspeed.SelectedIndex;
             statics.palette = comboBox_color.SelectedIndex;
+            statics.windowsize = cb_screensize.SelectedIndex;
         }
 
         private void rb_plutousb_CheckedChanged(object sender, EventArgs e)

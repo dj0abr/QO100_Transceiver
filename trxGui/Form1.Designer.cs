@@ -88,6 +88,8 @@ namespace trxGui
             // panel_rit
             // 
             this.panel_rit.BackColor = System.Drawing.Color.White;
+            this.panel_rit.BackgroundImage = global::trxGui.Properties.Resources.rit_button;
+            this.panel_rit.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.panel_rit.Location = new System.Drawing.Point(14, 709);
             this.panel_rit.Name = "panel_rit";
             this.panel_rit.Size = new System.Drawing.Size(48, 48);
@@ -98,6 +100,8 @@ namespace trxGui
             // panel_xit
             // 
             this.panel_xit.BackColor = System.Drawing.Color.White;
+            this.panel_xit.BackgroundImage = global::trxGui.Properties.Resources.xit_button;
+            this.panel_xit.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.panel_xit.Location = new System.Drawing.Point(68, 709);
             this.panel_xit.Name = "panel_xit";
             this.panel_xit.Size = new System.Drawing.Size(48, 48);
@@ -138,6 +142,7 @@ namespace trxGui
             // panel_txmute
             // 
             this.panel_txmute.BackColor = System.Drawing.Color.White;
+            this.panel_txmute.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.panel_txmute.Location = new System.Drawing.Point(284, 709);
             this.panel_txmute.Name = "panel_txmute";
             this.panel_txmute.Size = new System.Drawing.Size(48, 48);
@@ -148,6 +153,7 @@ namespace trxGui
             // panel_comp
             // 
             this.panel_comp.BackColor = System.Drawing.Color.White;
+            this.panel_comp.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.panel_comp.Location = new System.Drawing.Point(338, 710);
             this.panel_comp.Name = "panel_comp";
             this.panel_comp.Size = new System.Drawing.Size(48, 48);
@@ -158,6 +164,7 @@ namespace trxGui
             // panel_rxfilter
             // 
             this.panel_rxfilter.BackColor = System.Drawing.Color.White;
+            this.panel_rxfilter.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.panel_rxfilter.Location = new System.Drawing.Point(392, 710);
             this.panel_rxfilter.Name = "panel_rxfilter";
             this.panel_rxfilter.Size = new System.Drawing.Size(48, 48);
@@ -168,6 +175,7 @@ namespace trxGui
             // panel_txfilter
             // 
             this.panel_txfilter.BackColor = System.Drawing.Color.White;
+            this.panel_txfilter.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.panel_txfilter.Location = new System.Drawing.Point(446, 710);
             this.panel_txfilter.Name = "panel_txfilter";
             this.panel_txfilter.Size = new System.Drawing.Size(48, 48);
@@ -178,6 +186,7 @@ namespace trxGui
             // panel_rfloop
             // 
             this.panel_rfloop.BackColor = System.Drawing.Color.White;
+            this.panel_rfloop.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.panel_rfloop.Location = new System.Drawing.Point(610, 710);
             this.panel_rfloop.Name = "panel_rfloop";
             this.panel_rfloop.Size = new System.Drawing.Size(48, 48);
@@ -188,6 +197,7 @@ namespace trxGui
             // panel_audioloop
             // 
             this.panel_audioloop.BackColor = System.Drawing.Color.White;
+            this.panel_audioloop.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.panel_audioloop.Location = new System.Drawing.Point(556, 710);
             this.panel_audioloop.Name = "panel_audioloop";
             this.panel_audioloop.Size = new System.Drawing.Size(48, 48);
@@ -219,7 +229,7 @@ namespace trxGui
             // 
             this.panel_pavucontrol.BackColor = System.Drawing.Color.White;
             this.panel_pavucontrol.BackgroundImage = global::trxGui.Properties.Resources.mixer;
-            this.panel_pavucontrol.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.panel_pavucontrol.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.panel_pavucontrol.Location = new System.Drawing.Point(976, 710);
             this.panel_pavucontrol.Name = "panel_pavucontrol";
             this.panel_pavucontrol.Size = new System.Drawing.Size(48, 48);
@@ -241,7 +251,7 @@ namespace trxGui
             // 
             this.panel_setup.BackColor = System.Drawing.Color.White;
             this.panel_setup.BackgroundImage = global::trxGui.Properties.Resources.setup;
-            this.panel_setup.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.panel_setup.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.panel_setup.Location = new System.Drawing.Point(1030, 710);
             this.panel_setup.Name = "panel_setup";
             this.panel_setup.Size = new System.Drawing.Size(48, 48);
@@ -251,6 +261,7 @@ namespace trxGui
             // panel_txhighpass
             // 
             this.panel_txhighpass.BackColor = System.Drawing.Color.White;
+            this.panel_txhighpass.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.panel_txhighpass.Location = new System.Drawing.Point(500, 709);
             this.panel_txhighpass.Name = "panel_txhighpass";
             this.panel_txhighpass.Size = new System.Drawing.Size(48, 48);

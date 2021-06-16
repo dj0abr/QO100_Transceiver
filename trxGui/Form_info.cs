@@ -16,6 +16,9 @@ namespace trxGui
         {
             InitializeComponent();
 
+            this.Width = 800;
+            button_ok.Location = new Point(Width - button_ok.Width - 30, Height - button_ok.Height - 30);
+
             foreach (Control c in Controls)
                 c.Text = language.GetText(c.Text);
 

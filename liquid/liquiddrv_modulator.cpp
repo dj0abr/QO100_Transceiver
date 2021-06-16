@@ -304,6 +304,16 @@ int txbufidx = 0;
         txbuf[txbufidx++] = xi >> 8;
         txbuf[txbufidx++] = xq & 0xff;
         txbuf[txbufidx++] = xq >> 8;
+
+        /*
+        // measure max value in case of distortions, may be max 0x7fff
+        static int32_t max = 0;
+
+        if(xi > max)
+        {
+            max = xi;
+            printf("%04X\n",max);
+        }*/
     }
 
     write_fifo(TXfifo,txbuf,PLUTOBUFSIZE*4);

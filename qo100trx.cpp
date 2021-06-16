@@ -49,6 +49,7 @@ int resetqrgs = 0;
 int beaconlock = 0;
 int fftspeed = 0;
 int audiohighpass = 0;
+int txpower = 0;
 
 // fifos to send/receive samples with pluto run thread
 int RXfifo;
@@ -213,6 +214,14 @@ void udprxfunc(uint8_t *pdata, int len, struct sockaddr_in* sender)
 
 	if(pdata[0] == 18)
 		audiohighpass = pdata[1];
+
+	if(pdata[0] == 19)
+	{
+		txpower = pdata[1];
+		txpower = -txpower;	// convert received pos value into correct neg value
+		if(txpower > 0) txpower = 0;
+		if(txpower < -60) txpower = -60;
+	}
 }
 
 void close_program()
@@ -229,6 +238,7 @@ int main ()
 {
 	printf("=== QO100 Transceiver Pluto-Driver, by DJ0ABR ===\n");
 
+	// linux error number see:
 	// https://github.com/torvalds/linux/blob/master/include/uapi/asm-generic/errno-base.h
 	/*char s1[100];
 	iio_strerror(-19, s1, 99);
@@ -355,6 +365,8 @@ int main ()
 			setRXfrequency((long long)RX_FREQ);
 			setTXfrequency((long long)TX_FREQ);
 		}
+
+		setTXpower();
 
 		usleep(100);
 	}

@@ -18,7 +18,6 @@ typedef struct _stream_cfg_ {
 	long long bw_hz; // Analog bandwidth in Hz
 	long long fs_hz; // Baseband sample rate in Hz
 	long long lo_hz; // Local oscillator frequency in Hz
-	double hwgain;	 // TX gain
 	const char* rfport; // Port name
 } stream_cfg;
 
@@ -31,6 +30,7 @@ void pluto_setup();
 void init_runloop();
 void setTXfrequency(long long freq);
 void setRXfrequency(long long freq);
+void setTXpower();
 
 
 extern stream_cfg rxcfg;

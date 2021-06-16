@@ -158,7 +158,6 @@ void downmix(liquid_float_complex *samples, int len)
 
     for(int i=0; i<len; i++)
     {
-        
         exec_beaconlock(samples[i]);
 
         // down mix SSB channel into baseband

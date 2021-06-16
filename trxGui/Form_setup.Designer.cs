@@ -60,6 +60,11 @@ namespace trxGui
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.label16 = new System.Windows.Forms.Label();
             this.comboBox_color = new System.Windows.Forms.ComboBox();
+            this.label17 = new System.Windows.Forms.Label();
+            this.textBox_txpower = new System.Windows.Forms.TextBox();
+            this.label18 = new System.Windows.Forms.Label();
+            this.label19 = new System.Windows.Forms.Label();
+            this.cb_screensize = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // button1
@@ -88,7 +93,7 @@ namespace trxGui
             this.cb_audioPB.FormattingEnabled = true;
             this.cb_audioPB.Location = new System.Drawing.Point(154, 47);
             this.cb_audioPB.Name = "cb_audioPB";
-            this.cb_audioPB.Size = new System.Drawing.Size(538, 21);
+            this.cb_audioPB.Size = new System.Drawing.Size(509, 21);
             this.cb_audioPB.TabIndex = 2;
             // 
             // label10
@@ -114,14 +119,14 @@ namespace trxGui
             this.cb_audioCAP.FormattingEnabled = true;
             this.cb_audioCAP.Location = new System.Drawing.Point(154, 71);
             this.cb_audioCAP.Name = "cb_audioCAP";
-            this.cb_audioCAP.Size = new System.Drawing.Size(538, 21);
+            this.cb_audioCAP.Size = new System.Drawing.Size(509, 21);
             this.cb_audioCAP.TabIndex = 13;
             // 
             // tb_txqrg
             // 
             this.tb_txqrg.Location = new System.Drawing.Point(154, 125);
             this.tb_txqrg.Name = "tb_txqrg";
-            this.tb_txqrg.Size = new System.Drawing.Size(177, 20);
+            this.tb_txqrg.Size = new System.Drawing.Size(157, 20);
             this.tb_txqrg.TabIndex = 21;
             // 
             // label6
@@ -136,7 +141,7 @@ namespace trxGui
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(337, 106);
+            this.label2.Location = new System.Drawing.Point(325, 106);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(312, 13);
             this.label2.TabIndex = 27;
@@ -146,7 +151,7 @@ namespace trxGui
             // 
             this.tb_rxqrg.Location = new System.Drawing.Point(154, 102);
             this.tb_rxqrg.Name = "tb_rxqrg";
-            this.tb_rxqrg.Size = new System.Drawing.Size(177, 20);
+            this.tb_rxqrg.Size = new System.Drawing.Size(157, 20);
             this.tb_rxqrg.TabIndex = 26;
             // 
             // label3
@@ -161,7 +166,7 @@ namespace trxGui
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(337, 129);
+            this.label1.Location = new System.Drawing.Point(325, 129);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(306, 13);
             this.label1.TabIndex = 28;
@@ -220,7 +225,7 @@ namespace trxGui
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(337, 159);
+            this.label7.Location = new System.Drawing.Point(325, 159);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(347, 13);
             this.label7.TabIndex = 38;
@@ -230,7 +235,7 @@ namespace trxGui
             // 
             this.tb_plutooffset.Location = new System.Drawing.Point(154, 155);
             this.tb_plutooffset.Name = "tb_plutooffset";
-            this.tb_plutooffset.Size = new System.Drawing.Size(177, 20);
+            this.tb_plutooffset.Size = new System.Drawing.Size(157, 20);
             this.tb_plutooffset.TabIndex = 37;
             // 
             // label8
@@ -245,7 +250,7 @@ namespace trxGui
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(337, 185);
+            this.label9.Location = new System.Drawing.Point(325, 185);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(312, 13);
             this.label9.TabIndex = 41;
@@ -255,7 +260,7 @@ namespace trxGui
             // 
             this.tb_lnboffset.Location = new System.Drawing.Point(154, 181);
             this.tb_lnboffset.Name = "tb_lnboffset";
-            this.tb_lnboffset.Size = new System.Drawing.Size(177, 20);
+            this.tb_lnboffset.Size = new System.Drawing.Size(157, 20);
             this.tb_lnboffset.TabIndex = 40;
             // 
             // label12
@@ -274,16 +279,16 @@ namespace trxGui
             "fast CPU (RPI4...)",
             "normal CPU",
             "very slow CPU (RPI3...)"});
-            this.comboBox_cpuspeed.Location = new System.Drawing.Point(154, 212);
+            this.comboBox_cpuspeed.Location = new System.Drawing.Point(154, 242);
             this.comboBox_cpuspeed.Name = "comboBox_cpuspeed";
-            this.comboBox_cpuspeed.Size = new System.Drawing.Size(177, 21);
+            this.comboBox_cpuspeed.Size = new System.Drawing.Size(157, 21);
             this.comboBox_cpuspeed.TabIndex = 42;
             this.comboBox_cpuspeed.Text = "normal CPU";
             // 
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(11, 216);
+            this.label13.Location = new System.Drawing.Point(11, 246);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(136, 13);
             this.label13.TabIndex = 43;
@@ -292,7 +297,7 @@ namespace trxGui
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(338, 216);
+            this.label14.Location = new System.Drawing.Point(326, 246);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(200, 13);
             this.label14.TabIndex = 44;
@@ -312,7 +317,7 @@ namespace trxGui
             // label15
             // 
             this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(11, 273);
+            this.label15.Location = new System.Drawing.Point(11, 303);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(58, 13);
             this.label15.TabIndex = 47;
@@ -324,9 +329,9 @@ namespace trxGui
             this.comboBox1.Items.AddRange(new object[] {
             "English",
             "German/Deutsch"});
-            this.comboBox1.Location = new System.Drawing.Point(154, 269);
+            this.comboBox1.Location = new System.Drawing.Point(154, 299);
             this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(177, 21);
+            this.comboBox1.Size = new System.Drawing.Size(157, 21);
             this.comboBox1.TabIndex = 46;
             this.comboBox1.Text = "English";
             this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
@@ -334,7 +339,7 @@ namespace trxGui
             // label16
             // 
             this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(11, 246);
+            this.label16.Location = new System.Drawing.Point(11, 276);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(70, 13);
             this.label16.TabIndex = 49;
@@ -348,17 +353,74 @@ namespace trxGui
             "red / rot",
             "green / grün",
             "white / weiß"});
-            this.comboBox_color.Location = new System.Drawing.Point(154, 242);
+            this.comboBox_color.Location = new System.Drawing.Point(154, 272);
             this.comboBox_color.Name = "comboBox_color";
-            this.comboBox_color.Size = new System.Drawing.Size(177, 21);
+            this.comboBox_color.Size = new System.Drawing.Size(157, 21);
             this.comboBox_color.TabIndex = 48;
             this.comboBox_color.Text = "blue / blau";
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(325, 215);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(228, 13);
+            this.label17.TabIndex = 52;
+            this.label17.Text = "Pluto TX power [dBm], allowed values: -40 to 0";
+            // 
+            // textBox_txpower
+            // 
+            this.textBox_txpower.Location = new System.Drawing.Point(154, 211);
+            this.textBox_txpower.Name = "textBox_txpower";
+            this.textBox_txpower.Size = new System.Drawing.Size(157, 20);
+            this.textBox_txpower.TabIndex = 51;
+            this.textBox_txpower.Text = "0";
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Location = new System.Drawing.Point(12, 214);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(56, 13);
+            this.label18.TabIndex = 50;
+            this.label18.Text = "TX power:";
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Location = new System.Drawing.Point(11, 330);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(67, 13);
+            this.label19.TabIndex = 54;
+            this.label19.Text = "Screen-Size:";
+            // 
+            // cb_screensize
+            // 
+            this.cb_screensize.FormattingEnabled = true;
+            this.cb_screensize.Items.AddRange(new object[] {
+            "1280x800",
+            "1280x480",
+            "1024x768",
+            "800x600",
+            "800x480",
+            "640x480",
+            "480x320"});
+            this.cb_screensize.Location = new System.Drawing.Point(154, 326);
+            this.cb_screensize.Name = "cb_screensize";
+            this.cb_screensize.Size = new System.Drawing.Size(157, 21);
+            this.cb_screensize.TabIndex = 53;
+            this.cb_screensize.Text = "1280x800";
             // 
             // Form_setup
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 347);
+            this.ClientSize = new System.Drawing.Size(800, 382);
+            this.Controls.Add(this.label19);
+            this.Controls.Add(this.cb_screensize);
+            this.Controls.Add(this.label17);
+            this.Controls.Add(this.textBox_txpower);
+            this.Controls.Add(this.label18);
             this.Controls.Add(this.label16);
             this.Controls.Add(this.comboBox_color);
             this.Controls.Add(this.label15);
@@ -431,5 +493,10 @@ namespace trxGui
         private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.ComboBox comboBox_color;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.TextBox textBox_txpower;
+        private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.ComboBox cb_screensize;
     }
 }

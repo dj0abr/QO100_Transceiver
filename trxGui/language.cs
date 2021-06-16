@@ -30,6 +30,9 @@ namespace trxGui
             "Open Manual",
             "Mouse:",
             "Color Palette:",
+            "Pluto TX power [dBm], allowed values: -40 to 0",
+            "TX power:",
+            "Screen-Size:",
         };
 
         public static String[] de = new String[]
@@ -54,6 +57,9 @@ namespace trxGui
             "Bedienungsanleitung",
             "Maus:",
             "Farbpalette:",
+            "Pluto TX Ausgangsleistung [dBm], erlaubte Werte: -40 bis 0",
+            "TX Leistung:",
+            "Bildgröße:",
         };
 
         public static String GetText(String s)

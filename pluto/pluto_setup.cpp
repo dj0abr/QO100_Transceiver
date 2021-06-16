@@ -33,7 +33,6 @@ float RX_BW =    	1;					// MHz
 float TX_BW =    	0.1;				// MHz
 double RX_FREQ =	(double)RXBASEQRG;	// Hz
 double TX_FREQ =	(double)TXBASEQRG;	// Hz
-float TX_GAIN =  	0;				// dBm max = 0, max_usable=-5
 // =========================================
 
 
@@ -78,14 +77,13 @@ void pluto_setup()
 	txcfg.fs_hz = srate;   			// tx sample rate (must be same as RX samp rate)
 	txcfg.lo_hz = TX_FREQ; 			// tx rf frequency
 	txcfg.rfport = "A"; 			// port A (select for rf freq.)
-	txcfg.hwgain = TX_GAIN;
-
+	
 	printf("RX frequency         : %f MHz\n", (double)rxcfg.lo_hz / 1e6);
 	printf("TX frequency         : %f MHz\n", (double)txcfg.lo_hz / 1e6);
 	printf("Samplerate           : %f MHz\n", (double)SAMPRATE / 1e6);
 	printf("RX Bandwidth         : %f MHz\n", (double)rxcfg.bw_hz / 1e6);
 	printf("TX Bandwidth         : %f MHz\n", (double)txcfg.bw_hz / 1e6);
-	printf("TX Gain              : %f dBm\n",txcfg.hwgain);
+	printf("TX Gain              : %d dBm\n",txpower);
 
 	// Initialize Pluto
 	ctx = iio_create_context_from_uri(pluto_context_name);

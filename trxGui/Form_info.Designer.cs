@@ -46,7 +46,7 @@ namespace trxGui
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
             this.textBox1.ReadOnly = true;
-            this.textBox1.Size = new System.Drawing.Size(410, 174);
+            this.textBox1.Size = new System.Drawing.Size(364, 208);
             this.textBox1.TabIndex = 0;
             this.textBox1.Text = resources.GetString("textBox1.Text");
             // 
@@ -65,11 +65,11 @@ namespace trxGui
             this.textBox2.BackColor = System.Drawing.SystemColors.Control;
             this.textBox2.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.textBox2.Font = new System.Drawing.Font("Courier New", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox2.Location = new System.Drawing.Point(420, 96);
+            this.textBox2.Location = new System.Drawing.Point(384, 96);
             this.textBox2.Multiline = true;
             this.textBox2.Name = "textBox2";
             this.textBox2.ReadOnly = true;
-            this.textBox2.Size = new System.Drawing.Size(359, 262);
+            this.textBox2.Size = new System.Drawing.Size(347, 275);
             this.textBox2.TabIndex = 2;
             this.textBox2.Text = resources.GetString("textBox2.Text");
             // 
@@ -79,12 +79,12 @@ namespace trxGui
             this.panel1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.panel1.Location = new System.Drawing.Point(13, 7);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(775, 84);
+            this.panel1.Size = new System.Drawing.Size(766, 84);
             this.panel1.TabIndex = 3;
             // 
             // button_manual
             // 
-            this.button_manual.Location = new System.Drawing.Point(13, 277);
+            this.button_manual.Location = new System.Drawing.Point(13, 328);
             this.button_manual.Name = "button_manual";
             this.button_manual.Size = new System.Drawing.Size(228, 23);
             this.button_manual.TabIndex = 4;
@@ -97,7 +97,7 @@ namespace trxGui
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(800, 422);
+            this.ClientSize = new System.Drawing.Size(784, 422);
             this.Controls.Add(this.button_manual);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.textBox2);

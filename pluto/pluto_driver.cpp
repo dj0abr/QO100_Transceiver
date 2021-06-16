@@ -128,17 +128,41 @@ bool cfg_ad9361_streaming_ch(struct iio_context *ctx, stream_cfg *cfg, enum iode
 	wr_ch_lli(chn, "rf_bandwidth",       cfg->bw_hz);
 	//printf("write sampling_frequency: %lld\n",cfg->fs_hz);
 	wr_ch_lli(chn, "sampling_frequency", cfg->fs_hz);
+	
 	if(type == TX)
 	{
-		wr_ch_double(chn, "hardwaregain", txcfg.hwgain - 10);
+		//wr_ch_double(chn, "hardwaregain", txcfg.hwgain);
+		setTXpower();
 		setTXfrequency(cfg->lo_hz);
 	}
 	else
 	{
+		// show possible values: iio_attr -n 192.168.20.25 -c ad9361-phy voltage0
+		wr_ch_str(chn, "gain_control_mode","slow_attack");
+		//wr_ch_str(chn, "gain_control_mode","manual");
+		//wr_ch_lli(chn, "hardwaregain", 66);
 		// Configure LO channel
 		setRXfrequency(cfg->lo_hz);
 	}
 	return true;
+}
+
+int lasttxpower = -1;
+
+void setTXpower()
+{
+	if(txpower != lasttxpower)
+	{
+		if(txpower > 0) txpower = 0;	// 0 is pluto's max value
+
+		lasttxpower = txpower;
+
+		printf("set TX power to %d dBm\n",txpower);
+
+		struct iio_channel *chn = NULL;
+		if (!get_phy_chan(ctx, TX, 0, &chn)) { return; }
+		wr_ch_double(chn, "hardwaregain", (double)txpower);
+	}
 }
 
 long long lastfreq = 0;
@@ -151,7 +175,7 @@ void setTXfrequency(long long freq)
 	{
 		lastfreq = freq;
 
-		printf("************* TX-QRG *************** %lld, offset:%d\n",freq,refoffset);
+		//printf("************* TX-QRG *************** %lld, offset:%d\n",freq,refoffset);
 		
 		struct iio_channel *chn = NULL;
 		if (!get_lo_chan(ctx, TX, &chn)) { return; }
@@ -169,7 +193,7 @@ void setRXfrequency(long long freq)
 	{
 		lastrxfreq = freq;
 
-		printf("************* RX-QRG *************** %lld, offset:%d\n",freq,refoffset);
+		//printf("************* RX-QRG *************** %lld, offset:%d\n",freq,refoffset);
 		
 		struct iio_channel *chn = NULL;
 		if (!get_lo_chan(ctx, RX, &chn)) { return; }

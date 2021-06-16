@@ -27,22 +27,9 @@ namespace trxGui
         static Thread udprx_thread;
         static Thread udptx_thread;
 
-        public static void InitUdp(int bsw, int bsh)
+        public static void InitUdp()
         {
-            bigSpecW = bsw;
-            bigSpecH = bsh;
-
-            smallSpecW = bsw;
-            smallSpecH = bsh;
-
-            bigWFW = bsw;
-            bigWFH = bsh;
-
-            smallWFW = bsw;
-            smallWFH = bsh;
-
-            bmBigWF = new Bitmap(bigWFW, bigWFH);
-            bmSmallWF = new Bitmap(smallWFW, smallWFH);
+            UpdateSize();
 
             // create thread for UDP RX
             udprx_thread = new Thread(new ThreadStart(Udprxloop));
@@ -51,6 +38,24 @@ namespace trxGui
             // create thread for UDP TX
             udptx_thread = new Thread(new ThreadStart(Udptxloop));
             udptx_thread.Start();
+        }
+
+        public static void UpdateSize()
+        {
+            bigSpecW = statics.panel_bigspec_Width;
+            bigSpecH = statics.panel_bigspec_Height;
+
+            smallSpecW = statics.panel_smallspec_Width;
+            smallSpecH = statics.panel_smallspec_Height;
+
+            bigWFW = statics.panel_bigwf_Width;
+            bigWFH = statics.panel_bigwf_Height;
+
+            smallWFW = statics.panel_smallwf_Width;
+            smallWFH = statics.panel_smallwf_Height;
+
+            bmBigWF = new Bitmap(bigWFW, bigWFH);
+            bmSmallWF = new Bitmap(smallWFW, smallWFH);
         }
 
         static void Udptxloop()
@@ -197,6 +202,11 @@ namespace trxGui
             return max - r;
         }
 
+        static int scaleX(int x, int maxx, int width)
+        {
+            return x * width / maxx;
+        }
+
         static int [] getSpecArr(Byte [] arr)
         {
             int [] sa = new int [arr.Length / 2];
@@ -238,12 +248,13 @@ namespace trxGui
                 // Make a Polyline
                 Point[] poly = new Point[arr.Length + 2];
                 poly[0] = new Point(0, bigSpecH-1);
-                poly[arr.Length + 2 - 1] = new Point(1120-1, bigSpecH-1);
+                poly[arr.Length + 2 - 1] = new Point(bigSpecW - 1, bigSpecH-1);
 
                 for (int i = 0; i < arr.Length; i++)
                 {
                     int val = scaleY(arr[i], noiselevel, statics.maxlevel, bigSpecH);
-                    poly[i + 1] = new Point(i, val);
+                    int xi = scaleX(i,arr.Length, bigSpecW);
+                    poly[i + 1] = new Point(xi, val);
                 }
 
                 gr.FillRectangle(Brushes.Black, 0, 0, bigSpecW, bigSpecH);
@@ -254,10 +265,10 @@ namespace trxGui
                 penmarkerLN.DashPattern = new float[] { 1.0f, 1.0f };
                 if (statics.bandplan_mode == 0)
                 {
-                    for (int i = 0; i < bp.be.Length - 1; i++)
+                    for (int i = 0; i < bp.be.Length; i++)
                     {
                         int xs = qrgToPixelpos(bp.be[i].from);
-                        int ws = qrgToPixelpos(bp.be[i + 1].from) - xs;
+                        xs = xs * bigSpecW / 1120;
                         gr.DrawLine(penmarkerLN, xs,0,xs, bigSpecH);
                     }
                 }
@@ -266,6 +277,7 @@ namespace trxGui
                     for (int qrg = 10489500; qrg <= 10490000; qrg += 50)
                     {
                         int spos = qrgToPixelpos(qrg);
+                        spos = spos * bigSpecW / 1120;
                         gr.DrawLine(penmarkerLN, spos, 0, spos, bigSpecH);
                     }
                 }
@@ -273,7 +285,9 @@ namespace trxGui
                 // green vertical line at RX frequency
                 // red vertical line at TX frequency
                 int x = statics.RXoffset * 2 / 1000;
+                x = x * bigSpecW / 1120;
                 int xtx = statics.TXoffset * 2 / 1000;
+                xtx = xtx * bigSpecW / 1120;
                 int xydiff = Math.Abs(x - xtx);
                 
                 penmarker.DashPattern = new float[] { 2.0f, 2.0f };
@@ -309,18 +323,19 @@ namespace trxGui
             Pen dotpen = new Pen(Brushes.Yellow, 1);
             dotpen.DashPattern = new float[] { 2.0f, 2.0f };
 
-            Bitmap bmsmallspec = new Bitmap(bigSpecW, smallSpecH);
+            Bitmap bmsmallspec = new Bitmap(smallSpecW, smallSpecH);
             using (Graphics gr = Graphics.FromImage(bmsmallspec))
             {
                 // Make a Polyline
                 Point[] poly = new Point[arr.Length + 2];
                 poly[0] = new Point(0, smallSpecH - 1);
-                poly[arr.Length + 2 - 1] = new Point(1120 - 1, smallSpecH - 1);
+                poly[arr.Length + 2 - 1] = new Point(smallSpecW - 1, smallSpecH - 1);
 
                 for (int i = 0; i < arr.Length; i++)
                 {
                     int val = scaleY(arr[i], statics.noiselevel, statics.maxlevel, smallSpecH);
-                    poly[i + 1] = new Point(i, val);
+                    int xi = scaleX(i, arr.Length, smallSpecW);
+                    poly[i + 1] = new Point(xi, val);
                 }
 
                 gr.FillRectangle(Brushes.Black, 0, 0, bigSpecW, smallSpecH);
@@ -355,7 +370,8 @@ namespace trxGui
                     //Console.WriteLine(arr[i] + ": " + v);
 
                     SolidBrush br = new SolidBrush(col.getColor(v));
-                    gr.FillRectangle(br, i, 0, i, lineincrement);
+                    int xi = scaleX(i, arr.Length, bigWFW);
+                    gr.FillRectangle(br, xi, 0, xi, lineincrement);
                 }
             }
 
@@ -363,37 +379,14 @@ namespace trxGui
             using (Graphics grbm = Graphics.FromImage(bmBigWF))
                 grbm.DrawImage(bmnew, 0, 0);
 
-            /* TODO: maybe a faster solution based on this example:
-             * 
-            Rectangle rect = new Rectangle(0, 0, bigWFW, 1);
-            BitmapData bmpData = bmbigline.LockBits(rect, ImageLockMode.ReadWrite, bmbigline.PixelFormat);
-
-            // Get the address of the first line (the only line in this case)
-            IntPtr ptr = bmpData.Scan0;
-
-            // Declare an array to hold the bytes of the bitmap.
-            int bytes = Math.Abs(bmpData.Stride) * bmbigline.Height;
-            byte[] rgbValues = new byte[bytes];
-
-            // Copy the RGB values into the array.
-            System.Runtime.InteropServices.Marshal.Copy(ptr, rgbValues, 0, bytes);
-
-            // Set every third value to 255. A 24bpp bitmap will look red.  
-            for (int counter = 2; counter < rgbValues.Length; counter += 3)
-                rgbValues[counter] = 255;
-
-            // Copy the RGB values back to the bitmap
-            System.Runtime.InteropServices.Marshal.Copy(rgbValues, 0, ptr, bytes);
-
-            bmbigline.UnlockBits(bmpData);
-            */
-
             using (Graphics gr = Graphics.FromImage(bmnew))
             {
                 // green vertical line at RX frequency
                 // red vertical line at TX frequency
                 int x = statics.RXoffset * 2 / 1000;
+                x = x * bigWFW / 1120;
                 int xtx = statics.TXoffset * 2 / 1000;
+                xtx = xtx * bigWFW / 1120;
                 int xydiff = Math.Abs(x - xtx);
 
                 penmarker.DashPattern = new float[] { 2.0f, 2.0f };
@@ -425,7 +418,8 @@ namespace trxGui
                     //Console.WriteLine(arr[i] + ": " + v);
 
                     SolidBrush br = new SolidBrush(col.getColor(v));
-                    gr.FillRectangle(br, i, 0, i, lineincrement);
+                    int xi = scaleX(i, arr.Length, smallWFW);
+                    gr.FillRectangle(br, xi, 0, xi, lineincrement);
                 }
             }
 
@@ -441,18 +435,21 @@ namespace trxGui
                 // tuning (middle) line
                 Pen dotpen = new Pen(Brushes.Yellow, 1);
                 dotpen.DashPattern = new float[] { 2.0f, 2.0f };
-                gr.DrawLine(dotpen, smallWFW / 2, 0, smallWFW / 2, smallWFH);
+                int xi = smallWFW / 2;
+                gr.DrawLine(dotpen, xi, 0, xi, smallWFH);
 
                 // 25Hz per pixel: 120px per 3kHz
                 Pen dotgraypen = new Pen(Brushes.DarkGray, 1);
                 dotgraypen.DashPattern = new float[] { 1.0f, 3.0f };
                 for (int i=120; i<500; i+=120)
                 {
-                    gr.DrawLine(dotgraypen, smallWFW / 2 + i, 0, smallWFW / 2 + i, smallWFH);
+                    xi = smallWFW / 2 + i * smallWFW / 1120;
+                    gr.DrawLine(dotgraypen, xi, 0, xi, smallWFH);
                 }
                 for (int i = -120; i > -500; i -= 120)
                 {
-                    gr.DrawLine(dotgraypen, smallWFW / 2 + i, 0, smallWFW / 2 + i, smallWFH);
+                    xi = smallWFW / 2 + i * smallWFW / 1120;
+                    gr.DrawLine(dotgraypen, xi, 0, xi, smallWFH);
                 }
             }
 

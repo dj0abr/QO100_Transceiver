@@ -7,6 +7,13 @@ namespace trxGui
 {
     public partial class Form1 : Form
     {
+        int window_width = 800;
+        int window_height = 480;
+        int spec_height = 88;
+        int wf_height = 70;
+        int button_size = 32;
+        Font bigfnt;
+
         public Form1()
         {
             InitializeComponent();
@@ -22,84 +29,7 @@ namespace trxGui
             panel_smallwf.MouseWheel += panel_smallwf_MouseWheel;
             panel_smallspec.MouseWheel += panel_smallwf_MouseWheel;
 
-            this.Width = 1155;
-            this.Height = 790;
-
-            panel_qrg.Location = new Point(13, 4);
-            panel_qrg.Width = 1092;
-            panel_qrg.Height = 40;
-
-            panel_sync.Location = new Point(panel_qrg.Location.X + panel_qrg.Width + 4, panel_qrg.Location.Y);
-            panel_sync.Width = 1120 - (panel_qrg.Location.X + panel_qrg.Width-4);
-
-            panel_beaconlock.Location = new Point(panel_qrg.Location.X + panel_qrg.Width + 4, panel_sync.Location.Y + panel_sync.Height + 4);
-            panel_beaconlock.Width = panel_sync.Width;
-            panel_beaconlock.Height = panel_sync.Height;
-
-            panel_bigspec.Width = 1120;
-            panel_bigspec.Height = 150;
-
-            panel_bandplan.Width = 1120 - 16;
-            panel_bandplan.Height = 16;
-
-            panel_switchbandplan.Width = 16;
-            panel_switchbandplan.Height = 16;
-
-            panel_bigwf.Width = 1120;
-            panel_bigwf.Height = 150;
-
-            panel_rxline.Width = 1120;
-            panel_rxline.Height = 15;
-
-            panel_smallspec.Width = 1120;
-            panel_smallspec.Height = 150;
-
-            panel_smallqrg.Width = 1120;
-            panel_smallqrg.Height = 16;
-
-            panel_smallwf.Width = 1120;
-            panel_smallwf.Height = 150;
-
-            
-            panel_bigspec.Location = new Point(13, panel_qrg.Location.Y + panel_qrg.Height+5);
-            panel_bandplan.Location = new Point(13, panel_bigspec.Location.Y + panel_bigspec.Height);
-            panel_switchbandplan.Location = new Point(panel_bandplan.Location.X + panel_bandplan.Width, panel_bigspec.Location.Y + panel_bigspec.Height);
-            panel_bigwf.Location = new Point(13, panel_bandplan.Location.Y + panel_bandplan.Height);
-
-            panel_rxline.Location = new Point(13, panel_bigwf.Location.Y + panel_bigwf.Height);
-
-            panel_smallspec.Location = new Point(13, panel_rxline.Location.Y + panel_rxline.Height);
-            panel_smallqrg.Location = new Point(13, panel_smallspec.Location.Y + panel_smallspec.Height);
-            panel_smallwf.Location = new Point(13, panel_smallqrg.Location.Y + panel_smallqrg.Height);
-
-            // button panel positions
-            int xspace = 4;
-
-            panel_txhighpass.Size = panel_pavucontrol.Size = panel_rxfilter.Size = panel_txfilter.Size = panel_rfloop.Size = panel_audioloop.Size = panel_comp.Size = panel_setup.Size = panel_info.Size = panel_rit.Size = panel_xit.Size = panel_copyRtoT.Size = panel_copyTtoR.Size = panel_agc.Size = panel_txmute.Size =new Size(48, 48);
-            panel_rit.Location = new Point(13, panel_smallwf.Location.Y + panel_smallwf.Height + 4);
-            panel_xit.Location = new Point(panel_rit.Location.X + panel_rit.Width + xspace, panel_rit.Location.Y);
-
-            panel_copyRtoT.Location = new Point(panel_xit.Location.X + panel_xit.Width + xspace+6, panel_rit.Location.Y);
-            panel_copyTtoR.Location = new Point(panel_copyRtoT.Location.X + panel_copyRtoT.Width + xspace, panel_rit.Location.Y);
-
-            panel_agc.Location = new Point(panel_copyTtoR.Location.X + panel_copyTtoR.Width + xspace+6, panel_rit.Location.Y);
-            panel_txmute.Location = new Point(panel_agc.Location.X + panel_agc.Width + xspace, panel_rit.Location.Y);
-            panel_comp.Location = new Point(panel_txmute.Location.X + panel_txmute.Width + xspace, panel_rit.Location.Y);
-
-            panel_rxfilter.Location = new Point(panel_comp.Location.X + panel_comp.Width + xspace+6, panel_rit.Location.Y);
-            panel_txfilter.Location = new Point(panel_rxfilter.Location.X + panel_rxfilter.Width + xspace, panel_rit.Location.Y);
-            panel_txhighpass.Location = new Point(panel_txfilter.Location.X + panel_txfilter.Width + xspace, panel_rit.Location.Y);
-
-            panel_audioloop.Location = new Point(panel_txhighpass.Location.X + panel_txhighpass.Width + xspace+6, panel_rit.Location.Y);
-            panel_rfloop.Location = new Point(panel_audioloop.Location.X + panel_audioloop.Width + xspace, panel_rit.Location.Y);
-
-            panel_info.Location = new Point(panel_bigspec.Location.X + panel_bigspec.Width - panel_info.Width, panel_rit.Location.Y);
-            panel_setup.Location = new Point(panel_info.Location.X - panel_setup.Width - 5, panel_rit.Location.Y);
-            panel_pavucontrol.Location = new Point(panel_setup.Location.X - panel_pavucontrol.Width - 5, panel_rit.Location.Y);
-
-            // PTT Panel
-            panel1.Location = new Point(panel_rfloop.Location.X + panel_rfloop.Width + xspace+6, panel_rit.Location.Y);
-            panel1.Size = new Size(panel_pavucontrol.Location.X - panel1.Location.X - 6, panel_rfloop.Height);
+            scaleElements();
 
             // test OS type
             OperatingSystem osversion = System.Environment.OSVersion;
@@ -123,13 +53,183 @@ namespace trxGui
                 Console.WriteLine("cannot set working path: " + e.ToString());
             }
 
-            Udp.InitUdp(panel_bigspec.Width, panel_bigspec.Height);
+            Udp.InitUdp();
 
             statics.StartQO100trx();
 
             timer_draw.Start();
 
             sendAndRefreshRXTXoffset();
+        }
+
+        void scaleElements()
+        {
+            if (statics.windowsize == 0)
+            {
+                // sizes for screens 1200x800 pixel
+                window_width = 1155;
+                window_height = 790;
+                spec_height = 150;
+                wf_height = 150;
+                button_size = 48;
+                bigfnt = new Font("Verdana", 24.0f);
+            }
+
+            if (statics.windowsize == 1)
+            {
+                // sizes for screens 1200x480 pixel
+                window_width = 1155;
+                window_height = 480;
+                spec_height = 88;
+                wf_height = 70;
+                button_size = 32;
+                bigfnt = new Font("Verdana", 24.0f);
+            }
+
+            if (statics.windowsize == 2)
+            {
+                // sizes for screens 1024x768 pixel
+                window_width = 1024;
+                window_height = 768;
+                spec_height = 148;
+                wf_height = 148;
+                button_size = 40;
+                bigfnt = new Font("Verdana", 24.0f);
+            }
+
+            if (statics.windowsize == 3)
+            {
+                // sizes for screens 800x600 pixel
+                window_width = 800;
+                window_height = 600;
+                spec_height = 116;
+                wf_height = 100;
+                button_size = 32;
+                bigfnt = new Font("Verdana", 14.0f);
+            }
+
+            if (statics.windowsize == 4)
+            {
+                // sizes for screens 800x480 pixel
+                window_width = 800;
+                window_height = 480;
+                spec_height = 88;
+                wf_height = 70;
+                button_size = 32;
+                bigfnt = new Font("Verdana", 14.0f);
+            }
+
+            if (statics.windowsize == 5)
+            {
+                // sizes for screens 640x480 pixel
+                window_width = 640;
+                window_height = 480;
+                spec_height = 88;
+                wf_height = 70;
+                button_size = 32;
+                bigfnt = new Font("Verdana", 14.0f);
+            }
+
+            if (statics.windowsize == 6)
+            {
+                // sizes for screens 480x320 pixel
+                window_width = 480;
+                window_height = 320;
+                spec_height = 50;
+                wf_height = 34;
+                button_size = 20;
+                bigfnt = new Font("Verdana", 12.0f);
+            }
+
+
+            this.Width = window_width;
+            this.Height = window_height;
+            int panel_width = window_width - 35;
+
+            panel_qrg.Location = new Point(13, 4);
+            panel_qrg.Width = panel_width - 28;
+            panel_qrg.Height = 40;
+
+            panel_sync.Location = new Point(panel_qrg.Location.X + panel_qrg.Width + 4, panel_qrg.Location.Y);
+            panel_sync.Width = panel_width - (panel_qrg.Location.X + panel_qrg.Width - 4);
+
+            panel_beaconlock.Location = new Point(panel_qrg.Location.X + panel_qrg.Width + 4, panel_sync.Location.Y + panel_sync.Height + 4);
+            panel_beaconlock.Width = panel_sync.Width;
+            panel_beaconlock.Height = panel_sync.Height;
+
+            panel_bigspec.Width = panel_width;
+            panel_bigspec.Height = spec_height;
+
+            panel_bandplan.Width = panel_width - 16;
+            panel_bandplan.Height = 16;
+
+            panel_switchbandplan.Width = 16;
+            panel_switchbandplan.Height = 16;
+
+            panel_bigwf.Width = panel_width;
+            panel_bigwf.Height = wf_height;
+
+            panel_rxline.Width = panel_width;
+            panel_rxline.Height = 15;
+
+            panel_smallspec.Width = panel_width;
+            panel_smallspec.Height = spec_height;
+
+            panel_smallqrg.Width = panel_width;
+            panel_smallqrg.Height = 16;
+
+            panel_smallwf.Width = panel_width;
+            panel_smallwf.Height = wf_height;
+
+
+            panel_bigspec.Location = new Point(13, panel_qrg.Location.Y + panel_qrg.Height + 5);
+            panel_bandplan.Location = new Point(13, panel_bigspec.Location.Y + panel_bigspec.Height);
+            panel_switchbandplan.Location = new Point(panel_bandplan.Location.X + panel_bandplan.Width, panel_bigspec.Location.Y + panel_bigspec.Height);
+            panel_bigwf.Location = new Point(13, panel_bandplan.Location.Y + panel_bandplan.Height);
+
+            panel_rxline.Location = new Point(13, panel_bigwf.Location.Y + panel_bigwf.Height);
+
+            panel_smallspec.Location = new Point(13, panel_rxline.Location.Y + panel_rxline.Height);
+            panel_smallqrg.Location = new Point(13, panel_smallspec.Location.Y + panel_smallspec.Height);
+            panel_smallwf.Location = new Point(13, panel_smallqrg.Location.Y + panel_smallqrg.Height);
+
+            // button panel positions
+            int xspace = 4;
+
+            panel_txhighpass.Size = panel_pavucontrol.Size = panel_rxfilter.Size = panel_txfilter.Size = panel_rfloop.Size = panel_audioloop.Size = panel_comp.Size = panel_setup.Size = panel_info.Size = panel_rit.Size = panel_xit.Size = panel_copyRtoT.Size = panel_copyTtoR.Size = panel_agc.Size = panel_txmute.Size = new Size(button_size, button_size);
+            panel_rit.Location = new Point(13, panel_smallwf.Location.Y + panel_smallwf.Height + 4);
+            panel_xit.Location = new Point(panel_rit.Location.X + panel_rit.Width + xspace, panel_rit.Location.Y);
+
+            panel_copyRtoT.Location = new Point(panel_xit.Location.X + panel_xit.Width + xspace + 6, panel_rit.Location.Y);
+            panel_copyTtoR.Location = new Point(panel_copyRtoT.Location.X + panel_copyRtoT.Width + xspace, panel_rit.Location.Y);
+
+            panel_agc.Location = new Point(panel_copyTtoR.Location.X + panel_copyTtoR.Width + xspace + 6, panel_rit.Location.Y);
+            panel_txmute.Location = new Point(panel_agc.Location.X + panel_agc.Width + xspace, panel_rit.Location.Y);
+            panel_comp.Location = new Point(panel_txmute.Location.X + panel_txmute.Width + xspace, panel_rit.Location.Y);
+
+            panel_rxfilter.Location = new Point(panel_comp.Location.X + panel_comp.Width + xspace + 6, panel_rit.Location.Y);
+            panel_txfilter.Location = new Point(panel_rxfilter.Location.X + panel_rxfilter.Width + xspace, panel_rit.Location.Y);
+            panel_txhighpass.Location = new Point(panel_txfilter.Location.X + panel_txfilter.Width + xspace, panel_rit.Location.Y);
+
+            panel_audioloop.Location = new Point(panel_txhighpass.Location.X + panel_txhighpass.Width + xspace + 6, panel_rit.Location.Y);
+            panel_rfloop.Location = new Point(panel_audioloop.Location.X + panel_audioloop.Width + xspace, panel_rit.Location.Y);
+
+            panel_info.Location = new Point(panel_bigspec.Location.X + panel_bigspec.Width - panel_info.Width, panel_rit.Location.Y);
+            panel_setup.Location = new Point(panel_info.Location.X - panel_setup.Width - 5, panel_rit.Location.Y);
+            panel_pavucontrol.Location = new Point(panel_setup.Location.X - panel_pavucontrol.Width - 5, panel_rit.Location.Y);
+
+            // PTT Panel
+            panel1.Location = new Point(panel_rfloop.Location.X + panel_rfloop.Width + xspace + 6, panel_rit.Location.Y);
+            panel1.Size = new Size(panel_pavucontrol.Location.X - panel1.Location.X - 6, panel_rfloop.Height);
+
+            statics.panel_bigspec_Width = panel_bigspec.Width;
+            statics.panel_bigspec_Height = panel_bigspec.Height;
+            statics.panel_bigwf_Width = panel_bigwf.Width;
+            statics.panel_bigwf_Height = panel_bigwf.Height;
+            statics.panel_smallspec_Width = panel_smallspec.Width;
+            statics.panel_smallspec_Height = panel_smallspec.Height;
+            statics.panel_smallwf_Width = panel_smallwf.Width;
+            statics.panel_smallwf_Height = panel_smallwf.Height;
         }
 
         private void panel_bigspec_Paint(object sender, PaintEventArgs e)
@@ -231,6 +331,8 @@ namespace trxGui
                 panel_txfilter_Click(null, null);
                 statics.sendReferenceOffset(statics.rfoffset);
                 sendCpuSpeed();
+                sendTXpower();
+                panel_txhighpass_Click(null, null);
                 this.Text += " GUI: " + formatSN(statics.gui_serno) + " Driver: " + formatSN(statics.driver_serno);
                 // check consistency
                 if(statics.gui_serno != statics.driver_serno)
@@ -334,19 +436,20 @@ namespace trxGui
 
         private void tuneBig(MouseEventArgs e)
         {
-            
+            int x = e.X;
+            x = x * 1120 / panel_bigspec.Width;
 
             if (e.Button == MouseButtons.Left)
             {
                 if (statics.calmode == 0)
                 {
-                    statics.RXoffset = e.X * 500;
+                    statics.RXoffset = x * 500;
                     sendAndRefreshRXTXoffset();
                 }
                 else if (statics.calmode == 1)
                 {
                     // cal to BPSK beacon
-                    int off = e.X * 500 - 280000;
+                    int off = x * 500 - 280000;
                     //Console.WriteLine("Pluto offset: " + off + " Hz");
                     if(off > 0)
                         statics.calfreq += (UInt32)off;
@@ -357,7 +460,7 @@ namespace trxGui
                 }
                 else if (statics.calmode == 2)
                 {
-                    int off = e.X * 500 - 280000;
+                    int off = x * 500 - 280000;
                     Console.WriteLine("offset: " + off);
                     statics.lnboffset += off;
                     statics.sendBaseQRG();
@@ -366,8 +469,8 @@ namespace trxGui
 
             if (e.Button == MouseButtons.Right)
             {
-                statics.RXoffset = e.X * 500;
-                statics.TXoffset = e.X * 500;
+                statics.RXoffset = x * 500;
+                statics.TXoffset = x * 500;
                 sendAndRefreshRXTXoffset();
             }
         }
@@ -383,7 +486,9 @@ namespace trxGui
         private void tuneSmall(MouseEventArgs e)
         {
             // small WF: 25Hz per pixel, with the tune qrg in the middle
-            int hz = (e.X - 560) * 25;
+            int x = e.X;
+            x = x * 1120 / panel_smallwf.Width;
+            int hz = (x - 560) * 25;
             
 
             if (e.Button == MouseButtons.Left)
@@ -548,16 +653,19 @@ namespace trxGui
             using(Graphics gr = e.Graphics)
             {
                 String s = "0 Hz";
-                gr.DrawString(s, smallfnt, Brushes.Black, panel_smallqrg.Width / 2 - 10, 0);
+                int x = panel_smallqrg.Width / 2 - 10;
+                gr.DrawString(s, smallfnt, Brushes.Black, x, 0);
                 for(int i=120; i<500; i+=120)
                 {
                     s = (i * 25 / 1000).ToString() + "kHz";
-                    gr.DrawString(s, smallfnt, Brushes.Black, i + panel_smallqrg.Width / 2 - 10, 0);
+                    x = i * panel_smallqrg.Width / 1120 + panel_smallqrg.Width / 2 - 10;
+                    gr.DrawString(s, smallfnt, Brushes.Black, x, 0);
                 }
                 for (int i = -120; i > -500; i -= 120)
                 {
                     s = (i * 25 / 1000).ToString() + "kHz";
-                    gr.DrawString(s, smallfnt, Brushes.Black, i + panel_smallqrg.Width / 2 - 10, 0);
+                    x = i * panel_smallqrg.Width / 1120 + panel_smallqrg.Width / 2 - 10;
+                    gr.DrawString(s, smallfnt, Brushes.Black, x, 0);
                 }
             }
         }
@@ -566,19 +674,28 @@ namespace trxGui
         {
             qrg -= 10489000;   // rest is kHz
             qrg -= 470;
-            return qrg*2;
+            qrg *= 2;
+            qrg = qrg * panel_bigspec.Width / 1120;
+            return qrg;
         }
 
-        Font qrgfnt = new Font("Verdana", 9.0f);
         private void panel_bandplan_Paint(object sender, PaintEventArgs e)
         {
+            Font qrgfnt = new Font("Verdana", 9.0f);
+            Font bpfnt;
+            if (panel_bigspec.Width > 1000)
+                bpfnt = new Font("Verdana", 9.0f);
+            else
+                bpfnt = new Font("Verdana", 8.0f);
+
             Bandplan bp = new Bandplan();
             using (Graphics gr = e.Graphics)
             {
                 if (statics.bandplan_mode == 0)
                 {
                     gr.FillRectangle(new SolidBrush(Color.DarkBlue), 0, 0, panel_bandplan.Width, panel_bandplan.Height);
-                    gr.DrawString("Bandplan", qrgfnt, Brushes.White, 0, -1);
+                    if(panel_bigspec.Width > 1000)
+                        gr.DrawString("Bandplan", bpfnt, Brushes.White, 0, -1);
                     for (int i = 0; i < bp.be.Length - 1; i++)
                     {
                         int x = qrgToPixelpos(bp.be[i].from);
@@ -587,14 +704,15 @@ namespace trxGui
                         gr.FillRectangle(new SolidBrush(col), x, 0, w, panel_bandplan.Height);
                         String s = bp.be[i].text;
                         int spos = qrgToPixelpos(bp.be[i].textpos);
-                        gr.DrawString(s, qrgfnt, Brushes.White, spos, -1);
+                        gr.DrawString(s, bpfnt, Brushes.White, spos, -1);
                     }
                 }
                 else if (statics.bandplan_mode == 1)
                 {
                     // QO100 RX qrgs
                     gr.FillRectangle(new SolidBrush(Color.DarkBlue), 0, 0, panel_bandplan.Width, panel_bandplan.Height);
-                    gr.DrawString("RX", qrgfnt, Brushes.White, 0, -1);
+                    if (panel_bigspec.Width > 1000)
+                        gr.DrawString("RX", qrgfnt, Brushes.White, 0, -1);
                     for (int qrg = 10489500; qrg <= 10490000; qrg += 50)
                     {
                         int spos = qrgToPixelpos(qrg);
@@ -614,7 +732,8 @@ namespace trxGui
                 {
                     // QO100 TX qrgs
                     gr.FillRectangle(new SolidBrush(Color.DarkBlue), 0, 0, panel_bandplan.Width, panel_bandplan.Height);
-                    gr.DrawString("TX", qrgfnt, Brushes.White, 0, -1);
+                    if (panel_bigspec.Width > 1000)
+                        gr.DrawString("TX", qrgfnt, Brushes.White, 0, -1);
                     for (int qrg = 10489500; qrg <= 10490000; qrg += 50)
                     {
                         int spos = qrgToPixelpos(qrg);
@@ -634,7 +753,8 @@ namespace trxGui
                 {
                     // Pluto RX qrgs
                     gr.FillRectangle(new SolidBrush(Color.DarkBlue), 0, 0, panel_bandplan.Width, panel_bandplan.Height);
-                    gr.DrawString("RX", qrgfnt, Brushes.White, 0, -1);
+                    if (panel_bigspec.Width > 1000)
+                        gr.DrawString("RX", qrgfnt, Brushes.White, 0, -1);
                     for (int qrg = (int)statics.rxqrg - 250000; qrg <= (int)statics.rxqrg + 250000; qrg += 50000)
                     {
                         int spos = qrgToPixelpos(qrg/1000 + 10489000 - (qrg/1000000)*1000);
@@ -654,7 +774,8 @@ namespace trxGui
                 {
                     // Pluto TX qrgs
                     gr.FillRectangle(new SolidBrush(Color.DarkBlue), 0, 0, panel_bandplan.Width, panel_bandplan.Height);
-                    gr.DrawString("TX", qrgfnt, Brushes.White, 0, -1);
+                    if (panel_bigspec.Width > 1000)
+                        gr.DrawString("TX", qrgfnt, Brushes.White, 0, -1);
                     for (int qrg = (int)statics.txqrg - 250000; qrg <= (int)statics.txqrg + 250000; qrg += 50000)
                     {
                         int spos = qrgToPixelpos(qrg / 1000 + 10489500 - (qrg / 1000000) * 1000);
@@ -673,10 +794,10 @@ namespace trxGui
             }
         }
 
-        Font bigfnt = new Font("Verdana", 24.0f);
+       
         Font smlfnt = new Font("Verdana", 10.0f);
         int titrightpos = 10;
-        int mouserightpos = 820;
+        int mouserightpos = 790;
         int bigy = 2;
 
         // insert a space betwenn each char:
@@ -685,27 +806,58 @@ namespace trxGui
         {
             using (Graphics gr = e.Graphics)
             {
-                double val = (double)(statics.RXoffset + 10489470000) / 1e6;
-                String s = String.Format("RX:" + "{0:0.000000}" + " MHz", val);
-                gr.DrawString(s, bigfnt, Brushes.Green, titrightpos, bigy);
-
-                val = (double)(statics.TXoffset + 10489470000) / 1e6 - 8089.5;
-                s = String.Format("TX:" + "{0:0.000000}" + " MHz", val);
-                gr.DrawString(s, bigfnt, Brushes.DarkRed, 420+ titrightpos, bigy);
-
-                if(statics.rxmouse != -1)
+                if (panel_bigspec.Width > 900)
                 {
-                    val = (double)(statics.rxmouse + 10489470000) / 1e6;
-                    s = String.Format(language.GetText("Mouse:") +  "  {0:0.000000}" + " MHz", val);
-                    gr.DrawString(s, smlfnt, Brushes.Blue, mouserightpos + titrightpos, 0);
+                    double val = (double)(statics.RXoffset + 10489470000) / 1e6;
+                    String s = String.Format("RX:" + "{0:0.000000}" + " MHz", val);
+                    gr.DrawString(s, bigfnt, Brushes.Green, titrightpos, bigy);
+
+                    val = (double)(statics.TXoffset + 10489470000) / 1e6 - 8089.5;
+                    s = String.Format("TX:" + "{0:0.000000}" + " MHz", val);
+                    gr.DrawString(s, bigfnt, Brushes.DarkRed, 420 + titrightpos, bigy);
+
+                    if (statics.rxmouse != -1)
+                    {
+                        val = (double)(statics.rxmouse + 10489470000) / 1e6;
+                        s = String.Format(language.GetText("Mouse:") + "  {0:0.000000}", val);
+                        gr.DrawString(s, smlfnt, Brushes.Blue, mouserightpos + titrightpos, 0);
+                    }
+                    else
+                    {
+                        gr.FillRectangle(Brushes.Gray, mouserightpos + titrightpos, 0, panel_qrg.Width - (mouserightpos + titrightpos), panel_qrg.Height);
+                    }
+
+                    s = String.Format("Drift : {0:0}" + " Hz", statics.beaconoffset);
+                    gr.DrawString(s, smlfnt, Brushes.Blue, mouserightpos + titrightpos, 20);
                 }
                 else
                 {
-                    gr.FillRectangle(Brushes.Gray, mouserightpos + titrightpos, 0, panel_qrg.Width - (mouserightpos + titrightpos), panel_qrg.Height);
-                }
+                    double val = (double)(statics.RXoffset + 10489470000) / 1e6;
+                    String s = String.Format("RX:" + "{0:0.000000}" + " MHz", val);
+                    gr.DrawString(s, bigfnt, Brushes.Green, titrightpos, bigy-5);
 
-                s = String.Format("Drift : {0:0}" + " Hz", statics.beaconoffset);
-                gr.DrawString(s, smlfnt, Brushes.Blue, mouserightpos + titrightpos, 20);
+                    val = (double)(statics.TXoffset + 10489470000) / 1e6 - 8089.5;
+                    s = String.Format("TX:" + "{0:0.000000}" + " MHz", val);
+                    gr.DrawString(s, bigfnt, Brushes.DarkRed, titrightpos, bigy+16);
+
+                    mouserightpos = 420;
+                    if (panel_bigspec.Width < 700) mouserightpos = 390;
+                    if (panel_bigspec.Width < 500) mouserightpos = 250;
+
+                    if (statics.rxmouse != -1)
+                    {
+                        val = (double)(statics.rxmouse + 10489470000) / 1e6;
+                        s = String.Format(language.GetText("Mouse:") + "  {0:0.000000}", val);
+                        gr.DrawString(s, smlfnt, Brushes.Blue, mouserightpos + titrightpos, 0);
+                    }
+                    else
+                    {
+                        gr.FillRectangle(Brushes.Gray, mouserightpos + titrightpos, 0, panel_qrg.Width - (mouserightpos + titrightpos), panel_qrg.Height);
+                    }
+
+                    s = String.Format("Drift : {0:0}" + " Hz", statics.beaconoffset);
+                    gr.DrawString(s, smlfnt, Brushes.Blue, mouserightpos + titrightpos, 20);
+                }
             }
         }
 
@@ -725,13 +877,13 @@ namespace trxGui
                 {
                     gr.FillRectangle(Brushes.Red, 0, 0, panel1.Width, panel1.Height);
                     using (Bitmap bm = new Bitmap(Properties.Resources.ptt_tx))
-                        gr.DrawImage(bm, panel1.Width/2 - bm.Width/2, 0);
+                        drawBitmap(gr, bm, panel1.Width / 2 - bm.Width / 2, 0,button_size*2);
                 }
                 else
                 {
                     gr.FillRectangle(Brushes.Green, 0, 0, panel1.Width, panel1.Height);
                     using (Bitmap bm = new Bitmap(Properties.Resources.ptt_rx))
-                        gr.DrawImage(bm, panel1.Width / 2 - bm.Width / 2, 0);
+                        drawBitmap(gr, bm, panel1.Width / 2 - bm.Width / 2, 0, button_size * 2);
                 }
             }
             setPTT(statics.ptt | statics.pttkey);
@@ -748,6 +900,7 @@ namespace trxGui
         {
             int oldpluto = statics.plutousb;
             String oldpladr = statics.plutoaddress;
+            int oldwin = statics.windowsize;
 
             Form_setup setupForm = new Form_setup();
 
@@ -759,12 +912,19 @@ namespace trxGui
                 statics.sendBaseQRG();
                 statics.sendReferenceOffset(statics.rfoffset);
                 sendCpuSpeed();
+                sendTXpower();
 
                 if (oldpluto != statics.plutousb || oldpladr != statics.plutoaddress)
                 {
                     // pluto setting has been changed, restart required
                     MessageBox.Show("Pluto settings changed. Press OK to close this software, then start it again", "RESTART REQUIRED", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     Close();
+                }
+
+                if(statics.windowsize != oldwin)
+                {
+                    scaleElements();
+                    Udp.UpdateSize();
                 }
             }
         }
@@ -892,6 +1052,9 @@ namespace trxGui
                     statics.bandplan_mode = ReadInt(sr);
                     statics.language = ReadInt(sr);
                     statics.palette = ReadInt(sr);
+                    statics.audioHighpass = ReadString(sr) == "1";
+                    statics.txpower = ReadInt(sr);
+                    statics.windowsize = ReadInt(sr);
                 }
             }
             catch
@@ -929,6 +1092,9 @@ namespace trxGui
                     sw.WriteLine(statics.bandplan_mode.ToString());
                     sw.WriteLine(statics.language.ToString());
                     sw.WriteLine(statics.palette.ToString());
+                    sw.WriteLine(statics.audioHighpass ? "1" : "0");
+                    sw.WriteLine(statics.txpower.ToString());
+                    sw.WriteLine(statics.windowsize.ToString());
                 }
             }
             catch { }
@@ -969,12 +1135,23 @@ namespace trxGui
             panel_xit.Invalidate();
         }
 
+        private void drawBitmap(Graphics gr, Bitmap bm, int x=0, int y=0, int sizex=0)
+        {
+            Bitmap bm_resized;
+            if (sizex != 0)
+                bm_resized = new Bitmap(bm, sizex, button_size);
+            else
+                bm_resized = new Bitmap(bm, button_size, button_size);
+
+            gr.DrawImage(bm_resized, x, y);
+        }
+
         private void drawButtonPanel(Graphics gr, bool state, Bitmap bm, Bitmap bminact)
         {
             if (state)
-                gr.DrawImage(bm, 0, 0);
+                drawBitmap(gr, bm);
             else
-                gr.DrawImage(bminact, 0, 0);
+                drawBitmap(gr, bminact);
         }
                 
         private void panel_rit_Paint(object sender, PaintEventArgs e)
@@ -1035,6 +1212,14 @@ namespace trxGui
             Udp.UdpSendData(txb);
         }
 
+        void sendTXpower()
+        {
+            Byte[] txb = new Byte[2];
+            txb[0] = 19;
+            txb[1] = (Byte)Math.Abs(statics.txpower); // send positive value
+            Udp.UdpSendData(txb);
+        }
+
         private void panel_agc_Click(object sender, EventArgs e)
         {
             if(e != null) statics.audioagc = !statics.audioagc;
@@ -1073,19 +1258,19 @@ namespace trxGui
             {
                 case 0:
                     using (Bitmap bm = new Bitmap(Properties.Resources.comp_off))
-                        e.Graphics.DrawImage(bm, 0, 0);
+                        drawBitmap(e.Graphics, bm);
                     break;
                 case 1:
                     using (Bitmap bm = new Bitmap(Properties.Resources.comp_low))
-                        e.Graphics.DrawImage(bm, 0, 0);
+                        drawBitmap(e.Graphics, bm);
                     break;
                 case 2:
                     using (Bitmap bm = new Bitmap(Properties.Resources.comp_mid))
-                        e.Graphics.DrawImage(bm, 0, 0);
+                        drawBitmap(e.Graphics, bm);
                     break;
                 case 3:
                     using (Bitmap bm = new Bitmap(Properties.Resources.comp_high))
-                        e.Graphics.DrawImage(bm, 0, 0);
+                        drawBitmap(e.Graphics, bm);
                     break;
             }
         }
@@ -1103,19 +1288,19 @@ namespace trxGui
             {
                 case 0:
                     using (Bitmap bm = new Bitmap(Properties.Resources.rx_filter_1))
-                        e.Graphics.DrawImage(bm, 0, 0);
+                        drawBitmap(e.Graphics, bm);
                     break;
                 case 1:
                     using (Bitmap bm = new Bitmap(Properties.Resources.rx_filter_18))
-                        e.Graphics.DrawImage(bm, 0, 0);
+                        drawBitmap(e.Graphics, bm);
                     break;
                 case 2:
                     using (Bitmap bm = new Bitmap(Properties.Resources.rx_filter_27))
-                        e.Graphics.DrawImage(bm, 0, 0);
+                        drawBitmap(e.Graphics, bm);
                     break;
                 case 3:
                     using (Bitmap bm = new Bitmap(Properties.Resources.rx_filter_36))
-                        e.Graphics.DrawImage(bm, 0, 0);
+                        drawBitmap(e.Graphics, bm);
                     break;
             }
         }
@@ -1126,20 +1311,20 @@ namespace trxGui
             {
                 case 0:
                     using (Bitmap bm = new Bitmap(Properties.Resources.tx_filter_1))
-                        e.Graphics.DrawImage(bm, 0, 0);
+                        drawBitmap(e.Graphics, bm);
                     break;
                 case 1:
                     using (Bitmap bm = new Bitmap(Properties.Resources.tx_filter_18))
-                        e.Graphics.DrawImage(bm, 0, 0);
+                        drawBitmap(e.Graphics, bm);
                     break;
                 case 2:
                     using (Bitmap bm = new Bitmap(Properties.Resources.tx_filter_22))
-                        e.Graphics.DrawImage(bm, 0, 0);
+                        drawBitmap(e.Graphics, bm);
                     break;
                 case 3:
                 case 4:
                     using (Bitmap bm = new Bitmap(Properties.Resources.tx_filter_27))
-                        e.Graphics.DrawImage(bm, 0, 0);
+                        drawBitmap(e.Graphics, bm);
                     break;
             }
         }
@@ -1228,6 +1413,7 @@ namespace trxGui
         private void panel_rxline_Paint(object sender, PaintEventArgs e)
         {
             int x = statics.RXoffset / 500;
+            x = x * panel_rxline.Width / 1120;
             //Console.WriteLine("pp " + x);
             using (Graphics gr = e.Graphics)
             {
@@ -1277,7 +1463,8 @@ namespace trxGui
 
         private void panel_txhighpass_Click(object sender, EventArgs e)
         {
-            statics.audioHighpass = !statics.audioHighpass;
+            if(sender != null || e != null)
+                statics.audioHighpass = !statics.audioHighpass;
 
             Byte[] txb = new Byte[2];
             txb[0] = 18;

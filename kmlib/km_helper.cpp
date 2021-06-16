@@ -384,3 +384,15 @@ static int first=1;
     }
     return sr;
 }
+
+void measure_maxval(double v)
+{
+static double max = - 99999999;    
+
+    v = fabs(v);
+    if(v > max)
+    {
+        max = v;
+        printf("maxval: %f\n",max);
+    }
+}

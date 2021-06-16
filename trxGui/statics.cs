@@ -12,7 +12,7 @@ namespace trxGui
 {
     public static class statics
     {
-        public static UInt16 gui_serno = 162;   // 123 means: V1.23
+        public static UInt16 gui_serno = 163;   // 123 means: V1.23
         public static UInt16 driver_serno = 0;
         public static bool running = true;
         public static String ModemIP;
@@ -49,6 +49,10 @@ namespace trxGui
         public static int bandplan_mode = 0; // 0=QO100-Bandplan, 1=QO100-RX-QRGs, 2=QO100-TX-QRGs, 3=Pluto-RX-QRGs, 4=Pluto-TX-QRGs
         public static int language = 1;     // 0=en, 1=de
         public static int palette = 1;      // colors: 0=blue, 1=red, 2=green, 3=white
+        public static int txpower = 0;
+        public static int windowsize = 4;
+        public static int panel_bigspec_Width, panel_bigspec_Height, panel_bigwf_Width, panel_bigwf_Height,
+                        panel_smallspec_Width, panel_smallspec_Height, panel_smallwf_Width, panel_smallwf_Height;
 
 
         // Pluto frequency settings
@@ -327,13 +331,13 @@ namespace trxGui
         public Bandplan()
         {
             be[0] = new Bandentry(Color.FromArgb(255,255,0,0), 10489500, "B", 10489500);
-            be[1] = new Bandentry(Color.FromArgb(0xff, 0x00, 0xaf, 0xef), 10489505, "CW only", 10489510);
-            be[2] = new Bandentry(Color.FromArgb(0xff, 0x6f, 0x2f, 0x9f), 10489540, "NB digi", 10489550);
+            be[1] = new Bandentry(Color.FromArgb(0xff, 0x00, 0xaf, 0xef), 10489505, "CW", 10489510);
+            be[2] = new Bandentry(Color.FromArgb(0xff, 0x6f, 0x2f, 0x9f), 10489540, "NB dig", 10489550);
             be[3] = new Bandentry(Color.FromArgb(0xff, 0xfe, 0xbf, 0x00), 10489580, "digital", 10489605);
             be[4] = new Bandentry(Color.FromArgb(0xff, 0x91, 0xcf, 0x4f), 10489650, "SSB only", 10489688);
             be[5] = new Bandentry(Color.FromArgb(0xff, 0xff, 0x00, 0x00), 10489745, "B", 10489748);
             be[6] = new Bandentry(Color.FromArgb(0xff, 0x91, 0xcf, 0x4f), 10489755, "SSB only", 10489790);
-            be[7] = new Bandentry(Color.FromArgb(0xff, 0xc5, 0x59, 0x10), 10489850, "MIXED", 10489850);
+            be[7] = new Bandentry(Color.FromArgb(0xff, 0xc5, 0x59, 0x10), 10489850, "MIX", 10489850);
             be[8] = new Bandentry(Color.FromArgb(0xff, 0xb5, 0xa9, 0x10), 10489870, "MIXED + Contest", 10489905);
             be[9] = new Bandentry(Color.FromArgb(0xff, 0xff, 0x00, 0x00), 10489990, "B", 10489992);
             be[10] =new Bandentry(Color.FromArgb(0xff, 0xff, 0x00, 0x00),10490000, "---", 0);

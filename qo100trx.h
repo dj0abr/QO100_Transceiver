@@ -57,3 +57,4 @@ extern int bcnoffset;
 extern int beaconlock;
 extern int fftspeed;
 extern int audiohighpass;
+extern int txpower;

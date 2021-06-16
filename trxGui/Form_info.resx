@@ -118,7 +118,8 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="textBox1.Text" xml:space="preserve">
-    <value>AMSAT-DL QO-100 DSP Transceiver for Adalm-Pluto and Linux
+    <value>AMSAT-DL QO-100 DSP Transceiver for
+Adalm-Pluto and Linux
 by DJ0ABR
 
 Open Source: https://github.com/dj0abr/QO100_Transceiver

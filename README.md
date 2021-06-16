@@ -4,20 +4,21 @@ QO-100 Software Transceiver using an Adalm-Pluto and an SBC (Raspberry, Odroid .
 This project is a fully functional software based transceiver for QO-100
 
 Version Status:\
-V1.0 ... May,28 2021 ... Now fully working, Setup via Setup Menu.\
-V1.1 ... May,31 2021 ... Pluto USB/ETH setup, speech compressor\
-V1.2 ... June,2 2021 ... Audio Filter, Muting, new user interface\
-V1.4 ... June,6 2021 ... calibration for Pluto and LNB\
+V1.0 ... May, 28 2021 ... Now fully working, Setup via Setup Menu.\
+V1.1 ... May, 31 2021 ... Pluto USB/ETH setup, speech compressor\
+V1.2 ... June, 2 2021 ... Audio Filter, Muting, new user interface\
+V1.4 ... June, 6 2021 ... calibration for Pluto and LNB\
 V1.5 ... June,11 2021 ... Major Upgrade (!) PLEASE CHECK YOUR SETUP (frequencies have been changed)\
 V1.6 ... June,12 2021 ... various bug fixes (Sound card name, now working on 64bit Raspi)
 V1.63 .. June,16 2021 ... new settings: Pluto TX power, Screen Size
+V1.64 .. June,17 2021 ... many more Screen Sizes, new languages
 
 ![alt text](https://github.com/dj0abr/QO100_Transceiver/blob/main/trxGui/Properties/sampleGUI.png)
 
 ## Hardware requirements
 
 * Pluto SDR (connected via USB or Eth/USB Adapter)
-* SBC like Raspberry PI-4, Odroid C4, Odroid N2 and others
+* SBC like Raspberry PI-4, Odroid C4, Odroid N2 or Desktop-PC (Debuian based, Ubuntu, Mint...) and many others
 * USB sound stick (if the SBC does not have a microphone connector)
 * Satellite-Dish, QO-100 Feed and 2,4 GHz Amplifier (i.e. Amsat-DL 46dB Amp)
 

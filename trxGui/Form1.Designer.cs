@@ -84,6 +84,7 @@ namespace trxGui
             this.panel_qrg.Size = new System.Drawing.Size(1087, 41);
             this.panel_qrg.TabIndex = 5;
             this.panel_qrg.Paint += new System.Windows.Forms.PaintEventHandler(this.panel_qrg_Paint);
+            this.panel_qrg.DoubleClick += new System.EventHandler(this.panel_qrg_DoubleClick);
             // 
             // panel_rit
             // 

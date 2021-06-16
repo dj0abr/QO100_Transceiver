@@ -1497,6 +1497,18 @@ namespace trxGui
             if (++statics.bandplan_mode >= 5) statics.bandplan_mode = 0;
             panel_bandplan.Invalidate();
         }
+
+        private void panel_qrg_DoubleClick(object sender, EventArgs e)
+        {
+            DialogResult dr = MessageBox.Show("set windows size to 640x480px", "SET WINDOW SIZE", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if(dr == DialogResult.Yes)
+            {
+                statics.windowsize = 6;
+                scaleElements();
+                Udp.UpdateSize();
+            }
+        }
     }
 
     class DoubleBufferedPanel : Panel 

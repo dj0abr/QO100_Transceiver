@@ -10,7 +10,7 @@ void exec_beaconlock(liquid_float_complex samp);
 nco_crcf dnnco = NULL;      
 
 // SSB Demodulator
-float demod_index  = 0.1f;                // modulation index (bandwidth)
+float demod_index  = 0.99f;                // modulation index (bandwidth)
 ampmodem demod = NULL;
 
 // Low pass
@@ -128,6 +128,9 @@ int16_t xq;
         xq = stream[i+3];
         xq <<= 8;
         xq += stream[i+2];
+
+        xi <<= 4;
+        xq <<= 4;
 
         samples[didx].real = (float)xi / 32768.0f;
         samples[didx].imag = (float)xq / 32768.0f;

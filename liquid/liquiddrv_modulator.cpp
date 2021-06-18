@@ -42,16 +42,7 @@ iirfilt_crcf au_lp_q = NULL;
 // AGC
 agc_rrrf agc_q = NULL;
 
-void showmax(float f)
-{
-static float fs=0; 
-
-    if(f>fs)
-    {
-        fs = f;
-        printf("max:%f\n",fs);
-    }
-}
+int32_t plutomax = 1;
 
 liquid_float_complex rc(liquid_float_complex c)
 {
@@ -165,17 +156,9 @@ static int lastoffset = -1;
 liquid_float_complex txarr[PLUTOBUFSIZE];
 int txarridx = 0;
 
-// it looks like the AGC functions do not work with 0..1 levels
-// so we need to adapt the levels
-const float agcmult = 100.0f;
-const float gainreduction = 1000.0f;
-// the max gain is used to limit the background noise if no signal is present
-const float maxgain = 0.6f;
-
 void upmix(float *f, int len, int offsetfreq)
 {
 float fcompr;
-float gain = 1;
 
     if (mod == NULL) return;
     if (interp_q == NULL) return;
@@ -191,30 +174,10 @@ float gain = 1;
     // re-set bandpass if changed by user
     createBandpass();
 
-    if(audioagc > 0)
-    {
-        // estimate AGC level for this number of new samples
-        agc_rrrf_init(agc_q, f, len);
-        gain = agc_rrrf_get_gain(agc_q);
-        gain /= gainreduction;
-        if(gain > maxgain) gain = maxgain;
-        //printf("%f\n",gain);
-    }
-
     // loop through all samples
     for(int i=0; i<len; i++)
     {
-        if(audioagc > 0)
-        {
-            // audio AGC
-            float fagc;
-            agc_rrrf_set_gain(agc_q,gain);
-            agc_rrrf_execute(agc_q, f[i] *agcmult, &fagc);
-            //printf("%f   %f   %f\n",gain,f[i],fagc);
-            fcompr = fagc;
-        }
-        else
-            fcompr = f[i];
+        fcompr = f[i] * 3.0f;
 
         // audio compression
         if(compressor > 0)
@@ -274,7 +237,7 @@ float gain = 1;
             // up mix to SSB channel into baseband
             nco_crcf_step(upnco);
             nco_crcf_mix_up(upnco,out[samp],&(txarr[txarridx]));
-            
+
             // collect until we have a complete buffer filled
             if(++txarridx >= PLUTOBUFSIZE)
             {
@@ -287,33 +250,80 @@ float gain = 1;
     }
 }
 
+void agc(int32_t *fi, int32_t *fq, int len)
+{
+static float smult = 0;
+static float maxvol = 30000.0f;
+
+    // measure peak value of these samples
+    int32_t p = 0;
+    for(int i=0; i<len; i++)
+    {
+        if(fi[i] > p) p = fi[i];
+        if(fi[i] < -p) p = -fi[i];
+
+        if(fq[i] > p) p = fq[i];
+        if(fq[i] < -p) p = -fq[i];
+    }
+
+    // required multiplicator to bring peak to maxvol
+    float mult = maxvol / (float)p;
+    if(mult > 40.0f) mult = 40.0f;
+
+    // slowly adapt smult to mult
+    if(mult < smult)
+        smult = mult;
+    else
+    {
+        float diff = mult - smult;
+        smult += diff/10.0f;
+    }
+
+    // do agc
+    for(int i=0; i<len; i++)
+    {
+        fi[i] *= smult;
+        fq[i] *= smult;
+    }
+
+    // measure peak and mid value of these samples
+    int32_t pki = 0, pkq = 0;
+    for(int i=0; i<len; i++)
+    {
+        if(fi[i] > pki) pki = fi[i];
+        if(fq[i] > pkq) pkq = fq[i];
+    }
+
+    //printf("peak:%d smult:%f newpeak:%d %d\n",p,smult,pki,pkq);
+}
+
+float pmult = 32767.0f;  // adjust to get maximum values
+
 void sendToPluto()
 {
-int32_t xi;
-int32_t xq;
+int32_t xi[PLUTOBUFSIZE];
+int32_t xq[PLUTOBUFSIZE];
 uint8_t txbuf[PLUTOBUFSIZE * 4];
 int txbufidx = 0;
 
     for(int i=0; i<PLUTOBUFSIZE; i++)
     {
         // convert complex to pluto format
-        xi = (int32_t)(txarr[i].real * 32768.0f);
-        xq = (int32_t)(txarr[i].imag * 32768.0f);
+        xi[i] = (int32_t)(txarr[i].real * pmult);
+        xq[i] = (int32_t)(txarr[i].imag * pmult);
+    }
 
-        txbuf[txbufidx++] = xi & 0xff;
-        txbuf[txbufidx++] = xi >> 8;
-        txbuf[txbufidx++] = xq & 0xff;
-        txbuf[txbufidx++] = xq >> 8;
+    if(audioagc > 0)
+    {
+        agc(xi, xq, PLUTOBUFSIZE);
+    }
 
-        /*
-        // measure max value in case of distortions, may be max 0x7fff
-        static int32_t max = 0;
-
-        if(xi > max)
-        {
-            max = xi;
-            printf("%04X\n",max);
-        }*/
+    for(int i=0; i<PLUTOBUFSIZE; i++)
+    {
+        txbuf[txbufidx++] = xi[i] & 0xff;
+        txbuf[txbufidx++] = xi[i] >> 8;
+        txbuf[txbufidx++] = xq[i] & 0xff;
+        txbuf[txbufidx++] = xq[i] >> 8;
     }
 
     write_fifo(TXfifo,txbuf,PLUTOBUFSIZE*4);

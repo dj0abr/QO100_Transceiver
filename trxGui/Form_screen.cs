@@ -8,6 +8,12 @@ namespace trxGui
         public Form_screen()
         {
             InitializeComponent();
+
+            this.Height = 80;
+            this.Width = 180;
+
+            comboBox1.Width = 140;
+
             try
             {
                 comboBox1.SelectedIndex = statics.windowsize;

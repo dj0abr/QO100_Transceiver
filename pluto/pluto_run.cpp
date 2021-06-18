@@ -55,8 +55,8 @@ uint8_t *p_dat, *p_start;
 
         p_start = (uint8_t *)iio_buffer_first(rxbuf, rx0_i);
 
-        for(int ix=0; ix<nbytes_rx; ix++)
-            measure_maxval(p_start[ix]);
+        //for(int ix=0; ix<nbytes_rx; ix++)
+        //    measure_maxval(p_start[ix]);
 
         // sample buffer begins at p_start with length (PLUTOBUFSIZE * p_inc) bytes
         write_fifo(RXfifo,p_start,nbytes_rx);

@@ -37,7 +37,7 @@ namespace trxGui
             this.comboBox1.FormattingEnabled = true;
             this.comboBox1.Items.AddRange(new object[] {
             "1920x1080",
-            "1280x800",
+            "1280x720",
             "1280x480",
             "1024x768",
             "800x600",
@@ -55,8 +55,7 @@ namespace trxGui
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(143, 23);
-            this.ControlBox = false;
+            this.ClientSize = new System.Drawing.Size(155, 77);
             this.Controls.Add(this.comboBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.MaximizeBox = false;

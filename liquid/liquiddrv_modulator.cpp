@@ -184,12 +184,9 @@ float fcompr;
         {
             if(fcompr >= 1) fcompr = 0.99;
             if(fcompr <= -1) fcompr = -0.99;
-            for(int co=0; co<compressor; co++)
-            {
-                fcompr = 3.3 * log10(fcompr+1);
-                if(fcompr >= 1) fcompr = 0.99;
-                if(fcompr <= -1) fcompr = -0.99;
-            }
+            fcompr = 3.3 * log10(fcompr+1);
+            if(fcompr >= 1) fcompr = 0.99;
+            if(fcompr <= -1) fcompr = -0.99;
         }
 
         // modulator, at 48k audio sample rate

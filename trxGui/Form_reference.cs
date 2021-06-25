@@ -15,12 +15,15 @@ namespace trxGui
         public Form_reference()
         {
             InitializeComponent();
+
+            foreach (Control c in Controls)
+                c.Text = language.GetText(c.Text);
         }
 
         private void button_cal439_Click(object sender, EventArgs e)
         {
             // set receiver to standard values, clear any offset correction
-            statics.calfreq = statics.calbasefreq - 250000; //250k to shift the carrier into the center
+            statics.calfreq = statics.calbasefreq; // shift the carrier into the center
             statics.sendReferenceOffset(0);
             statics.sendBaseQRG(statics.calfreq);
             statics.calmode = 1;
@@ -32,7 +35,7 @@ namespace trxGui
             statics.calmode = 0;
             label_cal439.Text = "";
 
-            Int64 calibrFr = statics.calfreq + 250000;
+            Int64 calibrFr = statics.calfreq;// + 250000;
             Int64 shift439 = calibrFr - statics.calbasefreq;
             Console.WriteLine("calbasefreq: " + statics.calbasefreq + " calibrFr: " + calibrFr);
             // shift439 ... this is the pluto-TCXO error related to 439 MHz

@@ -70,7 +70,7 @@ namespace trxGui
             // 
             // button_cal439
             // 
-            this.button_cal439.Location = new System.Drawing.Point(171, 47);
+            this.button_cal439.Location = new System.Drawing.Point(208, 47);
             this.button_cal439.Name = "button_cal439";
             this.button_cal439.Size = new System.Drawing.Size(75, 23);
             this.button_cal439.TabIndex = 3;
@@ -100,7 +100,7 @@ namespace trxGui
             // 
             this.label_cal439.AutoSize = true;
             this.label_cal439.ForeColor = System.Drawing.Color.Red;
-            this.label_cal439.Location = new System.Drawing.Point(252, 52);
+            this.label_cal439.Location = new System.Drawing.Point(289, 52);
             this.label_cal439.Name = "label_cal439";
             this.label_cal439.Size = new System.Drawing.Size(16, 13);
             this.label_cal439.TabIndex = 6;
@@ -108,7 +108,7 @@ namespace trxGui
             // 
             // button_fin
             // 
-            this.button_fin.Location = new System.Drawing.Point(292, 113);
+            this.button_fin.Location = new System.Drawing.Point(340, 113);
             this.button_fin.Name = "button_fin";
             this.button_fin.Size = new System.Drawing.Size(98, 23);
             this.button_fin.TabIndex = 7;
@@ -147,7 +147,7 @@ namespace trxGui
             // 
             // button_lnbfinished
             // 
-            this.button_lnbfinished.Location = new System.Drawing.Point(298, 366);
+            this.button_lnbfinished.Location = new System.Drawing.Point(334, 366);
             this.button_lnbfinished.Name = "button_lnbfinished";
             this.button_lnbfinished.Size = new System.Drawing.Size(114, 23);
             this.button_lnbfinished.TabIndex = 15;
@@ -159,7 +159,7 @@ namespace trxGui
             // 
             this.label_caliblnb.AutoSize = true;
             this.label_caliblnb.ForeColor = System.Drawing.Color.Red;
-            this.label_caliblnb.Location = new System.Drawing.Point(252, 191);
+            this.label_caliblnb.Location = new System.Drawing.Point(294, 191);
             this.label_caliblnb.Name = "label_caliblnb";
             this.label_caliblnb.Size = new System.Drawing.Size(16, 13);
             this.label_caliblnb.TabIndex = 14;
@@ -176,7 +176,7 @@ namespace trxGui
             // 
             // button_caliblnb
             // 
-            this.button_caliblnb.Location = new System.Drawing.Point(171, 186);
+            this.button_caliblnb.Location = new System.Drawing.Point(213, 186);
             this.button_caliblnb.Name = "button_caliblnb";
             this.button_caliblnb.Size = new System.Drawing.Size(75, 23);
             this.button_caliblnb.TabIndex = 11;
@@ -225,7 +225,7 @@ namespace trxGui
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(466, 444);
+            this.ClientSize = new System.Drawing.Size(462, 440);
             this.ControlBox = false;
             this.Controls.Add(this.label8);
             this.Controls.Add(this.panel1);

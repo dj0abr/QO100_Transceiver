@@ -12,6 +12,7 @@ V1.5 ... June,11 2021 ... Major Upgrade (!) PLEASE CHECK YOUR SETUP (frequencies
 V1.6 ... June,12 2021 ... various bug fixes (Sound card name, now working on 64bit Raspi)\
 V1.63 .. June,16 2021 ... new settings: Pluto TX power, Screen Size\
 V1.64 .. June,17 2021 ... many more Screen Sizes, new languages
+V1.66 .. June,25 2021 ... cleanup in the GUI, new RX/TX QRG settings, now usable also by touch screens. Stores RX-to-TX offset.
 
 ![alt text](https://github.com/dj0abr/QO100_Transceiver/blob/main/trxGui/Properties/sampleGUI.png)
 

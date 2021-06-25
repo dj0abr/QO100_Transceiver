@@ -2,13 +2,14 @@
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Text;
 using System.Threading;
 
 namespace trxGui
 {
     public static class statics
     {
-        public static UInt16 gui_serno = 165;   // 123 means: V1.23
+        public static UInt16 gui_serno = 166;   // 123 means: V1.23
         public static UInt16 driver_serno = 0;
         public static bool running = true;
         public static String ModemIP;
@@ -32,7 +33,7 @@ namespace trxGui
         public static bool rit = true;
         public static bool xit = false;
         public static bool audioagc = false;
-        public static int compressor = 0;
+        public static bool compressor = false;
         public static int rxfilter = 3;
         public static int txfilter = 3;
         public static bool audioloop = false;
@@ -56,6 +57,8 @@ namespace trxGui
         public static UInt32 txqrg;             // baseband QRG of lower beacon, TX tuner = this value - 30kHz
         public static int RXoffset = 280000;    // Tuner: 470 + Offset: 280 = 750kHz (mid Beacon)
         public static int TXoffset = 280000;    // Tuner: 470 + Offset: 280 = 750kHz (mid Beacon)
+        public static int RXTXoffset = 0;       // offset between RX and TX
+        public static int lastRXoffset = 280000;
         public static UInt32 calbasefreq = 439000000; // base frequency for calibration
         public static UInt32 calfreq;           // same as rxqrg, but used during offset calibration
         public static int rfoffset = 0;         // Pluto's TCXO offset to RX/TX frequency
@@ -301,6 +304,49 @@ namespace trxGui
             {
                 Process.Start("xdg-open", url);
             }
+        }
+
+        static public string RunExternalProgram(string filename, string arguments = null)
+        {
+            var process = new Process();
+
+            process.StartInfo.FileName = filename;
+            if (!string.IsNullOrEmpty(arguments))
+                process.StartInfo.Arguments = arguments;
+
+            process.StartInfo.CreateNoWindow = true;
+            process.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+            process.StartInfo.UseShellExecute = false;
+
+            process.StartInfo.RedirectStandardError = true;
+            process.StartInfo.RedirectStandardOutput = true;
+            var stdOutput = new StringBuilder();
+            process.OutputDataReceived += (sender, args) => stdOutput.AppendLine(args.Data); // Use AppendLine rather than Append since args.Data is one line of output, not including the newline character.
+
+            string stdError = null;
+            try
+            {
+                process.Start();
+                process.BeginOutputReadLine();
+                stdError = process.StandardError.ReadToEnd();
+                process.WaitForExit();
+            }
+            catch
+            {
+                return "";
+            }
+
+            if (process.ExitCode == 0)
+                return stdOutput.ToString();
+
+            return "";
+        }
+
+        static private string Format(string filename, string arguments)
+        {
+            return "'" + filename +
+                ((string.IsNullOrEmpty(arguments)) ? string.Empty : " " + arguments) +
+                "'";
         }
     }
 

@@ -53,6 +53,10 @@ namespace trxGui
             this.panel_txhighpass = new System.Windows.Forms.Panel();
             this.panel_switchbandplan = new System.Windows.Forms.Panel();
             this.panel_screen = new System.Windows.Forms.Panel();
+            this.panel_recall = new System.Windows.Forms.Panel();
+            this.panel_rec_mic = new System.Windows.Forms.Panel();
+            this.panel_playTX = new System.Windows.Forms.Panel();
+            this.panel_save = new System.Windows.Forms.Panel();
             this.panel_rxline = new trxGui.DoubleBufferedPanel();
             this.panel_bigspec = new trxGui.DoubleBufferedPanel();
             this.panel_bigwf = new trxGui.DoubleBufferedPanel();
@@ -82,14 +86,14 @@ namespace trxGui
             this.panel_qrg.BackColor = System.Drawing.Color.Gray;
             this.panel_qrg.Location = new System.Drawing.Point(68, 3);
             this.panel_qrg.Name = "panel_qrg";
-            this.panel_qrg.Size = new System.Drawing.Size(1031, 41);
+            this.panel_qrg.Size = new System.Drawing.Size(1064, 41);
             this.panel_qrg.TabIndex = 5;
             this.panel_qrg.Paint += new System.Windows.Forms.PaintEventHandler(this.panel_qrg_Paint);
             // 
             // panel_rit
             // 
             this.panel_rit.BackColor = System.Drawing.Color.White;
-            this.panel_rit.BackgroundImage = global::trxGui.Properties.Resources.rit_button;
+            this.panel_rit.BackgroundImage = global::trxGui.Properties.Resources.rxqrg;
             this.panel_rit.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.panel_rit.Location = new System.Drawing.Point(14, 709);
             this.panel_rit.Name = "panel_rit";
@@ -101,7 +105,7 @@ namespace trxGui
             // panel_xit
             // 
             this.panel_xit.BackColor = System.Drawing.Color.White;
-            this.panel_xit.BackgroundImage = global::trxGui.Properties.Resources.xit_button;
+            this.panel_xit.BackgroundImage = global::trxGui.Properties.Resources.txqrg;
             this.panel_xit.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.panel_xit.Location = new System.Drawing.Point(68, 709);
             this.panel_xit.Name = "panel_xit";
@@ -208,8 +212,9 @@ namespace trxGui
             // 
             // panel_sync
             // 
-            this.panel_sync.BackColor = System.Drawing.Color.White;
-            this.panel_sync.Location = new System.Drawing.Point(1106, 3);
+            this.panel_sync.BackgroundImage = global::trxGui.Properties.Resources.gauge;
+            this.panel_sync.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.panel_sync.Location = new System.Drawing.Point(12, 59);
             this.panel_sync.Name = "panel_sync";
             this.panel_sync.Size = new System.Drawing.Size(26, 17);
             this.panel_sync.TabIndex = 22;
@@ -218,8 +223,10 @@ namespace trxGui
             // 
             // panel_beaconlock
             // 
-            this.panel_beaconlock.BackColor = System.Drawing.Color.White;
-            this.panel_beaconlock.Location = new System.Drawing.Point(1108, 27);
+            this.panel_beaconlock.BackColor = System.Drawing.Color.Gray;
+            this.panel_beaconlock.BackgroundImage = global::trxGui.Properties.Resources.lock_open;
+            this.panel_beaconlock.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.panel_beaconlock.Location = new System.Drawing.Point(14, 82);
             this.panel_beaconlock.Name = "panel_beaconlock";
             this.panel_beaconlock.Size = new System.Drawing.Size(26, 17);
             this.panel_beaconlock.TabIndex = 23;
@@ -292,6 +299,50 @@ namespace trxGui
             this.panel_screen.TabIndex = 23;
             this.panel_screen.Click += new System.EventHandler(this.panel_screen_Click);
             // 
+            // panel_recall
+            // 
+            this.panel_recall.BackColor = System.Drawing.Color.Gray;
+            this.panel_recall.BackgroundImage = global::trxGui.Properties.Resources.read;
+            this.panel_recall.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.panel_recall.Location = new System.Drawing.Point(14, 133);
+            this.panel_recall.Name = "panel_recall";
+            this.panel_recall.Size = new System.Drawing.Size(26, 17);
+            this.panel_recall.TabIndex = 24;
+            this.panel_recall.Click += new System.EventHandler(this.panel_recall_Click);
+            // 
+            // panel_rec_mic
+            // 
+            this.panel_rec_mic.BackColor = System.Drawing.Color.Gray;
+            this.panel_rec_mic.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("panel_rec_mic.BackgroundImage")));
+            this.panel_rec_mic.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.panel_rec_mic.Location = new System.Drawing.Point(12, 167);
+            this.panel_rec_mic.Name = "panel_rec_mic";
+            this.panel_rec_mic.Size = new System.Drawing.Size(26, 17);
+            this.panel_rec_mic.TabIndex = 25;
+            this.panel_rec_mic.Click += new System.EventHandler(this.panel_rec_mic_Click);
+            // 
+            // panel_playTX
+            // 
+            this.panel_playTX.BackColor = System.Drawing.Color.Gray;
+            this.panel_playTX.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("panel_playTX.BackgroundImage")));
+            this.panel_playTX.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.panel_playTX.Location = new System.Drawing.Point(12, 190);
+            this.panel_playTX.Name = "panel_playTX";
+            this.panel_playTX.Size = new System.Drawing.Size(26, 17);
+            this.panel_playTX.TabIndex = 25;
+            this.panel_playTX.Click += new System.EventHandler(this.panel_playTX_Click);
+            // 
+            // panel_save
+            // 
+            this.panel_save.BackColor = System.Drawing.Color.Gray;
+            this.panel_save.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("panel_save.BackgroundImage")));
+            this.panel_save.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.panel_save.Location = new System.Drawing.Point(12, 105);
+            this.panel_save.Name = "panel_save";
+            this.panel_save.Size = new System.Drawing.Size(26, 17);
+            this.panel_save.TabIndex = 25;
+            this.panel_save.Click += new System.EventHandler(this.panel_save_Click);
+            // 
             // panel_rxline
             // 
             this.panel_rxline.BackColor = System.Drawing.Color.Gray;
@@ -304,9 +355,9 @@ namespace trxGui
             // panel_bigspec
             // 
             this.panel_bigspec.BackColor = System.Drawing.Color.LightGray;
-            this.panel_bigspec.Location = new System.Drawing.Point(12, 50);
+            this.panel_bigspec.Location = new System.Drawing.Point(56, 50);
             this.panel_bigspec.Name = "panel_bigspec";
-            this.panel_bigspec.Size = new System.Drawing.Size(1120, 150);
+            this.panel_bigspec.Size = new System.Drawing.Size(1076, 150);
             this.panel_bigspec.TabIndex = 0;
             this.panel_bigspec.Paint += new System.Windows.Forms.PaintEventHandler(this.panel_bigspec_Paint);
             this.panel_bigspec.MouseClick += new System.Windows.Forms.MouseEventHandler(this.panel_bigwf_MouseClick);
@@ -317,9 +368,9 @@ namespace trxGui
             // panel_bigwf
             // 
             this.panel_bigwf.BackColor = System.Drawing.Color.Black;
-            this.panel_bigwf.Location = new System.Drawing.Point(12, 213);
+            this.panel_bigwf.Location = new System.Drawing.Point(56, 213);
             this.panel_bigwf.Name = "panel_bigwf";
-            this.panel_bigwf.Size = new System.Drawing.Size(1120, 150);
+            this.panel_bigwf.Size = new System.Drawing.Size(1076, 150);
             this.panel_bigwf.TabIndex = 1;
             this.panel_bigwf.Paint += new System.Windows.Forms.PaintEventHandler(this.panel_bigwf_Paint);
             this.panel_bigwf.MouseClick += new System.Windows.Forms.MouseEventHandler(this.panel_bigwf_MouseClick);
@@ -330,9 +381,9 @@ namespace trxGui
             // panel_bandplan
             // 
             this.panel_bandplan.BackColor = System.Drawing.Color.Silver;
-            this.panel_bandplan.Location = new System.Drawing.Point(14, 200);
+            this.panel_bandplan.Location = new System.Drawing.Point(52, 200);
             this.panel_bandplan.Name = "panel_bandplan";
-            this.panel_bandplan.Size = new System.Drawing.Size(1095, 10);
+            this.panel_bandplan.Size = new System.Drawing.Size(1057, 10);
             this.panel_bandplan.TabIndex = 1;
             this.panel_bandplan.Paint += new System.Windows.Forms.PaintEventHandler(this.panel_bandplan_Paint);
             // 
@@ -377,6 +428,10 @@ namespace trxGui
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Gray;
             this.ClientSize = new System.Drawing.Size(1147, 775);
+            this.Controls.Add(this.panel_save);
+            this.Controls.Add(this.panel_playTX);
+            this.Controls.Add(this.panel_rec_mic);
+            this.Controls.Add(this.panel_recall);
             this.Controls.Add(this.panel_screen);
             this.Controls.Add(this.panel_switchbandplan);
             this.Controls.Add(this.panel_txhighpass);
@@ -447,6 +502,10 @@ namespace trxGui
         private System.Windows.Forms.Panel panel_txhighpass;
         private System.Windows.Forms.Panel panel_switchbandplan;
         private System.Windows.Forms.Panel panel_screen;
+        private System.Windows.Forms.Panel panel_recall;
+        private System.Windows.Forms.Panel panel_rec_mic;
+        private System.Windows.Forms.Panel panel_playTX;
+        private System.Windows.Forms.Panel panel_save;
     }
 }
 

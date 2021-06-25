@@ -258,5 +258,62 @@
   <ItemGroup>
     <None Include="Properties\monitor.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\calbutton.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\lockbutton.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\freebutton.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\mem1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\mem2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\txqrg.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\txqrg_inact.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\rxqrg.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\rxqrg_inact.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\comp_on.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\gauge.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\lock.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\lock_open.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\forward.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\back.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\record.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\playback.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\save.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\read.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

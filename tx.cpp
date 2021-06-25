@@ -48,10 +48,20 @@ int TXoffsetfreq = 280000;
 
 void* tx_threadfunction(void* param);
 
+float sinus[4800];
+
 void init_tx()
 {
 	pthread_t txthread;
 	pthread_create(&txthread, NULL, tx_threadfunction, NULL);
+
+#ifdef SINUSTEST
+    for(int i=0; i<4800; i++)
+    {
+        sinus[i] = (float)sin((double)(i%24)*2.0*M_PI/4800.0);
+        sinus[i] *= 10;
+    }
+#endif
 }
 
 void* tx_threadfunction(void* param) 
@@ -75,6 +85,9 @@ void* tx_threadfunction(void* param)
                 }
                 else
                 {
+                    #ifdef SINUSTEST
+                    memcpy(f,sinus,sizeof(float)*4800);
+                    #endif
                     // send to modulator
                     if(ptt)
                         upmix(f,ret,TXoffsetfreq);

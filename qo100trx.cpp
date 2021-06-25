@@ -50,6 +50,7 @@ int beaconlock = 0;
 int fftspeed = 0;
 int audiohighpass = 0;
 int txpower = 0;
+int recpb = 0;	// 0=idle, 1=rec, 2=pb
 
 // fifos to send/receive samples with pluto run thread
 int RXfifo;
@@ -222,6 +223,9 @@ void udprxfunc(uint8_t *pdata, int len, struct sockaddr_in* sender)
 		if(txpower > 0) txpower = 0;
 		if(txpower < -60) txpower = -60;
 	}
+
+	if(pdata[0] == 20)
+		recpb = pdata[1];
 }
 
 void close_program()

@@ -107,28 +107,39 @@ namespace trxGui
 
                         //Console.WriteLine(rxtype);
 
-                        if (rxtype == 0)
+                        // check bitmap queues to avoid unnecessary graphic operations
+                        int q1 = bigspecQ.Count();
+                        int q2 = smallWFQ.Count();
+                        int q3 = bigWFQ.Count();
+                        int q4 = smallspecQ.Count();
+
+                        // for slower CPUs: allow only one graphics item in the buffer
+                        // faster CPUs: allow more graphic updates
+                        int maxfill = 1;
+                        if (statics.cpuspeed == 0) maxfill = 2; // only for fast cpus
+
+                        if (rxtype == 0 && q1 < maxfill)
                         {
                             // big Spectrum, mid values
                             int[] arr = getSpecArr(b);
                             drawBigSpec(arr);
                         }
 
-                        if (rxtype == 1)
+                        if (rxtype == 1 && q4 < maxfill)
                         {
                             // small Spectrum
                             int[] arr = getSpecArr(b);
                             drawSmallSpec(arr);
                         }
 
-                        if (rxtype == 2)
+                        if (rxtype == 2 && q3 < maxfill)
                         {
                             // big WF (raw - no mid - values)
                             int[] arr = getSpecArr(b);
                             drawBigWF(arr);
                         }
 
-                        if (rxtype == 3)
+                        if (rxtype == 3 && q2 < maxfill)
                         {
                             // small WF
                             int[] arr = getSpecArr(b);
@@ -243,17 +254,19 @@ namespace trxGui
             int noiselevel = statics.noiselevel * 54/50;
 
             Bitmap bmbigspec = new Bitmap(bigSpecW, bigSpecH);
+            // using gibt Ressourcen von gr nicht frei !!! 
+            // mono Update auf >= 6.12.xx erforderlich !!!
             using (Graphics gr = Graphics.FromImage(bmbigspec))
             {
                 // Make a Polyline
                 Point[] poly = new Point[arr.Length + 2];
-                poly[0] = new Point(0, bigSpecH-1);
-                poly[arr.Length + 2 - 1] = new Point(bigSpecW - 1, bigSpecH-1);
+                poly[0] = new Point(0, bigSpecH - 1);
+                poly[arr.Length + 2 - 1] = new Point(bigSpecW - 1, bigSpecH - 1);
 
                 for (int i = 0; i < arr.Length; i++)
                 {
                     int val = scaleY(arr[i], noiselevel, statics.maxlevel, bigSpecH);
-                    int xi = scaleX(i,arr.Length, bigSpecW);
+                    int xi = scaleX(i, arr.Length, bigSpecW);
                     poly[i + 1] = new Point(xi, val);
                 }
 
@@ -269,7 +282,7 @@ namespace trxGui
                     {
                         int xs = qrgToPixelpos(bp.be[i].from);
                         xs = xs * bigSpecW / 1120;
-                        gr.DrawLine(penmarkerLN, xs,0,xs, bigSpecH);
+                        gr.DrawLine(penmarkerLN, xs, 0, xs, bigSpecH);
                     }
                 }
                 else
@@ -289,13 +302,13 @@ namespace trxGui
                 int xtx = statics.TXoffset * 2 / 1000;
                 xtx = xtx * bigSpecW / 1120;
                 int xydiff = Math.Abs(x - xtx);
-                
+
                 penmarker.DashPattern = new float[] { 2.0f, 2.0f };
                 gr.DrawLine(penmarker, x, 20, x, bigSpecH);
 
                 // red vertical line at TX frequency
                 penmarkerTX.DashPattern = new float[] { 2.0f, 2.0f };
-                gr.DrawLine(penmarkerTX, xtx, 24, xtx, bigSpecH-4);
+                gr.DrawLine(penmarkerTX, xtx, 24, xtx, bigSpecH - 4);
 
                 if (xydiff > 10)
                 {

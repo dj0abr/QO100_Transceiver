@@ -155,6 +155,7 @@ double real, imag;
             // if fftspeed > 0 then ignore every n fft line
             // this helps to run this software on slow SBCs
             static int fdel = 0;
+    
             if(fdel++ < fftspeed) continue;
             fdel = 0;
 

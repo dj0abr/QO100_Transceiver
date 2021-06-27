@@ -59,6 +59,7 @@ namespace trxGui
         public static int TXoffset = 280000;    // Tuner: 470 + Offset: 280 = 750kHz (mid Beacon)
         public static int RXTXoffset = 0;       // offset between RX and TX
         public static int lastRXoffset = 280000;
+        public static int lastTXoffset = 280000;
         public static UInt32 calbasefreq = 439000000; // base frequency for calibration
         public static UInt32 calfreq;           // same as rxqrg, but used during offset calibration
         public static int rfoffset = 0;         // Pluto's TCXO offset to RX/TX frequency

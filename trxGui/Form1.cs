@@ -286,32 +286,48 @@ namespace trxGui
             statics.panel_smallwf_Height = panel_smallwf.Height;
         }
 
+        DateTime dts = DateTime.UtcNow;
         private void panel_bigspec_Paint(object sender, PaintEventArgs e)
         {
+            /*DateTime dtact = DateTime.UtcNow;
+            TimeSpan ts = dtact - dts;
+            Console.WriteLine("gap time: [ms] " + ts.TotalMilliseconds);
+            dts = DateTime.UtcNow;*/
             Bitmap bm = Udp.getBigSpecBitmap();
 
             if (bm != null)
             {
                 e.Graphics.DrawImage(bm, 0, 0);
                 bm.Dispose();
+                /*dtact = DateTime.UtcNow;
+                ts = dtact - dts;
+                Console.WriteLine("drawtime: [ms] " + ts.TotalMilliseconds);*/
             }
-
-            while (Udp.getBigSpecBitmap() != null);
         }
 
         private void timer_draw_Tick(object sender, EventArgs e)
         {
+            timer_draw.Stop();
+
             if (Udp.getBigSpecBitmap_avail())
+            {
                 panel_bigspec.Invalidate();
+            }
 
             if (Udp.getSmallSpecBitmap_avail())
+            {
                 panel_smallspec.Invalidate();
+            }
 
             if (Udp.getBigWFBitmap_avail())
+            {
                 panel_bigwf.Invalidate();
+            }
 
             if (Udp.getSmallWFBitmap_avail())
+            {
                 panel_smallwf.Invalidate();
+            }
 
             if (Control.ModifierKeys == Keys.Shift && !statics.pttkey)
             {
@@ -417,6 +433,8 @@ namespace trxGui
                 oldbcnoffset = statics.beaconoffset;
                 panel_qrg.Invalidate();
             }
+
+            timer_draw.Start();
         }
 
         private String formatSN(int sn)
@@ -457,8 +475,6 @@ namespace trxGui
                 e.Graphics.DrawImage(bm, 0, 0);
                 bm.Dispose();
             }
-
-            while (Udp.getSmallSpecBitmap() != null) ;
         }
 
         private void panel_bigwf_Paint(object sender, PaintEventArgs e)
@@ -470,8 +486,6 @@ namespace trxGui
                 e.Graphics.DrawImage(bm, 0, 0);
                 bm.Dispose();
             }
-
-            while (Udp.getBigWFBitmap() != null) ;
         }
 
         private void panel_smallwf_Paint(object sender, PaintEventArgs e)
@@ -483,8 +497,6 @@ namespace trxGui
                 e.Graphics.DrawImage(bm, 0, 0);
                 bm.Dispose();
             }
-
-            while (Udp.getSmallWFBitmap() != null) ;
         }
 
         private void panel_bigwf_MouseClick(object sender, MouseEventArgs e)
@@ -887,8 +899,8 @@ namespace trxGui
 
         // insert a space betwenn each char:
         // string.Join(" ", s.ToCharArray())
-        Brush brushrx = new SolidBrush(Color.FromArgb(0, 210, 120));
-        Brush brushtx = new SolidBrush(Color.FromArgb(130, 0, 0));
+        Brush brushrx = new SolidBrush(Color.FromArgb(0, 230, 100));
+        Brush brushtx = new SolidBrush(Color.FromArgb(160, 0, 0));
         private void panel_qrg_Paint(object sender, PaintEventArgs e)
         {
             using (Graphics gr = e.Graphics)
@@ -1581,10 +1593,12 @@ namespace trxGui
         private void panel_save_Click(object sender, EventArgs e)
         {
             statics.lastRXoffset = statics.RXoffset;
+            statics.lastTXoffset = statics.TXoffset;
         }
         private void panel_recall_Click(object sender, EventArgs e)
         {
             statics.RXoffset = statics.lastRXoffset;
+            statics.TXoffset = statics.lastTXoffset;
             panel_qrg.Invalidate();
             sendAndRefreshRXTXoffset();
         }

@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=QO100 transceiver
+Comment=Start the Pluto QO100 Transceiver
+Icon=/home/pi/QO100_Transceiver/ai.ico
+Exec=lxterminal -e /home/pi/QO100_Transceiver/startTRX
+Type=Application
+Encoding=UTF-8
+Terminal=true
+Categories=None;

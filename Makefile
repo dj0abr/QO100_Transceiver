@@ -1,4 +1,4 @@
-VERSION := 166
+VERSION := 167
 CXXFLAGS = -Wall -O3 -std=c++0x -Wno-write-strings -Wno-narrowing -DDRIVER_SERIAL=$(VERSION)
 LDFLAGS = -lpthread -lrt -lm -liio -lliquid -lad9361 -lfftw3 -lfftw3_threads -lsndfile -lasound -lsoundio
 OBJ = qo100trx.o rx.o tx.o fft.o\

@@ -22,6 +22,7 @@
 * 
 */
 
+#include <sys/syscall.h>
 #include "udp.h"
 
 void* threadfunction(void* param);
@@ -93,6 +94,7 @@ void* threadfunction(void* param)
 	char rxbuf[maxUDPpacketsize];
 	struct sockaddr_in fromSock;
 	fromlen = sizeof(struct sockaddr_in);
+    printf("entering UDP thread, *** PID:%ld ***\n",syscall(SYS_gettid));
 	while(*rxcfg.keeprunning)
 	{
         recvlen = recvfrom(*rxcfg.sock, rxbuf, maxUDPpacketsize, 0, (struct sockaddr *)&fromSock, &fromlen);

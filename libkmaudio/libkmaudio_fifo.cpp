@@ -49,7 +49,7 @@ pthread_mutex_t audio_crit_sec[NUM_OF_PIPES];
 #define UNLOCK(pn)	pthread_mutex_unlock(&(audio_crit_sec[pn]))
 #endif
 
-#define AUDIO_FIFOFLEN 480000 // 10s at 48k samprate (minimum is number of preambles)
+#define AUDIO_FIFOFLEN 48000
 
 int io_wridx[NUM_OF_PIPES];
 int io_rdidx[NUM_OF_PIPES];

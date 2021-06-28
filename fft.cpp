@@ -48,7 +48,7 @@ int ph = 0;
 
     pthread_detach(pthread_self());
 
-    printf("entering FFT loop\n");
+    printf("entering FFT loop, *** PID:%ld ***\n",syscall(SYS_gettid));
 	while(keeprunning)
 	{
 		uint8_t data[PLUTOBUFSIZE*4];
@@ -68,9 +68,8 @@ int ph = 0;
     return NULL;
 }
 
-
-fftw_complex *din = NULL;				// input data for  fft, output data from ifft
-fftw_complex *cpout = NULL;	            // ouput data from fft, input data to ifft
+fftw_complex *din = NULL;
+fftw_complex *cpout = NULL;
 fftw_plan plan = NULL;
 
 #define FFT_RESOLUTION  25             // Hz per bin
@@ -91,10 +90,10 @@ void fftinit()
 
     din   = (fftw_complex *)fftw_malloc(sizeof(fftw_complex) * FFT_LENGTH);
 	cpout = (fftw_complex *)fftw_malloc(sizeof(fftw_complex) * FFT_LENGTH);
-
     plan = fftw_plan_dft_1d(FFT_LENGTH, din, cpout, FFTW_FORWARD, FFTW_MEASURE);
 
     fftw_export_wisdom_to_filename("fftcfg");
+    printf("fft init ok\n");
 }
 
 void close_fft()
@@ -143,6 +142,12 @@ double real, imag;
         {
 
             din_idx = 0;
+            // if fftspeed > 0 then ignore every n fft line
+            // this helps to run this software on slow SBCs
+            static int fdel = 0;
+            if(fdel++ < fftspeed) continue;
+            fdel = 0;
+
             // the fft input buffer is full, now lets execute the fft
             fftw_execute(plan);
             // the FFT delivers FFT_LENGTH values (44800 bins)
@@ -151,13 +156,6 @@ double real, imag;
             int numbins = FFT_LENGTH; // 22400 (22400*25=560k)
             // the FFT generates the upper half folloed by the lower half
             // the tuned freq is in the center
-
-            // if fftspeed > 0 then ignore every n fft line
-            // this helps to run this software on slow SBCs
-            static int fdel = 0;
-    
-            if(fdel++ < fftspeed) continue;
-            fdel = 0;
 
             // range centerfreq(,750) - 560k/2 to +560k/2
             // is ,470 ... 1,030
@@ -320,7 +318,8 @@ double real, imag;
             // RXoffsetfreq is in kHz above the left margin which is 750-280= 470k
             // the bin-index of RXoffsetfreq is: RXoffsetfreq/10
 
-            static uint32_t smallmid[midlen][FFT_LENGTH];
+            static const int small_midlen = 15;
+            static uint32_t smallmid[small_midlen][FFT_LENGTH];
             static int smididx = 0;
             for(int i=start; i<end; i++)
             {
@@ -339,9 +338,9 @@ double real, imag;
                 uint32_t uv = 0;
                 if(i>=0 && i<FFT_LENGTH)
                 {
-                    for(int j=0; j<midlen; j++)
+                    for(int j=0; j<small_midlen; j++)
                         uv = uv + smallmid[j][i]+smallmid[j][i-1]+smallmid[j][i+1];
-                    uv /= (midlen*3);
+                    uv /= (small_midlen*3);
 
                     if((smallidx+1) >= (int)sizeof(smalllineraw)) printf("*********************** %d  %d  %d\n",smallidx, start,end);
 
@@ -363,7 +362,7 @@ double real, imag;
                 smallidx += 2;
             }
 
-            if(++smididx >= midlen) smididx = 0;
+            if(++smididx >= small_midlen) smididx = 0;
 
             // send the small fft bins to the GUI
             sendUDP(gui_ip, GUI_UDPPORT, smalllineraw, smallidx);

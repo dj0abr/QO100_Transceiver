@@ -336,7 +336,7 @@ int main ()
 	init_rx();
 	init_tx();
 
-	printf("initialisation finished. Enter normal operation (press Ctrl+C to cancel)\n");
+	printf("initialisation finished. Enter normal operation (press Ctrl+C to cancel)\n*** main-PID:%ld ***\n",syscall(SYS_gettid));
 	while(keeprunning)
 	{
 		if(newaudiodevs)
@@ -371,8 +371,7 @@ int main ()
 		}
 
 		setTXpower();
-
-		usleep(100);
+		usleep(1000);
 	}
  
 	return 0;

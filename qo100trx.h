@@ -12,6 +12,7 @@
 #include <fcntl.h>
 #include <sys/ioctl.h>
 #include <sys/time.h>
+#include <sys/syscall.h>
 
 #include "libs/include/iio.h"
 #include "libs/include/ad9361.h"

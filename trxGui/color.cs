@@ -269,6 +269,24 @@ namespace trxGui
             {0.0,1.0,0.0,0.0,1.0,0.0}
         };
 
+        static SolidBrush[] sba = new SolidBrush[256];
+        static int fba = 1;
+
+        public SolidBrush getSolidBrush(int val)
+        {
+            if (fba == 1)
+            {
+                fba = 0;
+                for (int i = 0; i < 256; i++)
+                {
+                    sba[i] = new SolidBrush(getColor(i));
+                }
+            }
+            if (val > 255) val = 255;
+            if (val < 0) val = 0;
+            return sba[val];
+        }
+
         public Color getColor(int val)
         {
             int r = 0, b = 0, g = 0;

@@ -43,7 +43,7 @@ uint8_t *p_dat, *p_start;
 
     pthread_detach(pthread_self());
 
-    printf("entering pluto loop\n");
+    printf("entering pluto loop, *** PID:%ld ***\n",syscall(SYS_gettid));
     
 	while(keeprunning)
 	{

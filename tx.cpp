@@ -68,7 +68,7 @@ void* tx_threadfunction(void* param)
 {
     pthread_detach(pthread_self());
 
-    printf("entering TX loop\n");
+    printf("entering TX loop, *** PID:%ld ***\n",syscall(SYS_gettid));
 	while(keeprunning)
 	{
         float f[4800];

@@ -42,7 +42,7 @@ void* rx_threadfunction(void* param)
 {
     pthread_detach(pthread_self());
 
-    printf("entering RX loop\n");
+    printf("entering RX loop, *** PID:%ld ***\n",syscall(SYS_gettid));
 	while(keeprunning)
 	{
 		uint8_t data[PLUTOBUFSIZE*4];

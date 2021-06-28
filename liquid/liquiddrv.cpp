@@ -19,7 +19,6 @@ float        lp_fc    =   0.0050f; // cutoff frequency
 float        lp_f0    =   0.0f;    // center frequency
 float        lp_Ap    =   1.0f;    // pass-band ripple
 float        lp_As    =  40.0f;    // stop-band attenuation
-unsigned int lp_n     = 128;       // number of samples
 iirfilt_crcf lp_q = NULL;
 
 // Down-Sampler
@@ -231,7 +230,6 @@ float        bcn_lp_fc    =   0.0018f; // cutoff frequency
 float        bcn_lp_f0    =   0.0f;    // center frequency
 float        bcn_lp_Ap    =   1.0f;    // pass-band ripple
 float        bcn_lp_As    =  40.0f;    // stop-band attenuation
-unsigned int bcn_lp_n     = 128;       // number of samples
 iirfilt_crcf bcn_lp_q = NULL;
 
 // decimator
@@ -291,6 +289,8 @@ void exec_beaconlock(liquid_float_complex samp)
 static liquid_float_complex ccol[bcnInterpolfactor];
 static int ccol_idx = 0;
 static int bcn_din_idx = 0;
+
+    if(!beaconlock) return;
 
     if (bcn_dnnco == NULL) return;
     if (bcn_lp_q == NULL) return;

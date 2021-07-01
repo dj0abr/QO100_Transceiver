@@ -12,8 +12,8 @@ if [ ! -d "QO100_Transceiver" ] ; then
         cd QO100_Transceiver
         git pull https://github.com/dj0abr/QO100_Transceiver
     fi
-cd scripts
+cd ~/QO100_Transceiver/scripts
 ./prepare_ubuntu_pluto
-cd scripts
+cd ~/QO100_Transceiver/scripts
 ./makeall
 echo "==== Installation: OK ===="

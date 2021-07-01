@@ -32,14 +32,18 @@ http://wiki.amsat-dl.org/doku.php?id=en:plutotrx:overview
 
 ## Installation
 
+The complete installation (and upgrading) is done by one single install file:
+https://raw.githubusercontent.com/dj0abr/QO100_Transceiver/main/install
+
 open a terminal and run these commands:
 
 ```
-git clone https://github.com/dj0abr/QO100_Transceiver
-cd QO100_Transceiver
-./prepare_ubuntu_pluto
+wget https://raw.githubusercontent.com/dj0abr/QO100_Transceiver/main/install
+chmod 755 install
 ./install
 ```
+
+that's all. There is nothing more to do than to run this file
 
 ## run the software
 

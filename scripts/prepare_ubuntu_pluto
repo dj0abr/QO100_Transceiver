@@ -21,7 +21,7 @@ cd ..
 
 # copy prebuild libraries to lib folder
 echo "install SDR and DSP libraries"
-LIBNAME=$(find /usr -name libfftw3* | head -1)
+LIBNAME=$(find /usr -name libfftw3*.so | head -1)
 LIBFOLDER=$(dirname $LIBNAME)
 ARCHITECTURE=$(uname -m)
 if [ ${ARCHITECTURE} == 'x86_64' ]; then

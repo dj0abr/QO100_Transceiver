@@ -1,3 +1,4 @@
+set -e
 echo "Install libraries for QO100_Transceiver"
 echo "======================================="
 
@@ -101,3 +102,4 @@ fi
 echo ==========================================================================================
 echo Library installation finished. You can now install the transceiver by entering:  ./install
 echo ==========================================================================================
+exit 0

@@ -1,0 +1,3 @@
+cd /home/pi/QO100_Transceiver/Release
+./startQO100trx
+

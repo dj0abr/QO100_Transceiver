@@ -1,0 +1,108 @@
+set -e
+echo "Install libraries for QO100_Transceiver"
+echo "======================================="
+
+echo "installing standard libraries ...please wait..."
+sudo apt-get -qq update
+sudo apt-get -y install build-essential libxml2-dev bison flex libcdk5-dev cmake libaio-dev libusb-1.0-0-dev libserialport-dev libavahi-client-dev
+sudo apt-get -y install libasound2-dev libfftw3-dev sndfile-tools libsndfile1-dev git libad9361-dev
+sudo apt-get -y install autotools-dev automake pavucontrol
+
+# install newest mono version (mono from standard repositories is always too old)
+echo "mono (.NET): install latest version"
+pwd
+sh ./prepare_mono
+
+# install desktop starter if we are running on a raspberry pi
+echo "install raspberry starter, if we are on a raspberry"
+pwd
+sh ./prepare_raspi
+cd ..
+
+# copy prebuild libraries to lib folder
+echo "install SDR and DSP libraries"
+LIBNAME=$(find /usr -name libfftw3* | head -1)
+LIBFOLDER=$(dirname $LIBNAME)
+ARCHITECTURE=$(uname -m)
+if [ ${ARCHITECTURE} == 'x86_64' ]; then
+    echo "install Intel/AMD 64 bit ${ARCHITECTURE} libs to $LIBFOLDER"
+    sudo cp ./libs/$ARCHITECTURE/* $LIBFOLDER
+elif [ ${ARCHITECTURE} == 'aarch64' ]; then
+    echo "install ARM 64 bit ${ARCHITECTURE} libs to $LIBFOLDER"
+    sudo cp ./libs/$ARCHITECTURE/* $LIBFOLDER
+elif [ ${ARCHITECTURE} == 'armv7l' ]; then
+    echo "install ARM 32 bit ${ARCHITECTURE} libs to $LIBFOLDER"
+    sudo cp ./libs/armhf/* $LIBFOLDER
+else
+    echo ==============================================================
+    echo no shared libs for $ARCHITECTURE . Installing them from github
+    echo ==============================================================
+    cd /tmp
+    mkdir -p qo100trx_libraries
+    cd qo100trx_libraries
+    
+    if [ ! -d "libiio" ] ; then
+        git clone https://github.com/analogdevicesinc/libiio.git
+        cd libiio
+    else
+        cd libiio
+        git pull https://github.com/analogdevicesinc/libiio.git
+    fi
+    mkdir -p build
+    cd build
+    cmake ../
+    make -j$(nproc)
+    sudo make install
+    cd ..
+    cd ..
+    
+    if [ ! -d "libad9361-iio" ] ; then
+        git clone https://github.com/analogdevicesinc/libad9361-iio
+        cd libad9361-iio
+    else
+        cd libad9361-iio
+        git pull https://github.com/analogdevicesinc/libad9361-iio
+    fi
+    mkdir -p build
+    cd build
+    cmake ../
+    make -j$(nproc)
+    sudo make install
+    cd ..
+    cd ..
+    
+    if [ ! -d "liquid-dsp" ] ; then
+        git clone https://github.com/jgaeddert/liquid-dsp
+        cd liquid-dsp
+    else
+        cd liquid-dsp
+        git pull https://github.com/jgaeddert/liquid-dsp
+    fi
+    ./bootstrap.sh
+    ./configure
+    make -j$(nproc)
+    sudo make install
+    cd ..
+
+    if [ ! -d "libsoundio" ] ; then
+        git clone https://github.com/andrewrk/libsoundio
+        cd libsoundio
+    else
+        cd libsoundio
+        git pull https://github.com/andrewrk/libsoundio
+    fi
+    mkdir -p build
+    cd build
+    cmake ../
+    make -j$(nproc)
+    sudo make install
+    cd ..
+    cd ..
+    
+    cd ..
+fi
+
+echo =============================
+echo Library installation finished
+echo =============================
+exit 0

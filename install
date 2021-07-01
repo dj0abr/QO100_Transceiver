@@ -1,2 +1,19 @@
-make clean
-make -j$(nproc)
+#!/bin/bash
+echo "==== complete install QO100 Transceiver ===="
+echo "full update, upgrade and installation"
+set -e
+cd ~
+sudo apt-get update
+sudo apt-get install git -y
+if [ ! -d "QO100_Transceiver" ] ; then
+        git clone https://github.com/dj0abr/QO100_Transceiver
+        cd QO100_Transceiver
+    else
+        cd QO100_Transceiver
+        git pull https://github.com/dj0abr/QO100_Transceiver
+    fi
+cd scripts
+./prepare_ubuntu_pluto
+cd scripts
+./makeall
+echo "==== Installation: OK ===="

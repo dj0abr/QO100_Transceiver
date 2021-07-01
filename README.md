@@ -50,7 +50,7 @@ that's all. There is nothing more to do than to run this install file.
 The install script was made for debian/ubuntu based Linux systems. If you are using another system then please do these steps manually:
 
 * clone this project
-* in the folder QO100_Transceiver look for the installation of several libraries and install them for your OS.
+* in the script QO100_Transceiver/sctipts/prepare_ubuntu_pluto look for the installation of several libraries and install them for your OS.
 * Install the latest version of the mono project (see prepare_mono as an example)
 * make clean and make the transceiver software
 

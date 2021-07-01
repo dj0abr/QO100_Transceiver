@@ -17,3 +17,6 @@ cd ~/QO100_Transceiver/scripts
 cd ~/QO100_Transceiver/scripts
 ./makeall
 echo "==== Installation: OK ===="
+cd ~/QO100_Transceiver/Release
+echo "==== Start the Transceiver in the folder QO100_Transceiver/Release ===="
+echo "==== by entering ./startQO100trx                                   ===="

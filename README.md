@@ -35,6 +35,8 @@ http://wiki.amsat-dl.org/doku.php?id=en:plutotrx:overview
 The complete installation (and upgrading) is done by one single install file:
 https://raw.githubusercontent.com/dj0abr/QO100_Transceiver/main/install
 
+(no need to clone this github project, all is done automatically by this install file)
+
 open a terminal and run these commands:
 
 ```
@@ -43,7 +45,14 @@ chmod 755 install
 ./install
 ```
 
-that's all. There is nothing more to do than to run this file
+that's all. There is nothing more to do than to run this install file.
+
+The install script was made for debian/ubuntu based Linux systems. If you are using another system then please do these steps manually:
+
+* clone this project
+* in the folder QO100_Transceiver look for the installation of several libraries and install them for your OS.
+* Install the latest version of the mono project (see prepare_mono as an example)
+* make clean and make the transceiver software
 
 ## run the software
 

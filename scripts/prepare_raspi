@@ -2,6 +2,6 @@ raspiID=$(cat /etc/os-release | grep -om1 aspbian)
 if [ "$raspiID" = "aspbian" ]; then
   set -e
   echo "Raspberry OS found, install desktop starter icon"
-  cp scripts/qo100trx.desktop /home/pi/Desktop
+  cp qo100trx.desktop /home/pi/Desktop
 fi
 exit 0

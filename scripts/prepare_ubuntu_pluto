@@ -21,22 +21,22 @@ cd ..
 
 # copy prebuild libraries to lib folder
 echo "install SDR and DSP libraries"
-LIBNAME=$(find /usr -name libfftw3*.so | head -1)
-LIBFOLDER=$(dirname $LIBNAME)
-ARCHITECTURE=$(uname -m)
-if [ ${ARCHITECTURE} == 'x86_64' ]; then
-    echo "install Intel/AMD 64 bit ${ARCHITECTURE} libs to $LIBFOLDER"
-    sudo cp ./libs/$ARCHITECTURE/* $LIBFOLDER
-elif [ ${ARCHITECTURE} == 'aarch64' ]; then
-    echo "install ARM 64 bit ${ARCHITECTURE} libs to $LIBFOLDER"
-    sudo cp ./libs/$ARCHITECTURE/* $LIBFOLDER
-elif [ ${ARCHITECTURE} == 'armv7l' ]; then
-    echo "install ARM 32 bit ${ARCHITECTURE} libs to $LIBFOLDER"
-    sudo cp ./libs/armhf/* $LIBFOLDER
-else
-    echo ==============================================================
-    echo no shared libs for $ARCHITECTURE . Installing them from github
-    echo ==============================================================
+#LIBNAME=$(find /usr -name libfftw3*.so | head -1)
+#LIBFOLDER=$(dirname $LIBNAME)
+#ARCHITECTURE=$(uname -m)
+#if [ ${ARCHITECTURE} == 'x86_64' ]; then
+#    echo "install Intel/AMD 64 bit ${ARCHITECTURE} libs to $LIBFOLDER"
+#    sudo cp ./libs/$ARCHITECTURE/* $LIBFOLDER
+#elif [ ${ARCHITECTURE} == 'aarch64' ]; then
+#    echo "install ARM 64 bit ${ARCHITECTURE} libs to $LIBFOLDER"
+#    sudo cp ./libs/$ARCHITECTURE/* $LIBFOLDER
+#elif [ ${ARCHITECTURE} == 'armv7l' ]; then
+#    echo "install ARM 32 bit ${ARCHITECTURE} libs to $LIBFOLDER"
+#    sudo cp ./libs/armhf/* $LIBFOLDER
+#else
+#    echo ==============================================================
+#    echo no shared libs for $ARCHITECTURE . Installing them from github
+#    echo ==============================================================
     cd /tmp
     mkdir -p qo100trx_libraries
     cd qo100trx_libraries
@@ -100,7 +100,7 @@ else
     cd ..
     
     cd ..
-fi
+#fi
 
 echo =============================
 echo Library installation finished

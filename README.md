@@ -1,6 +1,8 @@
 # QO100_Transceiver
 QO-100 Software Transceiver using an Adalm-Pluto and an SBC (Raspberry, Odroid ...)
 
+### 19.7.2021 ... the installation script was updated after some problems with libraries. If you had problems installing 1.67, then delete all previous files from your harddisk and make a fresh installation.
+
 This project is a fully functional software based transceiver for QO-100
 
 Version Status:\
@@ -14,6 +16,7 @@ V1.63 .. June,16 2021 ... new settings: Pluto TX power, Screen Size\
 V1.64 .. June,17 2021 ... many more Screen Sizes, new languages\
 V1.66 .. June,25 2021 ... cleanup in the GUI, new RX/TX QRG settings, now usable also by touch screens. Stores RX-to-TX offset.\
 V1.67 .. June,28 2021 ... first version which officially runs on Rapberry PI-3B+ (choose smaller screen size i.e. 1024x768, and disable beacon lock (important !) the lock symbol must show "FREE"). Also works on Orange PC+. 
+V1.67 .. July,19 2021 ... Install files updated
 
 
 ![alt text](https://github.com/dj0abr/QO100_Transceiver/blob/main/trxGui/Properties/sampleGUI.png)

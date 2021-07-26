@@ -100,9 +100,18 @@ void udprxfunc(uint8_t *pdata, int len, struct sockaddr_in* sender)
 		ptt = pdata[1];
 		if(ptt && lastptt == 0)
 		{
+			// switch to TX mode
 			io_fifo_clear(capidx);
 			fifo_clear(TXfifo);
+			set_ptt();
 		}
+
+		if(ptt==0 && lastptt)
+		{
+			// switch to TX mode
+			release_ptt();
+		}
+
 		lastptt = ptt;
 	}
 
@@ -335,6 +344,8 @@ int main ()
 	// start the SSB receiver and transmitter
 	init_rx();
 	init_tx();
+
+	release_ptt();
 
 	printf("initialisation finished. Enter normal operation (press Ctrl+C to cancel)\n*** main-PID:%ld ***\n",syscall(SYS_gettid));
 	while(keeprunning)

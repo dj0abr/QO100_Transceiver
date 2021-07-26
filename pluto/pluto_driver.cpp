@@ -156,13 +156,27 @@ void setTXpower()
 		if(txpower > 0) txpower = 0;	// 0 is pluto's max value
 
 		lasttxpower = txpower;
-
 		printf("set TX power to %d dBm\n",txpower);
 
 		struct iio_channel *chn = NULL;
 		if (!get_phy_chan(ctx, TX, 0, &chn)) { return; }
+	
+		// txpower=-40: switches OFF the PTT in the F5OEO firmware
 		wr_ch_double(chn, "hardwaregain", (double)txpower);
 	}
+}
+
+void set_ptt()
+{
+	lasttxpower = -1;
+}
+
+void release_ptt()
+{
+	// set the power to -40, this releases the GPO0,1 PTT in the F5OEO firmware (>V.2021)
+	struct iio_channel *chn = NULL;
+	if (!get_phy_chan(ctx, TX, 0, &chn)) { return; }
+	wr_ch_double(chn, "hardwaregain", (double)-40);
 }
 
 long long lastfreq = 0;

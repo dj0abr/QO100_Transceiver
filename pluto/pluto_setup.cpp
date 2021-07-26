@@ -96,12 +96,16 @@ void pluto_setup()
 		exit(0);
     }
 
+	// noch keine PTT
+
 	ret = get_ad9361_stream_dev(ctx, TX, &tx);
 	if(!ret) {printf("TX streaming device not found. Pluto error %d\n",errno); exit(0);}
 	ret = get_ad9361_stream_dev(ctx, RX, &rx);
 	if(!ret) {printf("RX streaming device not found. Pluto error %d\n",errno); exit(0);}
 
 	cfg_ad9361_streaming_ch(ctx, &rxcfg, RX, 0);
+	
+	// with the following command the F5OEO Firmware activates the PTT on GPIO
 	cfg_ad9361_streaming_ch(ctx, &txcfg, TX, 0);
 
 	get_ad9361_stream_ch(ctx, RX, rx, 0, &rx0_i);

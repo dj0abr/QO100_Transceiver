@@ -31,7 +31,8 @@ void init_runloop();
 void setTXfrequency(long long freq);
 void setRXfrequency(long long freq);
 void setTXpower();
-
+void release_ptt();
+void set_ptt();
 
 extern stream_cfg rxcfg;
 extern stream_cfg txcfg;

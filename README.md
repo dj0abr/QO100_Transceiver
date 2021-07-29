@@ -15,8 +15,8 @@ V1.6 ... June,12 2021 ... various bug fixes (Sound card name, now working on 64b
 V1.63 .. June,16 2021 ... new settings: Pluto TX power, Screen Size\
 V1.64 .. June,17 2021 ... many more Screen Sizes, new languages\
 V1.66 .. June,25 2021 ... cleanup in the GUI, new RX/TX QRG settings, now usable also by touch screens. Stores RX-to-TX offset.\
-V1.67 .. June,28 2021 ... first version which officially runs on Rapberry PI-3B+ (choose smaller screen size i.e. 1024x768, and disable beacon lock (important !) the lock symbol must show "FREE"). Also works on Orange PC+. 
-V1.67 .. July,19 2021 ... Install files updated
+V1.67 .. June,28 2021 ... first version which officially runs on Rapberry PI-3B+ (choose smaller screen size i.e. 1024x768, and disable beacon lock (important !) the lock symbol must show "FREE"). Also works on Orange PC+. \
+V1.67 .. July,19 2021 ... Install files updated\
 V1.68 .. July,26 2021 ... PTT control implemented, needs F5OEO firmware 2021 or later (version from 2019 does not work !)
 
 

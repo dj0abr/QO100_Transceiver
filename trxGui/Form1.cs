@@ -459,6 +459,14 @@ namespace trxGui
                     sendAndRefreshRXTXoffset();
             }
 
+            int pttreq = Udp.GetPTTrequest();
+            if(pttreq == 2 || pttreq == 3)
+            {
+                if (pttreq == 2) statics.ptt = false;
+                else statics.ptt = true;
+                panel1.Invalidate();
+            }
+
             timer_draw.Start();
         }
 

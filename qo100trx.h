@@ -48,6 +48,7 @@ extern int RXoffsetfreq;
 extern int TXoffsetfreq;
 extern uint8_t audioloop;
 extern uint8_t ptt;
+extern uint8_t mute;
 extern uint8_t rfloop;
 extern int compressor;
 extern int audioagc;

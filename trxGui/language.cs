@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace trxGui
 {
@@ -47,7 +43,7 @@ namespace trxGui
             "Close",
             "Example:",
             "Referenz Frequency Calibration",
-
+            "Do you want to shut down the computer?",
         };
 
         public static String[] de = new String[]
@@ -89,6 +85,7 @@ namespace trxGui
             "Schließen",
             "Beispiel:",
             "Referenz Frequenz Kalibration",
+            "Wollen sie den Rechner wirklich herunterfahren?",
         };
 
         public static String[] fr = new String[]
@@ -130,7 +127,7 @@ namespace trxGui
             "Fermer",
             "Exemple:",
             "Referenz Calibrage de la fréquence",
-
+            "Voulez-vous éteindre l'ordinateur ?",
         };
 
         public static String[] es = new String[]
@@ -172,6 +169,7 @@ namespace trxGui
             "Cerrar",
             "Ejemplo:",
             "Calibración de la frecuencia de referencia",
+            "¿Quieres apagar el ordenador?",
 
         };
 
@@ -214,6 +212,7 @@ namespace trxGui
             "Fechar",
             "Exemplo:",
             "Calibração de frequência de referência",
+            "Quer desligar o computador?",
 
         };
 
@@ -256,6 +255,7 @@ namespace trxGui
             "Chiudere",
             "Esempio:",
             "Calibrazione della frequenza di riferimento",
+            "Vuoi spegnere il computer?",
 
         };
 

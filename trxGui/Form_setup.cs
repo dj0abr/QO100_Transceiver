@@ -11,11 +11,12 @@ namespace trxGui
             InitializeComponent();
 
             Width = 800;
-            Height = 480;
-            int yb = Height - 60;
+            Height = 380;
+            int yb = Height - 70;
             button1.Location = new Point(Width - button1.Width - 20, yb);
-            button2.Location = new Point(button1.Location.X - button2.Width - 20, yb);
-            button3.Location = new Point(button2.Location.X - button3.Width - 20, yb);
+            button2.Location = new Point(button1.Location.X - button2.Width - 10, yb);
+            button_shutdown.Location = new Point(button2.Location.X - button_shutdown.Width - 10, yb);
+            button3.Location = new Point(button_shutdown.Location.X - button3.Width - 10, yb);
 
             comboBox1.SelectedIndex = statics.language;
 
@@ -153,6 +154,17 @@ namespace trxGui
 
             foreach (Control c in Controls)
                 c.Text = language.GetText(c.Text);
+        }
+
+        private void button_shutdown_Click(object sender, EventArgs e)
+        {
+            DialogResult dr = MessageBox.Show(language.GetText("Do you want to shut down the computer?"), "Shut Down", MessageBoxButtons.YesNo);
+            if (dr == DialogResult.Yes)
+            {
+                Byte[] txb = new Byte[1];
+                txb[0] = 21;
+                Udp.UdpSendData(txb);
+            }
         }
     }
 }

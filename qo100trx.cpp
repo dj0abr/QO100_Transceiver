@@ -35,6 +35,7 @@ uint8_t audioloop = 0;
 uint8_t rfloop = 0;
 uint8_t ptt = 0;
 uint8_t lastptt = 0;
+uint8_t mute = 0;
 char pbdevname[101] = {0};
 char capdevname[101] = {0};
 int newaudiodevs = 0;
@@ -235,6 +236,12 @@ void udprxfunc(uint8_t *pdata, int len, struct sockaddr_in* sender)
 
 	if(pdata[0] == 20)
 		recpb = pdata[1];
+
+	if(pdata[0] == 21)
+	{
+		int r = system("shutdown now");
+        exit(r);
+	}
 }
 
 void close_program()
@@ -354,6 +361,9 @@ int main ()
 	printf("initialisation finished. Enter normal operation (press Ctrl+C to cancel)\n*** main-PID:%ld ***\n",syscall(SYS_gettid));
 	while(keeprunning)
 	{
+		// main loop
+		// time-uncritical jobs are done here
+		
 		if(newaudiodevs)
 		{
 			if(*pbdevname && *capdevname)
@@ -410,6 +420,19 @@ int main ()
 			if(rxvolume < 0.02f) rxvolume = 0.02f;
 			// max volume is limited just before sending to sound driver
 		}
+
+		int nptt = test_ptt_gpio();
+		if(nptt == 2 || nptt == 3)
+		{
+			uint8_t ptta[2];
+			ptta[0] = 8;
+			ptta[1] = (uint8_t)nptt;
+			sendUDP(gui_ip, GUI_UDPPORT, ptta, 2);
+		}
+
+		int nmute = test_mute_gpio();
+		if(nmute != -1)
+			mute = nmute;
 
 		usleep(1000);
 	}

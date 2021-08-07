@@ -105,7 +105,7 @@ void *rotencproc(void *pdata)
 
     int aval[NUM_OF_ENCODERS];
     int bval[NUM_OF_ENCODERS];
-    int oldaval[NUM_OF_ENCODERS];
+    int oldaval[NUM_OF_ENCODERS]={0,0};
     while(keeprunning)
     {
         for(int i=0; i<NUM_OF_ENCODERS; i++)
@@ -132,6 +132,66 @@ void *rotencproc(void *pdata)
     pthread_exit(NULL);
 }
 
+// 0=RX, 1=TX, 2=just released, 3=just pressed
+int test_ptt_gpio()
+{
+    #ifndef RASPI
+    return -1;
+    #endif 
+
+static int gold = -1;
+int ret = 0;
+
+    int ptt = getPort("p");
+
+    if(ptt == 0)
+    {
+        // PTT is pressed
+        if(gold == 0) ret = 1;
+        else ret = 3;
+    }
+    else
+    {
+        // PTT is released
+        if(gold == 0) ret = 2;
+        else ret = 0;
+    }
+
+    gold = ptt;
+
+    return ret;
+}
+
+// 0=unmuted, 1=muted, 2=just unmuted, 3=just muted
+int test_mute_gpio()
+{
+    #ifndef RASPI
+    return -1;
+    #endif 
+    
+static int gold = -1;
+int ret = 0;
+
+    int mute = getPort("m");
+
+    if(mute == 0)
+    {
+        // mute is pressed
+        if(gold == 0) ret = 1;
+        else ret = 3;
+    }
+    else
+    {
+        // mute is released
+        if(gold == 0) ret = 2;
+        else ret = 0;
+    }
+
+    gold = mute;
+
+    return ret;
+}
+
 /* ============= Linux GPIO interface =============
  requires packages: gpiod  libgpiod-dev
 
@@ -146,13 +206,16 @@ void *rotencproc(void *pdata)
  frequency-encoder B ... GPIO27 (Pin13)
  volume   -encoder A ... GPIO4  (Pin 7)
  volume   -encoder B ... GPIO22 (Pin15)
+
+ PTT                 ... GPIO18 (Pin12)
+ Mute                ... GPIO23 (Pin16)
 */
 
 #include "gpiod.h"
 
 struct gpiod_chip *chip = NULL;
 struct gpiod_line *fa = NULL;
-struct gpiod_line  *fb = NULL, *va = NULL, *vb = NULL;
+struct gpiod_line  *fb = NULL, *va = NULL, *vb = NULL, *gptt = NULL, *gmute = NULL;
 
 int init_gpio()
 {
@@ -193,6 +256,20 @@ int init_gpio()
         return -1;
     }
 
+    gptt = gpiod_chip_get_line(chip,18);
+    if (!gptt) {
+        printf("cannot access GPIO18\n");
+        gpiod_chip_close(chip);
+        return -1;
+    }
+
+    gmute = gpiod_chip_get_line(chip,23);
+    if (!gmute) {
+        printf("cannot access GPIO23\n");
+        gpiod_chip_close(chip);
+        return -1;
+    }
+
     ret = gpiod_line_request_input(fa, "huhu");
     if (ret) {
         printf("cannot init GPIO17 for input\n");
@@ -221,7 +298,21 @@ int init_gpio()
         return -1;
     }
 
-    printf("GPIO for Encoders initialized\n");
+    ret = gpiod_line_request_input(gptt, "huhu");
+    if (ret) {
+        printf("cannot init GPIO18 for input\n");
+        gpiod_chip_close(chip);
+        return -1;
+    }
+
+    ret = gpiod_line_request_input(gmute, "huhu");
+    if (ret) {
+        printf("cannot init GPIO23 for input\n");
+        gpiod_chip_close(chip);
+        return -1;
+    }
+
+    printf("GPIOs initialized\n");
 
     return 0;
 }
@@ -231,6 +322,8 @@ void close_gpio()
     if(fb) gpiod_line_release(fb);
     if(va) gpiod_line_release(va);
     if(vb) gpiod_line_release(vb);
+    if(gptt) gpiod_line_release(gptt);
+    if(gmute) gpiod_line_release(gmute);
     if(chip) gpiod_chip_close(chip);
 }
 
@@ -240,11 +333,21 @@ int getPort(char *port)
     if(port[0] == 'f')
     {
         if(port[1] == 'a') return gpiod_line_get_value(fa);
-
         return gpiod_line_get_value(fb);
     }
 
-    if(port[1] == 'a') return gpiod_line_get_value(va);
+    if(port[0] == 'v')
+    {
+        if(port[1] == 'a') return gpiod_line_get_value(va);
+        return gpiod_line_get_value(vb);
+    }
 
-    return gpiod_line_get_value(vb);
+    if(port[0] == 'p')
+        return gpiod_line_get_value(gptt);
+
+    if(port[0] == 'm')
+        return gpiod_line_get_value(gmute);
+
+    return 0;
 }
+

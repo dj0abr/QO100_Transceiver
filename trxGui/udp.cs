@@ -19,6 +19,7 @@ namespace trxGui
         static public UdpQueue smallWFQ = new UdpQueue();
         static public UdpQueue uq_tx = new UdpQueue();
         static public UdpQueue uq_rotary = new UdpQueue();
+        static public UdpQueue uq_ptt = new UdpQueue();
 
         static Bitmap bmBigWF, bmSmallWF;
 
@@ -210,6 +211,12 @@ namespace trxGui
                             // number of rotary steps for frequency setting
                             int steps = (int)b[0] - 128;
                             uq_rotary.Add(steps);
+                        }
+
+                        if (rxtype == 8)
+                        {
+                            // driver wants to change PTT status
+                            uq_ptt.Add((int)b[0]);
                         }
                     }
                 }
@@ -545,6 +552,12 @@ namespace trxGui
         {
             if (uq_rotary.Count() == 0) return 0;
             return uq_rotary.Getint();
+        }
+
+        public static int GetPTTrequest()
+        {
+            if (uq_ptt.Count() == 0) return 0;
+            return uq_ptt.Getint();
         }
     }
 

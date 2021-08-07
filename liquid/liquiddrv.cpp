@@ -190,7 +190,7 @@ void downmix(liquid_float_complex *samples, int len)
         if(audioloop == 0 && pbidx != -1)
         {
             static float playvol = 1.0f;
-            if(ptt && rxmute && rfloop == 0) playvol = 0.08f;
+            if(((ptt && rxmute) || mute) && rfloop == 0) playvol = 0.08f;
             else playvol = 2.0f;
             float vol = playvol * rxvolume;
             if(fabs(vol) > 1.0f) 

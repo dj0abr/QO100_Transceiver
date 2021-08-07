@@ -63,12 +63,13 @@ namespace trxGui
             this.label17 = new System.Windows.Forms.Label();
             this.textBox_txpower = new System.Windows.Forms.TextBox();
             this.label18 = new System.Windows.Forms.Label();
+            this.button_shutdown = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // button1
             // 
             this.button1.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.button1.Location = new System.Drawing.Point(713, 312);
+            this.button1.Location = new System.Drawing.Point(588, 293);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 0;
@@ -78,7 +79,7 @@ namespace trxGui
             // button2
             // 
             this.button2.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.button2.Location = new System.Drawing.Point(632, 312);
+            this.button2.Location = new System.Drawing.Point(507, 293);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 23);
             this.button2.TabIndex = 1;
@@ -309,7 +310,7 @@ namespace trxGui
             // button3
             // 
             this.button3.ForeColor = System.Drawing.Color.Red;
-            this.button3.Location = new System.Drawing.Point(504, 312);
+            this.button3.Location = new System.Drawing.Point(338, 293);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(75, 23);
             this.button3.TabIndex = 45;
@@ -393,11 +394,23 @@ namespace trxGui
             this.label18.TabIndex = 50;
             this.label18.Text = "TX power:";
             // 
+            // button_shutdown
+            // 
+            this.button_shutdown.ForeColor = System.Drawing.Color.Red;
+            this.button_shutdown.Location = new System.Drawing.Point(419, 293);
+            this.button_shutdown.Name = "button_shutdown";
+            this.button_shutdown.Size = new System.Drawing.Size(75, 23);
+            this.button_shutdown.TabIndex = 53;
+            this.button_shutdown.Text = "ShutDown";
+            this.button_shutdown.UseVisualStyleBackColor = true;
+            this.button_shutdown.Click += new System.EventHandler(this.button_shutdown_Click);
+            // 
             // Form_setup
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 382);
+            this.ClientSize = new System.Drawing.Size(671, 328);
+            this.Controls.Add(this.button_shutdown);
             this.Controls.Add(this.label17);
             this.Controls.Add(this.textBox_txpower);
             this.Controls.Add(this.label18);
@@ -476,5 +489,6 @@ namespace trxGui
         private System.Windows.Forms.Label label17;
         private System.Windows.Forms.TextBox textBox_txpower;
         private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.Button button_shutdown;
     }
 }

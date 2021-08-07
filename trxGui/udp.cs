@@ -18,6 +18,7 @@ namespace trxGui
         static public UdpQueue bigWFQ = new UdpQueue();
         static public UdpQueue smallWFQ = new UdpQueue();
         static public UdpQueue uq_tx = new UdpQueue();
+        static public UdpQueue uq_rotary = new UdpQueue();
 
         static Bitmap bmBigWF, bmSmallWF;
 
@@ -202,6 +203,13 @@ namespace trxGui
 
                             statics.beaconoffset = v;
                             //Console.WriteLine("beaconoffset: " + statics.beaconoffset);
+                        }
+
+                        if (rxtype == 7)
+                        {
+                            // number of rotary steps for frequency setting
+                            int steps = (int)b[0] - 128;
+                            uq_rotary.Add(steps);
                         }
                     }
                 }
@@ -532,6 +540,12 @@ namespace trxGui
         {
             uq_tx.Add(b);
         }
+
+        public static int GetRotary()
+        {
+            if (uq_rotary.Count() == 0) return 0;
+            return uq_rotary.Getint();
+        }
     }
 
     // this class is a thread safe queue wich is used
@@ -541,6 +555,14 @@ namespace trxGui
         Queue myQ = new Queue();
 
         public void Add(Byte[] b)
+        {
+            lock (myQ.SyncRoot)
+            {
+                myQ.Enqueue(b);
+            }
+        }
+
+        public void Add(int b)
         {
             lock (myQ.SyncRoot)
             {
@@ -574,6 +596,17 @@ namespace trxGui
             lock (myQ.SyncRoot)
             {
                 b = (Byte[])myQ.Dequeue();
+            }
+            return b;
+        }
+
+        public int Getint()
+        {
+            int b;
+
+            lock (myQ.SyncRoot)
+            {
+                b = (int)myQ.Dequeue();
             }
             return b;
         }

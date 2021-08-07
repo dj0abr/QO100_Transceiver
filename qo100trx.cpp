@@ -245,6 +245,7 @@ void close_program()
 	close_liquid();
 	close_liquid_modulator();
 	close_fft();
+	close_gpio();
 }
 
 int main ()
@@ -345,6 +346,9 @@ int main ()
 	init_rx();
 	init_tx();
 
+	// init rotary encoders on RPI
+	init_rotencoder();
+
 	release_ptt();
 
 	printf("initialisation finished. Enter normal operation (press Ctrl+C to cancel)\n*** main-PID:%ld ***\n",syscall(SYS_gettid));
@@ -382,6 +386,31 @@ int main ()
 		}
 
 		setTXpower();
+
+		static int ms10 = 0;
+		if(++ms10 >= 100)
+		{
+			ms10 = 0;
+			int rotfreq = getEncSteps(0);
+			if(rotfreq != 0)
+			{
+				uint8_t rxoff[2];
+				rxoff[0] = 7;
+				rxoff[1] = (uint8_t)(rotfreq+128);
+				sendUDP(gui_ip, GUI_UDPPORT, rxoff, 2);
+			}
+		}
+
+		int rotvol = getEncSteps(1);
+		if(rotvol != 0)
+		{
+			rotvol = -rotvol;
+
+			rxvolume += (float)rotvol / 50.0f;
+			if(rxvolume < 0.02f) rxvolume = 0.02f;
+			// max volume is limited just before sending to sound driver
+		}
+
 		usleep(1000);
 	}
  

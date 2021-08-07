@@ -6,6 +6,8 @@ void init_beaconlock();
 void close_beaconlock();
 void exec_beaconlock(liquid_float_complex samp);
 
+float rxvolume = 1.0f;
+
 // down mixer
 nco_crcf dnnco = NULL;      
 
@@ -178,6 +180,8 @@ void downmix(liquid_float_complex *samples, int len)
             exit(0);
         }
 
+        //measure_maxval(fabs(soundsamp.real), 1000);
+
         // the rate here is 48000S/s
         // demodulate
         ampmodem_demodulate(demod, soundsamp, &z);
@@ -188,7 +192,14 @@ void downmix(liquid_float_complex *samples, int len)
             static float playvol = 1.0f;
             if(ptt && rxmute && rfloop == 0) playvol = 0.08f;
             else playvol = 2.0f;
-            kmaudio_playsamples(pbidx,&z,1,playvol);
+            float vol = playvol * rxvolume;
+            if(fabs(vol) > 1.0f) 
+            {
+                // reduce volume if overdriven
+                rxvolume = 1.0f / playvol;
+                vol = playvol * rxvolume;
+            }
+            kmaudio_playsamples(pbidx,&z,1,vol);
         }
     }
 }

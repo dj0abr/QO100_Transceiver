@@ -20,6 +20,7 @@
 #include "kmlib/km_helper.h"
 #include "kmlib/kmfifo.h"
 #include "kmlib/kmtimer.h"
+#include "kmlib/rotary.h"
 #include "udp/udp.h"
 #include "liquid/liquiddrv.h"
 #include "pluto/pluto.h"
@@ -59,3 +60,4 @@ extern int beaconlock;
 extern int fftspeed;
 extern int audiohighpass;
 extern int txpower;
+extern float rxvolume;

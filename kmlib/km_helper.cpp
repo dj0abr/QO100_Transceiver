@@ -385,14 +385,22 @@ static int first=1;
     return sr;
 }
 
-void measure_maxval(double v)
+void measure_maxval(double v, int anz)
 {
-static double max = - 99999999;    
+static double max = - 99999999;  
+static int cnt = 0;  
 
     v = fabs(v);
     if(v > max)
     {
         max = v;
+        //printf("maxval: %f\n",max);
+    }
+
+    if(++cnt >= anz)
+    {
         printf("maxval: %f\n",max);
+        max = - 99999999; 
+        cnt = 0; 
     }
 }

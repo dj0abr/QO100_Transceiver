@@ -6,7 +6,7 @@ echo "installing standard libraries ...please wait..."
 sudo apt-get -qq update
 sudo apt-get -y install build-essential libxml2-dev bison flex libcdk5-dev cmake libaio-dev libusb-1.0-0-dev libserialport-dev libavahi-client-dev
 sudo apt-get -y install libasound2-dev libfftw3-dev sndfile-tools libsndfile1-dev git libad9361-dev
-sudo apt-get -y install autotools-dev automake pavucontrol
+sudo apt-get -y install autotools-dev automake pavucontrol gpiod libgpiod-dev
 
 # install newest mono version (mono from standard repositories is always too old)
 echo "mono (.NET): install latest version"

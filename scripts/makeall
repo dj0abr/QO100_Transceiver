@@ -1,3 +1,9 @@
 cd ..
 make clean
-make -j$(nproc)
+raspiID=$(cat /etc/os-release | grep -om1 aspbian)
+if [ "$raspiID" = "aspbian" ]; then
+    make RASPI='-DRASPI' -j$(nproc)
+else
+    make -j$(nproc)
+fi
+

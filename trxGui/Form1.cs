@@ -434,6 +434,31 @@ namespace trxGui
                 panel_qrg.Invalidate();
             }
 
+            int rsteps = Udp.GetRotary();
+            if(rsteps != 0)
+            {
+                int b = Math.Abs(rsteps);
+
+                int factor = 10000;
+                if (b == 1) factor = 20;
+                else if (b == 2) factor = 80;
+                else if (b == 3) factor = 200;
+                else if (b == 4) factor = 600;
+                else if (b == 5) factor = 2000;
+                else if (b == 6) factor = 5000;
+
+                if (rsteps > 0) factor = -factor;
+
+                if (statics.rit)
+                    statics.RXoffset += factor;
+
+                if (statics.xit)
+                    statics.TXoffset += factor;
+
+                if (statics.rit || statics.xit)
+                    sendAndRefreshRXTXoffset();
+            }
+
             timer_draw.Start();
         }
 

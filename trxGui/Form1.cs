@@ -460,10 +460,9 @@ namespace trxGui
             }
 
             int pttreq = Udp.GetPTTrequest();
-            if(pttreq == 2 || pttreq == 3)
+            if(pttreq == 3)
             {
-                if (pttreq == 2) statics.ptt = false;
-                else statics.ptt = true;
+                statics.ptt = !statics.ptt;
                 panel1.Invalidate();
             }
 

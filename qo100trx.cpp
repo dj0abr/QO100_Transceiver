@@ -422,7 +422,7 @@ int main ()
 		}
 
 		int nptt = test_ptt_gpio();
-		if(nptt == 2 || nptt == 3)
+		if(nptt == 3)
 		{
 			uint8_t ptta[2];
 			ptta[0] = 8;
@@ -431,8 +431,11 @@ int main ()
 		}
 
 		int nmute = test_mute_gpio();
-		if(nmute != -1)
-			mute = nmute;
+		if(nmute == 3)
+		{
+			if(mute) mute = 0;
+			else mute = 1;
+		}
 
 		usleep(1000);
 	}

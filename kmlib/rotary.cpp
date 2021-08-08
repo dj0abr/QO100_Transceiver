@@ -144,17 +144,20 @@ int ret = 0;
 
     int ptt = getPort("p");
 
-    if(ptt == 0)
+    if(gold != -1)
     {
-        // PTT is pressed
-        if(gold == 0) ret = 1;
-        else ret = 3;
-    }
-    else
-    {
-        // PTT is released
-        if(gold == 0) ret = 2;
-        else ret = 0;
+        if(ptt == 0)
+        {
+            // PTT is pressed
+            if(gold == 0) ret = 1;
+            else ret = 3;
+        }
+        else
+        {
+            // PTT is released
+            if(gold == 0) ret = 2;
+            else ret = 0;
+        }
     }
 
     gold = ptt;
@@ -174,17 +177,20 @@ int ret = 0;
 
     int mute = getPort("m");
 
-    if(mute == 0)
+    if(gold != -1)
     {
-        // mute is pressed
-        if(gold == 0) ret = 1;
-        else ret = 3;
-    }
-    else
-    {
-        // mute is released
-        if(gold == 0) ret = 2;
-        else ret = 0;
+        if(mute == 0)
+        {
+            // mute is pressed
+            if(gold == 0) ret = 1;
+            else ret = 3;
+        }
+        else
+        {
+            // mute is released
+            if(gold == 0) ret = 2;
+            else ret = 0;
+        }
     }
 
     gold = mute;

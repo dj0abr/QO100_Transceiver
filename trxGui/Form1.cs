@@ -43,6 +43,9 @@ namespace trxGui
             // set the position of the GUI elements for various screen resolutions
             scaleElements();
 
+            // center in screen, this makes it easy to use or adapt to screen sizes
+            CenterToScreen();
+
             // test OS type
             OperatingSystem osversion = System.Environment.OSVersion;
             if (osversion.VersionString.Contains("indow"))
@@ -440,12 +443,12 @@ namespace trxGui
                 int b = Math.Abs(rsteps);
 
                 int factor = 10000;
-                if (b == 1) factor = 20;
-                else if (b == 2) factor = 80;
-                else if (b == 3) factor = 200;
-                else if (b == 4) factor = 600;
-                else if (b == 5) factor = 2000;
-                else if (b == 6) factor = 5000;
+                if (b == 1) factor = 25;
+                else if (b == 2) factor = 50;
+                else if (b == 3) factor = 100;
+                else if (b == 4) factor = 250;
+                else if (b == 5) factor = 500;
+                else if (b == 6) factor = 1000;
 
                 if (rsteps > 0) factor = -factor;
 

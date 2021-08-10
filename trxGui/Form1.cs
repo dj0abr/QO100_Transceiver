@@ -473,9 +473,12 @@ namespace trxGui
             {
                 if (statics.corractive > 0)
                 {
-                    Console.WriteLine("correct by corrfact: " + statics.corrfact);
-                    statics.RXoffset -= statics.corrfact;
-                    sendAndRefreshRXTXoffset();
+                    if (statics.autosync)
+                    {
+                        Console.WriteLine("correct by corrfact: " + statics.corrfact);
+                        statics.RXoffset -= statics.corrfact;
+                        sendAndRefreshRXTXoffset();
+                    }
                     statics.corractive--;
                 }
                 statics.corrfact = 0;
@@ -1202,6 +1205,7 @@ namespace trxGui
                     statics.audioHighpass = ReadString(sr) == "1";
                     statics.txpower = ReadInt(sr);
                     statics.windowsize = ReadInt(sr);
+                    statics.autosync = ReadString(sr) == "1";
                 }
             }
             catch
@@ -1242,7 +1246,7 @@ namespace trxGui
                     sw.WriteLine(statics.audioHighpass ? "1" : "0");
                     sw.WriteLine(statics.txpower.ToString());
                     sw.WriteLine(statics.windowsize.ToString());
-                    
+                    sw.WriteLine(statics.autosync ? "1" : "0");
                 }
             }
             catch { }

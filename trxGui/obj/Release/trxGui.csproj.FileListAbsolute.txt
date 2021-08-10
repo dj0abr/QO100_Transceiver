@@ -30,3 +30,4 @@ E:\funk\sat\QO100_Transceiver_500\trxGui\obj\Release\qo100trx.exe
 E:\funk\sat\QO100_Transceiver_500\trxGui\obj\Release\qo100trx.pdb
 E:\funk\sat\QO100_Transceiver_500\Release\qo100trx.pdb
 E:\funk\sat\QO100_Transceiver\trxGui\obj\Release\trxGui.Form_screen.resources
+E:\funk\sat\QO100_Transceiver\trxGui\obj\Release\trxGui.csprojAssemblyReference.cache

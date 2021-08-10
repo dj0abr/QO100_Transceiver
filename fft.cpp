@@ -31,6 +31,7 @@
 
 void fftinit();
 void calc_fft(uint8_t *data, int len);
+void findSignal(uint16_t *p16, int anz);
 
 void* fft_threadfunction(void* param);
 
@@ -364,11 +365,76 @@ double real, imag;
 
             if(++smididx >= small_midlen) smididx = 0;
 
+            findSignal((uint16_t *)smallline,smallidx/2);
+
+
             // send the small fft bins to the GUI
             sendUDP(gui_ip, GUI_UDPPORT, smalllineraw, smallidx);
 
             // send the small fft bins to the GUI
             sendUDP(gui_ip, GUI_UDPPORT, smallline, smallidx);
+        }
+    }
+}
+
+#define SRCHANZ 20
+int srch[SRCHANZ];
+int srchpos = 0;
+
+void findSignal(uint16_t *p16, int anz)
+{
+    // measure frequency of a signal within +/-4kHz of the RXfrequency
+    int st12 = (14000-6000)*1120/28000; // -4kHz
+    int en12 = (14000+6000)*1120/28000; // +4kHz
+    uint32_t mv16=0;
+
+    // measure mean value over 28 kHz
+    for(int i=0; i<anz; i++)
+        mv16 += p16[i];
+    mv16 /= anz;
+
+    // filter out the signal
+    uint16_t vt=100, vb=96;  // level factors to filter
+    int filtval = 0;
+    int filtanz = 0;
+    for(int i=st12+1; i<en12-1; i++)    
+    {
+        if( p16[i-1] > (mv16*vt/vb) &&
+            p16[i] > (mv16*vt/vb) &&
+            p16[i+1] > (mv16*vt/vb))
+        {
+            filtval += i;
+            filtanz++;
+        }
+    }
+
+    // calculate the mid frequency of the signal
+    if(filtanz > 0)
+    {
+        filtval /= filtanz;
+        int freq = filtval * 25 - 14000;
+        srch[srchpos] = freq;
+        if(++srchpos >= SRCHANZ) srchpos = 0;
+
+        // calculate a mean value of the found frequency
+        int srchmid = 0;
+        for(int i=0; i<SRCHANZ; i++)
+            srchmid += srch[i];
+        srchmid /= SRCHANZ;
+
+        if(srchpos == 0)
+        {
+            int korrfact = 1350 - srchmid;
+            //printf("%d, corr by: %d\n",srchmid,korrfact);
+            // send correction value to GUI
+            uint8_t cf[5];
+            cf[0] = 9;
+            cf[1] = korrfact >> 24;
+            cf[2] = korrfact >> 16;
+            cf[3] = korrfact >> 8;
+            cf[4] = korrfact & 0xff;
+            
+            sendUDP(gui_ip, GUI_UDPPORT, cf, 5);
         }
     }
 }

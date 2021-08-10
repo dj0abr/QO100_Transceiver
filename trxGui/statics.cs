@@ -39,6 +39,9 @@ namespace trxGui
         public static bool audioloop = false;
         public static bool rfloop = false;
         public static int beaconoffset = 0;
+        public static int corrfact = 0;
+        public static int corractive = 0;
+        public static int corractiveanz = 2;
         public static bool beaconlock = false;
         public static int calmode = 0;  // 0=off, 1=439MHz cal
         public static int cpuspeed = 0;

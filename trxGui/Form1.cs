@@ -469,6 +469,18 @@ namespace trxGui
                 panel1.Invalidate();
             }
 
+            if (statics.corrfact != 0)
+            {
+                if (statics.corractive > 0)
+                {
+                    Console.WriteLine("correct by corrfact: " + statics.corrfact);
+                    statics.RXoffset -= statics.corrfact;
+                    sendAndRefreshRXTXoffset();
+                    statics.corractive--;
+                }
+                statics.corrfact = 0;
+            }
+
             timer_draw.Start();
         }
 
@@ -537,6 +549,7 @@ namespace trxGui
         private void panel_bigwf_MouseClick(object sender, MouseEventArgs e)
         {
             tuneBig(e);
+            statics.corractive = statics.corractiveanz;
         }
 
         private void panel_smallwf_MouseClick(object sender, MouseEventArgs e)

@@ -218,6 +218,19 @@ namespace trxGui
                             // driver wants to change PTT status
                             uq_ptt.Add((int)b[0]);
                         }
+
+                        if (rxtype == 9)
+                        {
+                            int v = b[0];
+                            v <<= 8;
+                            v |= b[1];
+                            v <<= 8;
+                            v |= b[2];
+                            v <<= 8;
+                            v |= b[3];
+
+                            statics.corrfact = v;
+                        }
                     }
                 }
                 catch { }

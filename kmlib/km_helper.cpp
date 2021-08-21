@@ -115,6 +115,26 @@ void getParameters(int argc, char *argv[])
     }
 }
 
+// run external program and return it's output
+char *runProgram(char *parameter, int maxlen)
+{
+    //printf("run:<%s>\n",parameter);
+    FILE *fp = popen(parameter,"r");
+    if(fp)
+    {
+        *parameter = 0;
+        while (fgets(parameter+strlen(parameter), maxlen-1-strlen(parameter), fp) != NULL) 
+        {
+            //printf("returns:<%s>\n", parameter);
+        }
+        pclose(fp);
+        return parameter;
+    }
+    else
+        printf("ERROR: cannot run: %s\n",parameter);
+    return NULL;
+}
+
 void showbitstring(char* title, uint8_t* data, int totallen, int anz)
 {
     printf("%s. len %d: ", title, totallen);

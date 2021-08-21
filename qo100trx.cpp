@@ -267,11 +267,20 @@ int main ()
 	exit(0);*/
 
 	char url[512];
-	sprintf(url,"wget --no-check-certificate --no-cache --no-cookies --no-http-keep-alive -O version.txt https://raw.githubusercontent.com/dj0abr/QO100_Transceiver/main/version.txt?cachekiller=%d",rand());
-	int sres = system(url);
-	if(sres < 0)
+
+	// check if we are connected to a router
+	sprintf(url,"ip route");
+	char *pr = runProgram(url, sizeof(url)-1);
+	//printf("<%s>\n",pr);
+	if(strstr(pr,"default via"))
 	{
-		printf("error %d when reading actual serial number\n",sres);
+		// we are on a router, check github for updates
+		sprintf(url,"wget --no-check-certificate --no-cache --no-cookies --no-http-keep-alive -O version.txt https://raw.githubusercontent.com/dj0abr/QO100_Transceiver/main/version.txt?cachekiller=%d",rand());
+		int sres = system(url);
+		if(sres < 0)
+		{
+			printf("error %d when reading actual serial number\n",sres);
+		}
 	}
 
     install_signal_handler(close_program);

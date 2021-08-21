@@ -12,11 +12,12 @@ namespace trxGui
 
             Width = 800;
             Height = 390;
-            int yb = Height - 60;
+            int yb = Height - 70;
             button1.Location = new Point(Width - button1.Width - 20, yb);
             button2.Location = new Point(button1.Location.X - button2.Width - 10, yb);
-            button_shutdown.Location = new Point(button2.Location.X - button_shutdown.Width - 10, yb);
-            button3.Location = new Point(button_shutdown.Location.X - button3.Width - 10, yb);
+            button3.Location = new Point(button2.Location.X - button3.Width - 10, yb);
+
+            button_shutdown.Location = new Point(Width - button_shutdown.Width - 20, yb - button1.Height - 10);
 
             comboBox1.SelectedIndex = statics.language;
 

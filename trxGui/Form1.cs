@@ -421,7 +421,9 @@ namespace trxGui
                         Console.WriteLine("act version:" + actver);
                         if(actver > statics.gui_serno)
                         {
-                            MessageBox.Show("a new Version is avialable at Github:" + actver.ToString(), "NEW VERSION", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            //MessageBox.Show("a new Version is avialable at Github:" + actver.ToString(), "NEW VERSION", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            String nv = " (new:V" + ((double)actver / 100).ToString() + ")";
+                            this.Text += nv.Replace(',', '.');
                         }
                     }
                     File.Delete("version.txt");

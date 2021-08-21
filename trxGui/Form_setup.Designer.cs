@@ -312,7 +312,7 @@ namespace trxGui
             // button3
             // 
             this.button3.ForeColor = System.Drawing.Color.Red;
-            this.button3.Location = new System.Drawing.Point(338, 301);
+            this.button3.Location = new System.Drawing.Point(426, 302);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(75, 23);
             this.button3.TabIndex = 45;
@@ -399,7 +399,7 @@ namespace trxGui
             // button_shutdown
             // 
             this.button_shutdown.ForeColor = System.Drawing.Color.Red;
-            this.button_shutdown.Location = new System.Drawing.Point(419, 301);
+            this.button_shutdown.Location = new System.Drawing.Point(588, 272);
             this.button_shutdown.Name = "button_shutdown";
             this.button_shutdown.Size = new System.Drawing.Size(75, 23);
             this.button_shutdown.TabIndex = 53;

@@ -22,7 +22,7 @@ V1.64 .. June,17 2021 ... many more Screen Sizes, new languages\
 V1.66 .. June,25 2021 ... cleanup in the GUI, new RX/TX QRG settings, now usable also by touch screens. Stores RX-to-TX offset.\
 V1.67 .. June,28 2021 ... first version which officially runs on Rapberry PI-3B+ (choose smaller screen size i.e. 1024x768, and disable beacon lock (important !) the lock symbol must show "FREE"). Also works on Orange PC+. \
 V1.67 .. July,19 2021 ... Install files updated\
-V1.68 .. July,26 2021 ... PTT control implemented, needs F5OEO firmware 2021 or later (version from 2019 does not work ! Pluto Rev.C needs also a patch)
+V1.68 .. July,26 2021 ... PTT control implemented, needs F5OEO firmware 2021 or later (version from 2019 does not work ! Pluto Rev.C needs also a patch)\
 V1.69 ...August, 9 2021 ... rotary enocder for raspberry (frequency and RX volume), details see documentation
 
 ![alt text](https://github.com/dj0abr/QO100_Transceiver/blob/main/trxGui/Properties/sampleGUI.png)

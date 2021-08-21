@@ -1,7 +1,12 @@
 # QO100_Transceiver
 QO-100 Software Transceiver using an Adalm-Pluto and an SBC (Raspberry, Odroid ...)
 
-### 19.7.2021 ... the installation script was updated after some problems with libraries. If you had problems installing 1.67, then delete all previous files from your harddisk and make a fresh installation.
+### 22.8.2021 ... for 32bit ARM only (i.e. Raspberry): there is currently a bug in a third party library. If the ssb receiver is not working below the mid beacon, but working ok above the beacon, then run the following command in a terminal:
+
+### cd   ~/QO100_Transceiver/libs/armhf
+### sudo   cp   libliquid.so  libliquid.a  /usr/local/lib
+
+
 
 This project is a fully functional software based transceiver for QO-100
 

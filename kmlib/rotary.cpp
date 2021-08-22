@@ -213,15 +213,17 @@ int ret = 0;
  volume   -encoder A ... GPIO4  (Pin 7)
  volume   -encoder B ... GPIO22 (Pin15)
 
- PTT                 ... GPIO18 (Pin12)
+ PTT input           ... GPIO18 (Pin12)
  Mute                ... GPIO23 (Pin16)
+
+ PTT output          ... GPIO24 (Pin18)
 */
 
 #include "gpiod.h"
 
 struct gpiod_chip *chip = NULL;
 struct gpiod_line *fa = NULL;
-struct gpiod_line  *fb = NULL, *va = NULL, *vb = NULL, *gptt = NULL, *gmute = NULL;
+struct gpiod_line  *fb = NULL, *va = NULL, *vb = NULL, *gptt = NULL, *gmute = NULL, *pttout = NULL;
 
 int init_gpio()
 {
@@ -242,21 +244,21 @@ int init_gpio()
     }
 
     fb= gpiod_chip_get_line(chip,27);
-    if (!fa) {
+    if (!fb) {
         printf("cannot access GPIO27\n");
         gpiod_chip_close(chip);
         return -1;
     }
 
     va= gpiod_chip_get_line(chip,4);
-    if (!fa) {
+    if (!va) {
         printf("cannot access GPIO4\n");
         gpiod_chip_close(chip);
         return -1;
     }
 
     vb= gpiod_chip_get_line(chip,22);
-    if (!fa) {
+    if (!vb) {
         printf("cannot access GPIO22\n");
         gpiod_chip_close(chip);
         return -1;
@@ -272,6 +274,13 @@ int init_gpio()
     gmute = gpiod_chip_get_line(chip,23);
     if (!gmute) {
         printf("cannot access GPIO23\n");
+        gpiod_chip_close(chip);
+        return -1;
+    }
+
+    pttout = gpiod_chip_get_line(chip,24);
+    if (!pttout) {
+        printf("cannot access GPIO24\n");
         gpiod_chip_close(chip);
         return -1;
     }
@@ -318,6 +327,13 @@ int init_gpio()
         return -1;
     }
 
+    ret = gpiod_line_request_output(pttout, "huhu", 0);
+    if (ret) {
+        printf("cannot init GPIO24 for output\n");
+        gpiod_chip_close(chip);
+        return -1;
+    }
+
     printf("GPIOs initialized\n");
 
     return 0;
@@ -336,6 +352,10 @@ void close_gpio()
 // get status of physical port
 int getPort(char *port)
 {
+    #ifndef RASPI
+    return 0;
+    #endif 
+
     if(port[0] == 'f')
     {
         if(port[1] == 'a') return gpiod_line_get_value(fa);
@@ -355,5 +375,17 @@ int getPort(char *port)
         return gpiod_line_get_value(gmute);
 
     return 0;
+}
+
+void setPort(char *port, int value)
+{
+    #ifndef RASPI
+    return;
+    #endif 
+
+    if(port[0] == 'p')
+    {
+        gpiod_line_set_value(pttout,value);
+    }
 }
 

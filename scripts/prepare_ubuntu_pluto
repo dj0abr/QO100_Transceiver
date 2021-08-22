@@ -21,86 +21,24 @@ cd ..
 
 # copy prebuild libraries to lib folder
 echo "install SDR and DSP libraries"
-#LIBNAME=$(find /usr -name libfftw3*.so | head -1)
-#LIBFOLDER=$(dirname $LIBNAME)
-#ARCHITECTURE=$(uname -m)
-#if [ ${ARCHITECTURE} == 'x86_64' ]; then
-#    echo "install Intel/AMD 64 bit ${ARCHITECTURE} libs to $LIBFOLDER"
-#    sudo cp ./libs/$ARCHITECTURE/* $LIBFOLDER
-#elif [ ${ARCHITECTURE} == 'aarch64' ]; then
-#    echo "install ARM 64 bit ${ARCHITECTURE} libs to $LIBFOLDER"
-#    sudo cp ./libs/$ARCHITECTURE/* $LIBFOLDER
-#elif [ ${ARCHITECTURE} == 'armv7l' ]; then
-#    echo "install ARM 32 bit ${ARCHITECTURE} libs to $LIBFOLDER"
-#    sudo cp ./libs/armhf/* $LIBFOLDER
-#else
-#    echo ==============================================================
-#    echo no shared libs for $ARCHITECTURE . Installing them from github
-#    echo ==============================================================
-    cd /tmp
-    mkdir -p qo100trx_libraries
-    cd qo100trx_libraries
-    
-    if [ ! -d "libiio" ] ; then
-        git clone https://github.com/analogdevicesinc/libiio.git
-        cd libiio
-    else
-        cd libiio
-        git pull https://github.com/analogdevicesinc/libiio.git
-    fi
-    mkdir -p build
-    cd build
-    cmake ../
-    make -j$(nproc)
-    sudo make install
-    cd ..
-    cd ..
-    
-    if [ ! -d "libad9361-iio" ] ; then
-        git clone https://github.com/analogdevicesinc/libad9361-iio
-        cd libad9361-iio
-    else
-        cd libad9361-iio
-        git pull https://github.com/analogdevicesinc/libad9361-iio
-    fi
-    mkdir -p build
-    cd build
-    cmake ../
-    make -j$(nproc)
-    sudo make install
-    cd ..
-    cd ..
-    
-    if [ ! -d "liquid-dsp" ] ; then
-        git clone https://github.com/jgaeddert/liquid-dsp
-        cd liquid-dsp
-    else
-        cd liquid-dsp
-        git pull https://github.com/jgaeddert/liquid-dsp
-    fi
-    ./bootstrap.sh
-    ./configure
-    make -j$(nproc)
-    sudo make install
-    cd ..
-
-    if [ ! -d "libsoundio" ] ; then
-        git clone https://github.com/andrewrk/libsoundio
-        cd libsoundio
-    else
-        cd libsoundio
-        git pull https://github.com/andrewrk/libsoundio
-    fi
-    mkdir -p build
-    cd build
-    cmake ../
-    make -j$(nproc)
-    sudo make install
-    cd ..
-    cd ..
-    
-    cd ..
-#fi
+LIBNAME=$(find /usr -name libfftw3*.so | head -1)
+LIBFOLDER=$(dirname $LIBNAME)
+ARCHITECTURE=$(uname -m)
+if [ ${ARCHITECTURE} == 'x86_64' ]; then
+    echo "install Intel/AMD 64 bit ${ARCHITECTURE} libs to $LIBFOLDER"
+    sudo cp ./libs/$ARCHITECTURE/* $LIBFOLDER
+elif [ ${ARCHITECTURE} == 'aarch64' ]; then
+    echo "install ARM 64 bit ${ARCHITECTURE} libs to $LIBFOLDER"
+    sudo cp ./libs/$ARCHITECTURE/* $LIBFOLDER
+elif [ ${ARCHITECTURE} == 'armv7l' ]; then
+    echo "install ARM 32 bit ${ARCHITECTURE} libs to $LIBFOLDER"
+    sudo cp ./libs/armhf/* $LIBFOLDER
+else
+    echo ==============================================================
+    echo no shared libs for $ARCHITECTURE . Installing them from github
+    echo by running  ./install_github_libs
+    echo ==============================================================
+fi
 
 echo =============================
 echo Library installation finished

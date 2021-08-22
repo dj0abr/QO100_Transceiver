@@ -169,6 +169,7 @@ void setTXpower()
 void set_ptt()
 {
 	lasttxpower = -1;
+	setPort("p", 1);
 }
 
 void release_ptt()
@@ -179,6 +180,8 @@ void release_ptt()
 	struct iio_channel *chn = NULL;
 	if (!get_phy_chan(ctx, TX, 0, &chn)) { return; }
 	wr_ch_double(chn, "hardwaregain", (double)-40);
+
+	setPort("p", 0);
 }
 
 long long lastfreq = 0;

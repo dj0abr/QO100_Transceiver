@@ -1,0 +1,69 @@
+set -e
+echo "Install original libs for QO100_Transceiver from github"
+echo "======================================================="
+
+# copy prebuild libraries to lib folder
+cd /tmp
+mkdir -p qo100trx_libraries
+cd qo100trx_libraries
+
+if [ ! -d "libiio" ] ; then
+    git clone https://github.com/analogdevicesinc/libiio.git
+    cd libiio
+else
+    cd libiio
+    git pull https://github.com/analogdevicesinc/libiio.git
+fi
+mkdir -p build
+cd build
+cmake ../
+make -j$(nproc)
+sudo make install
+cd ..
+cd ..
+
+if [ ! -d "libad9361-iio" ] ; then
+    git clone https://github.com/analogdevicesinc/libad9361-iio
+    cd libad9361-iio
+else
+    cd libad9361-iio
+    git pull https://github.com/analogdevicesinc/libad9361-iio
+fi
+mkdir -p build
+cd build
+cmake ../
+make -j$(nproc)
+sudo make install
+cd ..
+cd ..
+
+if [ ! -d "liquid-dsp" ] ; then
+    git clone https://github.com/jgaeddert/liquid-dsp
+    cd liquid-dsp
+else
+    cd liquid-dsp
+    git pull https://github.com/jgaeddert/liquid-dsp
+fi
+./bootstrap.sh
+./configure
+make -j$(nproc)
+sudo make install
+cd ..
+
+if [ ! -d "libsoundio" ] ; then
+    git clone https://github.com/andrewrk/libsoundio
+    cd libsoundio
+else
+    cd libsoundio
+    git pull https://github.com/andrewrk/libsoundio
+fi
+mkdir -p build
+cd build
+cmake ../
+make -j$(nproc)
+sudo make install
+
+echo =============================
+echo Library installation finished
+echo =============================
+exit 0

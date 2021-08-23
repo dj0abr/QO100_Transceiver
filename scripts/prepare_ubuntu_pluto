@@ -34,11 +34,8 @@ cd ..
 #    echo "install ARM 32 bit ${ARCHITECTURE} libs to $LIBFOLDER"
 #    sudo cp ./libs/armhf/* $LIBFOLDER
 #else
-    echo ==============================================================
-    echo Install libraries from github
-    echo ==============================================================
-
     set -e
+    echo "======================================================="
     echo "Install original libs for QO100_Transceiver from github"
     echo "======================================================="
 

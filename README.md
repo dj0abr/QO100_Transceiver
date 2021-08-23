@@ -1,5 +1,5 @@
 # QO100_Transceiver
-QO-100 Software Transceiver using an Adalm-Pluto and an SBC (Raspberry, Odroid ...)
+QO-100 Software Transceiver using an Adalm-Pluto and an SBC (Raspberry, Odroid ...), also works on Linux-Desktop PCs 
 
 
 This project is a fully functional software based transceiver for QO-100

@@ -4,6 +4,7 @@ echo "full update, upgrade and installation"
 set -e
 cd ~
 echo "update system by running apt-get update"
+
 sudo apt-get update
 echo "install git"
 sudo apt-get install git -y

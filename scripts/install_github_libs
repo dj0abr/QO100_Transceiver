@@ -8,11 +8,11 @@ mkdir -p qo100trx_libraries
 cd qo100trx_libraries
 
 if [ ! -d "libiio" ] ; then
-    git clone https://github.com/analogdevicesinc/libiio.git
+    git clone https://github.com/dj0abr/libiio.git
     cd libiio
 else
     cd libiio
-    git pull https://github.com/analogdevicesinc/libiio.git
+    git pull https://github.com/dj0abr/libiio.git
 fi
 mkdir -p build
 cd build
@@ -23,11 +23,11 @@ cd ..
 cd ..
 
 if [ ! -d "libad9361-iio" ] ; then
-    git clone https://github.com/analogdevicesinc/libad9361-iio
+    git clone https://github.com/dj0abr/libad9361-iio
     cd libad9361-iio
 else
     cd libad9361-iio
-    git pull https://github.com/analogdevicesinc/libad9361-iio
+    git pull https://github.com/dj0abr/libad9361-iio
 fi
 mkdir -p build
 cd build
@@ -38,11 +38,11 @@ cd ..
 cd ..
 
 if [ ! -d "liquid-dsp" ] ; then
-    git clone https://github.com/jgaeddert/liquid-dsp
+    git clone https://github.com/dj0abr/liquid-dsp
     cd liquid-dsp
 else
     cd liquid-dsp
-    git pull https://github.com/jgaeddert/liquid-dsp
+    git pull https://github.com/dj0abr/liquid-dsp
 fi
 ./bootstrap.sh
 ./configure
@@ -51,11 +51,11 @@ sudo make install
 cd ..
 
 if [ ! -d "libsoundio" ] ; then
-    git clone https://github.com/andrewrk/libsoundio
+    git clone https://github.com/dj0abr/libsoundio
     cd libsoundio
 else
     cd libsoundio
-    git pull https://github.com/andrewrk/libsoundio
+    git pull https://github.com/dj0abr/libsoundio
 fi
 mkdir -p build
 cd build

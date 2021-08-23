@@ -3,7 +3,9 @@ echo "==== complete install QO100 Transceiver ===="
 echo "full update, upgrade and installation"
 set -e
 cd ~
+echo "update system by running apt-get update"
 sudo apt-get update
+echo "install git"
 sudo apt-get install git -y
 if [ ! -d "QO100_Transceiver" ] ; then
         git clone https://github.com/dj0abr/QO100_Transceiver

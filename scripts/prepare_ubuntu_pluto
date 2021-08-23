@@ -20,25 +20,89 @@ sh ./prepare_raspi
 cd ..
 
 # copy prebuild libraries to lib folder
-echo "install SDR and DSP libraries"
-LIBNAME=$(find /usr -name libfftw3*.so | head -1)
-LIBFOLDER=$(dirname $LIBNAME)
-ARCHITECTURE=$(uname -m)
-if [ ${ARCHITECTURE} == 'x86_64' ]; then
-    echo "install Intel/AMD 64 bit ${ARCHITECTURE} libs to $LIBFOLDER"
-    sudo cp ./libs/$ARCHITECTURE/* $LIBFOLDER
-elif [ ${ARCHITECTURE} == 'aarch64' ]; then
-    echo "install ARM 64 bit ${ARCHITECTURE} libs to $LIBFOLDER"
-    sudo cp ./libs/$ARCHITECTURE/* $LIBFOLDER
-elif [ ${ARCHITECTURE} == 'armv7l' ]; then
-    echo "install ARM 32 bit ${ARCHITECTURE} libs to $LIBFOLDER"
-    sudo cp ./libs/armhf/* $LIBFOLDER
-else
+#echo "install SDR and DSP libraries"
+#LIBNAME=$(find /usr -name libfftw3*.so | head -1)
+#LIBFOLDER=$(dirname $LIBNAME)
+#ARCHITECTURE=$(uname -m)
+#if [ ${ARCHITECTURE} == 'x86_64' ]; then
+#    echo "install Intel/AMD 64 bit ${ARCHITECTURE} libs to $LIBFOLDER"
+#    sudo cp ./libs/$ARCHITECTURE/* $LIBFOLDER
+#elif [ ${ARCHITECTURE} == 'aarch64' ]; then
+#    echo "install ARM 64 bit ${ARCHITECTURE} libs to $LIBFOLDER"
+#    sudo cp ./libs/$ARCHITECTURE/* $LIBFOLDER
+#elif [ ${ARCHITECTURE} == 'armv7l' ]; then
+#    echo "install ARM 32 bit ${ARCHITECTURE} libs to $LIBFOLDER"
+#    sudo cp ./libs/armhf/* $LIBFOLDER
+#else
     echo ==============================================================
-    echo no shared libs for $ARCHITECTURE . Install them from github
-    echo by running  ./install_github_libs
+    echo Install libraries from github
     echo ==============================================================
-fi
+
+    set -e
+    echo "Install original libs for QO100_Transceiver from github"
+    echo "======================================================="
+
+    # copy prebuild libraries to lib folder
+    cd /tmp
+    mkdir -p qo100trx_libraries
+    cd qo100trx_libraries
+
+    if [ ! -d "libiio" ] ; then
+        git clone https://github.com/dj0abr/libiio.git
+        cd libiio
+    else
+        cd libiio
+        git pull https://github.com/dj0abr/libiio.git
+    fi
+    mkdir -p build
+    cd build
+    cmake ../
+    make -j$(nproc)
+    sudo make install
+    cd ..
+    cd ..
+
+    if [ ! -d "libad9361-iio" ] ; then
+        git clone https://github.com/dj0abr/libad9361-iio
+        cd libad9361-iio
+    else
+        cd libad9361-iio
+        git pull https://github.com/dj0abr/libad9361-iio
+    fi
+    mkdir -p build
+    cd build
+    cmake ../
+    make -j$(nproc)
+    sudo make install
+    cd ..
+    cd ..
+
+    if [ ! -d "liquid-dsp" ] ; then
+        git clone https://github.com/dj0abr/liquid-dsp
+        cd liquid-dsp
+    else
+        cd liquid-dsp
+        git pull https://github.com/dj0abr/liquid-dsp
+    fi
+    ./bootstrap.sh
+    ./configure
+    make -j$(nproc)
+    sudo make install
+    cd ..
+
+    if [ ! -d "libsoundio" ] ; then
+        git clone https://github.com/dj0abr/libsoundio
+        cd libsoundio
+    else
+        cd libsoundio
+        git pull https://github.com/dj0abr/libsoundio
+    fi
+    mkdir -p build
+    cd build
+    cmake ../
+    make -j$(nproc)
+    sudo make install
+#fi
 
 echo =============================
 echo Library installation finished

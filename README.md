@@ -24,7 +24,7 @@ V1.67 .. June,28 2021 ... first version which officially runs on Rapberry PI-3B+
 V1.67 .. July,19 2021 ... Install files updated\
 V1.68 .. July,26 2021 ... PTT control implemented, needs F5OEO firmware 2021 or later (version from 2019 does not work ! Pluto Rev.C needs also a patch)\
 V1.69 ...August, 9 2021 ... rotary enocder for raspberry (frequency and RX volume), details see documentation\
-V1.70 ...August, 23 2021 ... new screen size 1680x1050, 800Hz Test Tone (see left buttons), PTT output (and input), Mute input on Raspi GPIO\
+V1.70 ...August, 23 2021 ... new screen size 1680x1050, 800Hz Test Tone (see left buttons), PTT output (and input), Mute input on Raspi GPIO, changes in installation scripts\
 
 ![alt text](https://github.com/dj0abr/QO100_Transceiver/blob/main/trxGui/Properties/sampleGUI.png)
 

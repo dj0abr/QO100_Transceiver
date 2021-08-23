@@ -35,7 +35,7 @@ elif [ ${ARCHITECTURE} == 'armv7l' ]; then
     sudo cp ./libs/armhf/* $LIBFOLDER
 else
     echo ==============================================================
-    echo no shared libs for $ARCHITECTURE . Installing them from github
+    echo no shared libs for $ARCHITECTURE . Install them from github
     echo by running  ./install_github_libs
     echo ==============================================================
 fi

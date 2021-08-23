@@ -13,6 +13,7 @@ namespace trxGui
         int wf_height = 70;
         int button_size = 32;
         Font bigfnt;
+        int lastsendtone = 0;
 
         String screensafertime = "";
 
@@ -77,6 +78,13 @@ namespace trxGui
             sendAndRefreshRXTXoffset();
         }
 
+        // buttons left side, vertical row
+        int but_left_leftmargin = 5;
+        int but_left_topmargin = 4;
+        int but_left_width = 24;
+        int but_left_heigth = 36;
+        int but_left_spacing = 4;
+
         void scaleElements()
         {
             int wsize = 0;
@@ -85,6 +93,15 @@ namespace trxGui
                 // sizes for screens 1920x1080 pixel
                 window_width = 1920;
                 window_height = 1080;
+                button_size = 64;
+                bigfnt = new Font("Verdana", 24.0f);
+            }
+
+            if (statics.windowsize == wsize++)
+            {
+                // sizes for screens 1600x1050 pixel
+                window_width = 1600;
+                window_height = 1050;
                 button_size = 64;
                 bigfnt = new Font("Verdana", 24.0f);
             }
@@ -165,13 +182,6 @@ namespace trxGui
             this.Width = window_width;
             this.Height = window_height;
 
-            // buttons left side, vertical row
-            int but_left_leftmargin = 5;
-            int but_left_topmargin = 4;
-            int but_left_width = 24;
-            int but_left_heigth = 36;
-            int but_left_spacing = 4;
-
             panel_screen.Location = new Point(but_left_leftmargin, but_left_topmargin+40);
             panel_screen.Width = but_left_width;
             panel_screen.Height = but_left_heigth;
@@ -192,16 +202,11 @@ namespace trxGui
             panel_recall.Width = but_left_width;
             panel_recall.Height = but_left_heigth;
 
-            panel_playTX.Visible = panel_rec_mic.Visible = false;
-            /*
-            panel_rec_mic.Location = new Point(but_left_leftmargin, panel_recall.Location.Y + panel_recall.Height + but_left_spacing);
-            panel_rec_mic.Width = but_left_width;
-            panel_rec_mic.Height = but_left_heigth;
+            panel_testtone.Location = new Point(but_left_leftmargin, panel_recall.Location.Y + panel_recall.Height + but_left_spacing);
+            panel_testtone.Width = but_left_width;
+            panel_testtone.Height = but_left_heigth;
 
-            panel_playTX.Location = new Point(but_left_leftmargin, panel_rec_mic.Location.Y + panel_rec_mic.Height + but_left_spacing);
-            panel_playTX.Width = but_left_width;
-            panel_playTX.Height = but_left_heigth;
-            */
+
             // main panels
             int left = panel_screen.Location.X + panel_screen.Width + 4;
             int panel_width = window_width - 15 - left;
@@ -292,19 +297,12 @@ namespace trxGui
         DateTime dts = DateTime.UtcNow;
         private void panel_bigspec_Paint(object sender, PaintEventArgs e)
         {
-            /*DateTime dtact = DateTime.UtcNow;
-            TimeSpan ts = dtact - dts;
-            Console.WriteLine("gap time: [ms] " + ts.TotalMilliseconds);
-            dts = DateTime.UtcNow;*/
             Bitmap bm = Udp.getBigSpecBitmap();
 
             if (bm != null)
             {
                 e.Graphics.DrawImage(bm, 0, 0);
                 bm.Dispose();
-                /*dtact = DateTime.UtcNow;
-                ts = dtact - dts;
-                Console.WriteLine("drawtime: [ms] " + ts.TotalMilliseconds);*/
             }
         }
 
@@ -484,6 +482,12 @@ namespace trxGui
                     statics.corractive--;
                 }
                 statics.corrfact = 0;
+            }
+
+            if(lastsendtone != statics.sendtone)
+            {
+                panel_testtone.Invalidate();
+                lastsendtone = statics.sendtone;
             }
 
             timer_draw.Start();
@@ -1307,7 +1311,7 @@ namespace trxGui
             else
                 drawBitmap(gr, bminact);
         }
-                
+
         private void panel_rit_Paint(object sender, PaintEventArgs e)
         {
             using (Bitmap bm = new Bitmap(Properties.Resources.rxqrg))
@@ -1657,20 +1661,19 @@ namespace trxGui
             sendAndRefreshRXTXoffset();
         }
 
-        private void panel_rec_mic_Click(object sender, EventArgs e)
+        private void panel_testtone_Click(object sender, EventArgs e)
         {
-            Byte[] txb = new Byte[2];
-            txb[0] = 20;
-            txb[1] = 1; // record
+            Byte[] txb = new Byte[1];
+            txb[0] = 22;
             Udp.UdpSendData(txb);
         }
 
-        private void panel_playTX_Click(object sender, EventArgs e)
+        private void panel_testtone_Paint(object sender, PaintEventArgs e)
         {
-            Byte[] txb = new Byte[2];
-            txb[0] = 20;
-            txb[1] = 2; // playback
-            Udp.UdpSendData(txb);
+            if(statics.sendtone == 1)
+                e.Graphics.DrawImage(Properties.Resources.waveactive,0,0);
+            else
+                e.Graphics.DrawImage(Properties.Resources.wave, 0, 0);
         }
     }
 

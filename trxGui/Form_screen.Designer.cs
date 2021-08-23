@@ -37,6 +37,7 @@ namespace trxGui
             this.comboBox1.FormattingEnabled = true;
             this.comboBox1.Items.AddRange(new object[] {
             "1920x1080",
+            "1600x1050",
             "1280x720",
             "1280x480",
             "1024x768",

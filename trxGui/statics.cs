@@ -9,7 +9,7 @@ namespace trxGui
 {
     public static class statics
     {
-        public static UInt16 gui_serno = 169;   // 123 means: V1.23
+        public static UInt16 gui_serno = 170;   // 123 means: V1.23
         public static UInt16 driver_serno = 0;
         public static bool running = true;
         public static String ModemIP;
@@ -54,6 +54,7 @@ namespace trxGui
         public static int windowsize = 5;
         public static int panel_bigspec_Width, panel_bigspec_Height, panel_bigwf_Width, panel_bigwf_Height,
                         panel_smallspec_Width, panel_smallspec_Height, panel_smallwf_Width, panel_smallwf_Height;
+        public static int sendtone = 0;
 
 
         // Pluto frequency settings

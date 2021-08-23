@@ -38,6 +38,7 @@ void init_rx();
 void init_tx();
 void init_fft();
 void close_fft();
+void setSendtone(int onoff);
 
 extern int RXfifo;
 extern int TXfifo;
@@ -62,3 +63,4 @@ extern int fftspeed;
 extern int audiohighpass;
 extern int txpower;
 extern float rxvolume;
+extern int sendtone;

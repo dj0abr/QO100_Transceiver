@@ -52,6 +52,7 @@ int fftspeed = 0;
 int audiohighpass = 0;
 int txpower = 0;
 int recpb = 0;	// 0=idle, 1=rec, 2=pb
+int sendtone = 0;
 
 // fifos to send/receive samples with pluto run thread
 int RXfifo;
@@ -102,6 +103,7 @@ void udprxfunc(uint8_t *pdata, int len, struct sockaddr_in* sender)
 		if(ptt && lastptt == 0)
 		{
 			// switch to TX mode
+			setSendtone(0);// never start with a test tone after pressing PTT
 			io_fifo_clear(capidx);
 			fifo_clear(TXfifo);
 			set_ptt();
@@ -241,6 +243,12 @@ void udprxfunc(uint8_t *pdata, int len, struct sockaddr_in* sender)
 	{
 		int r = system("shutdown now");
         exit(r);
+	}
+
+	if(pdata[0] == 22)
+	{
+		// send test tone
+		setSendtone(1-sendtone);
 	}
 }
 
@@ -450,4 +458,14 @@ int main ()
 	}
  
 	return 0;
+}
+
+void setSendtone(int onoff)
+{
+	sendtone = onoff;
+
+	uint8_t st[2];
+	st[0] = 10;
+	st[1] = (uint8_t)sendtone;
+	sendUDP(gui_ip, GUI_UDPPORT, st, 2);
 }

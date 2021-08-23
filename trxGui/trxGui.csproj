@@ -315,5 +315,11 @@
   <ItemGroup>
     <None Include="Properties\read.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\wave.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\waveactive.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

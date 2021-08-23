@@ -4,7 +4,6 @@ using System.Drawing;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
-using System.Drawing.Imaging;
 
 namespace trxGui
 {
@@ -230,6 +229,11 @@ namespace trxGui
                             v |= b[3];
 
                             statics.corrfact = v;
+                        }
+
+                        if (rxtype == 10)
+                        {
+                            statics.sendtone = b[0];
                         }
                     }
                 }

@@ -54,9 +54,8 @@ namespace trxGui
             this.panel_switchbandplan = new System.Windows.Forms.Panel();
             this.panel_screen = new System.Windows.Forms.Panel();
             this.panel_recall = new System.Windows.Forms.Panel();
-            this.panel_rec_mic = new System.Windows.Forms.Panel();
-            this.panel_playTX = new System.Windows.Forms.Panel();
             this.panel_save = new System.Windows.Forms.Panel();
+            this.panel_testtone = new System.Windows.Forms.Panel();
             this.panel_rxline = new trxGui.DoubleBufferedPanel();
             this.panel_bigspec = new trxGui.DoubleBufferedPanel();
             this.panel_bigwf = new trxGui.DoubleBufferedPanel();
@@ -310,28 +309,6 @@ namespace trxGui
             this.panel_recall.TabIndex = 24;
             this.panel_recall.Click += new System.EventHandler(this.panel_recall_Click);
             // 
-            // panel_rec_mic
-            // 
-            this.panel_rec_mic.BackColor = System.Drawing.Color.Gray;
-            this.panel_rec_mic.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("panel_rec_mic.BackgroundImage")));
-            this.panel_rec_mic.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.panel_rec_mic.Location = new System.Drawing.Point(12, 167);
-            this.panel_rec_mic.Name = "panel_rec_mic";
-            this.panel_rec_mic.Size = new System.Drawing.Size(26, 17);
-            this.panel_rec_mic.TabIndex = 25;
-            this.panel_rec_mic.Click += new System.EventHandler(this.panel_rec_mic_Click);
-            // 
-            // panel_playTX
-            // 
-            this.panel_playTX.BackColor = System.Drawing.Color.Gray;
-            this.panel_playTX.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("panel_playTX.BackgroundImage")));
-            this.panel_playTX.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.panel_playTX.Location = new System.Drawing.Point(12, 190);
-            this.panel_playTX.Name = "panel_playTX";
-            this.panel_playTX.Size = new System.Drawing.Size(26, 17);
-            this.panel_playTX.TabIndex = 25;
-            this.panel_playTX.Click += new System.EventHandler(this.panel_playTX_Click);
-            // 
             // panel_save
             // 
             this.panel_save.BackColor = System.Drawing.Color.Gray;
@@ -342,6 +319,18 @@ namespace trxGui
             this.panel_save.Size = new System.Drawing.Size(26, 17);
             this.panel_save.TabIndex = 25;
             this.panel_save.Click += new System.EventHandler(this.panel_save_Click);
+            // 
+            // panel_testtone
+            // 
+            this.panel_testtone.BackColor = System.Drawing.Color.Gray;
+            this.panel_testtone.BackgroundImage = global::trxGui.Properties.Resources.wave;
+            this.panel_testtone.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.panel_testtone.Location = new System.Drawing.Point(12, 156);
+            this.panel_testtone.Name = "panel_testtone";
+            this.panel_testtone.Size = new System.Drawing.Size(26, 17);
+            this.panel_testtone.TabIndex = 26;
+            this.panel_testtone.Click += new System.EventHandler(this.panel_testtone_Click);
+            this.panel_testtone.Paint += new System.Windows.Forms.PaintEventHandler(this.panel_testtone_Paint);
             // 
             // panel_rxline
             // 
@@ -428,9 +417,8 @@ namespace trxGui
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Gray;
             this.ClientSize = new System.Drawing.Size(1147, 775);
+            this.Controls.Add(this.panel_testtone);
             this.Controls.Add(this.panel_save);
-            this.Controls.Add(this.panel_playTX);
-            this.Controls.Add(this.panel_rec_mic);
             this.Controls.Add(this.panel_recall);
             this.Controls.Add(this.panel_screen);
             this.Controls.Add(this.panel_switchbandplan);
@@ -503,9 +491,8 @@ namespace trxGui
         private System.Windows.Forms.Panel panel_switchbandplan;
         private System.Windows.Forms.Panel panel_screen;
         private System.Windows.Forms.Panel panel_recall;
-        private System.Windows.Forms.Panel panel_rec_mic;
-        private System.Windows.Forms.Panel panel_playTX;
         private System.Windows.Forms.Panel panel_save;
+        private System.Windows.Forms.Panel panel_testtone;
     }
 }
 

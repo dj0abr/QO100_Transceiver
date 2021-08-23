@@ -20,6 +20,7 @@ resamp_crcf interp_q = NULL;
 // up mixer
 nco_crcf upnco = NULL;    
 nco_crcf upssb = NULL;    
+nco_crcf tone_nco = NULL;
 
 // ssb band pass
 unsigned int tx_lp_order =   8;       // filter order
@@ -65,6 +66,12 @@ void init_liquid_modulator()
     nco_crcf_set_phase(upssb, 0.0f);
     nco_crcf_set_frequency(upssb, RADIANS_PER_SAMPLE);
 
+    // test tone 800 Hz
+    tone_nco = nco_crcf_create(LIQUID_NCO);
+    float TT_RADIANS_PER_SAMPLE   = ((2.0f * (float)M_PI * 800.0f)/(float)AUDIOSAMPRATE);
+    nco_crcf_set_phase(tone_nco, 0.0f);
+    nco_crcf_set_frequency(tone_nco, TT_RADIANS_PER_SAMPLE);
+
     // SSB Mmodulator
     mod   = ampmodem_create(mod_index, LIQUID_AMPMODEM_USB, 1);
 
@@ -94,6 +101,9 @@ void close_liquid_modulator()
 
     if(upssb) nco_crcf_destroy(upssb);
     upssb = NULL;
+
+    if(tone_nco) nco_crcf_destroy(tone_nco);
+    tone_nco = NULL;
 
     if(mod) ampmodem_destroy(mod);
     mod = NULL;
@@ -187,6 +197,14 @@ float fcompr;
             fcompr = 3.3 * log10(fcompr+1);
             if(fcompr >= 1) fcompr = 0.99;
             if(fcompr <= -1) fcompr = -0.99;
+        }
+
+        // insert a test tone
+        if(sendtone)
+        {
+            nco_crcf_step(tone_nco);
+            fcompr = nco_crcf_sin(tone_nco);
+            fcompr /= 10;
         }
 
         // modulator, at 48k audio sample rate
@@ -310,7 +328,7 @@ int txbufidx = 0;
         xq[i] = (int32_t)(txarr[i].imag * pmult);
     }
 
-    if(audioagc > 0)
+    if(audioagc > 0 && sendtone == 0)
     {
         agc(xi, xq, PLUTOBUFSIZE);
     }

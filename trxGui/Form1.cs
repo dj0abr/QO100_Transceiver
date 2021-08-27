@@ -496,7 +496,7 @@ namespace trxGui
                         panel1.Invalidate();
                     }
                 }
-                if (statics.pttmode == 0)
+                if (statics.pttmode == 1)
                 {
                     // press=TX, not pressed=RX
                     if (pttreq == 3)

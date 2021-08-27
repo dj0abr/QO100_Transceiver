@@ -306,6 +306,8 @@ namespace trxGui
             }
         }
 
+        bool pttstat = false;
+
         private void timer_draw_Tick(object sender, EventArgs e)
         {
             timer_draw.Stop();
@@ -330,18 +332,37 @@ namespace trxGui
                 panel_smallwf.Invalidate();
             }
 
-            if (Control.ModifierKeys == Keys.Shift && !statics.pttkey)
+            if (statics.pttmode == 0)
             {
-                // PTT pressed (shift key)
-                statics.pttkey = true;
-                panel1.Invalidate();
+                // PTT on/off
+                if (Control.ModifierKeys == Keys.Shift && pttstat == false)
+                {
+                    // PTT pressed (shift key)
+                    statics.pttkey = !statics.pttkey;
+                    panel1.Invalidate();
+                    pttstat = true;
+                }
+                if (Control.ModifierKeys == Keys.None)
+                {
+                    pttstat = false;
+                }
             }
-            if (Control.ModifierKeys == Keys.None && statics.pttkey)
+            if (statics.pttmode == 1)
             {
-                // PTT released (shift key)
-                statics.pttkey = false;
-                statics.ptt = false;
-                panel1.Invalidate();
+                // Push to Talk
+                if (Control.ModifierKeys == Keys.Shift && !statics.pttkey)
+                {
+                    // PTT pressed (shift key)
+                    statics.pttkey = true;
+                    panel1.Invalidate();
+                }
+                if (Control.ModifierKeys == Keys.None && statics.pttkey)
+                {
+                    // PTT released (shift key)
+                    statics.pttkey = false;
+                    statics.ptt = false;
+                    panel1.Invalidate();
+                }
             }
 
             if (statics.GotAudioDevices == 1)
@@ -463,13 +484,37 @@ namespace trxGui
             }
 
             int pttreq = Udp.GetPTTrequest();
-            if(pttreq == 3)
+            if (pttreq == 2 || pttreq == 3)
             {
-                statics.ptt = !statics.ptt;
-                panel1.Invalidate();
+                if (statics.pttmode == 0)
+                {
+                    // one press=on, next press=off
+                    if (pttreq == 3)
+                    {
+                        // PTT just pressed
+                        statics.ptt = !statics.ptt;
+                        panel1.Invalidate();
+                    }
+                }
+                if (statics.pttmode == 0)
+                {
+                    // press=TX, not pressed=RX
+                    if (pttreq == 3)
+                    {
+                        // PTT just pressed
+                        statics.ptt = true;
+                        panel1.Invalidate();
+                    }
+                    if (pttreq == 2)
+                    {
+                        // PTT just released
+                        statics.ptt = false;
+                        panel1.Invalidate();
+                    }
+                }
             }
 
-            if (statics.corrfact != 0)
+                if (statics.corrfact != 0)
             {
                 if (statics.corractive > 0)
                 {
@@ -1053,9 +1098,30 @@ namespace trxGui
 
         private void panel1_MouseClick(object sender, MouseEventArgs e)
         {
-            if (statics.ptt) statics.ptt = false;
-            else statics.ptt = true;
-            panel1.Invalidate();
+            if (statics.pttmode == 0)
+            {
+                if (statics.ptt) statics.ptt = false;
+                else statics.ptt = true;
+                panel1.Invalidate();
+            }
+        }
+
+        private void panel1_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (statics.pttmode == 1)
+            {
+                statics.ptt = true;
+                panel1.Invalidate();
+            }
+        }
+
+        private void panel1_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (statics.pttmode == 1)
+            {
+                statics.ptt = false;
+                panel1.Invalidate();
+            }
         }
 
         private void butto_setup_click(object sender, EventArgs e)
@@ -1212,6 +1278,7 @@ namespace trxGui
                     statics.txpower = ReadInt(sr);
                     statics.windowsize = ReadInt(sr);
                     statics.autosync = ReadString(sr) == "1";
+                    statics.pttmode = ReadInt(sr);
                 }
             }
             catch
@@ -1253,6 +1320,7 @@ namespace trxGui
                     sw.WriteLine(statics.txpower.ToString());
                     sw.WriteLine(statics.windowsize.ToString());
                     sw.WriteLine(statics.autosync ? "1" : "0");
+                    sw.WriteLine(statics.pttmode.ToString());
                 }
             }
             catch { }
@@ -1675,6 +1743,7 @@ namespace trxGui
             else
                 e.Graphics.DrawImage(Properties.Resources.wave, 0, 0);
         }
+
     }
 
     class DoubleBufferedPanel : Panel 

@@ -11,7 +11,7 @@ namespace trxGui
             InitializeComponent();
 
             Width = 800;
-            Height = 390;
+            Height = 416;
             int yb = Height - 70;
             button1.Location = new Point(Width - button1.Width - 20, yb);
             button2.Location = new Point(button1.Location.X - button2.Width - 10, yb);
@@ -41,6 +41,7 @@ namespace trxGui
             comboBox_color.SelectedIndex = statics.palette;
 
             cb_autosync.Checked = statics.autosync;
+            cb_pttmode.SelectedIndex = statics.pttmode;
 
             // populate combo boxes
             if (statics.AudioPBdevs != null)
@@ -129,6 +130,7 @@ namespace trxGui
             statics.cpuspeed = comboBox_cpuspeed.SelectedIndex;
             statics.palette = comboBox_color.SelectedIndex;
             statics.autosync = cb_autosync.Checked;
+            statics.pttmode = cb_pttmode.SelectedIndex;
         }
 
         private void rb_plutousb_CheckedChanged(object sender, EventArgs e)

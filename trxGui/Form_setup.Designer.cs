@@ -66,6 +66,8 @@ namespace trxGui
             this.button_shutdown = new System.Windows.Forms.Button();
             this.cb_autosync = new System.Windows.Forms.CheckBox();
             this.label19 = new System.Windows.Forms.Label();
+            this.label20 = new System.Windows.Forms.Label();
+            this.cb_pttmode = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // button1
@@ -426,11 +428,34 @@ namespace trxGui
             this.label19.TabIndex = 55;
             this.label19.Text = "QSO Auto Sync";
             // 
+            // label20
+            // 
+            this.label20.AutoSize = true;
+            this.label20.Location = new System.Drawing.Point(11, 335);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(60, 13);
+            this.label20.TabIndex = 57;
+            this.label20.Text = "PTT-mode:";
+            // 
+            // cb_pttmode
+            // 
+            this.cb_pttmode.FormattingEnabled = true;
+            this.cb_pttmode.Items.AddRange(new object[] {
+            "ON/OFF",
+            "Push-To-Talk"});
+            this.cb_pttmode.Location = new System.Drawing.Point(154, 336);
+            this.cb_pttmode.Name = "cb_pttmode";
+            this.cb_pttmode.Size = new System.Drawing.Size(137, 21);
+            this.cb_pttmode.TabIndex = 56;
+            this.cb_pttmode.Text = "ON/OFF";
+            // 
             // Form_setup
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(671, 343);
+            this.ClientSize = new System.Drawing.Size(671, 411);
+            this.Controls.Add(this.label20);
+            this.Controls.Add(this.cb_pttmode);
             this.Controls.Add(this.label19);
             this.Controls.Add(this.cb_autosync);
             this.Controls.Add(this.button_shutdown);
@@ -515,5 +540,7 @@ namespace trxGui
         private System.Windows.Forms.Button button_shutdown;
         private System.Windows.Forms.CheckBox cb_autosync;
         private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.ComboBox cb_pttmode;
     }
 }

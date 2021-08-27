@@ -55,11 +55,11 @@ namespace trxGui
         public static int panel_bigspec_Width, panel_bigspec_Height, panel_bigwf_Width, panel_bigwf_Height,
                         panel_smallspec_Width, panel_smallspec_Height, panel_smallwf_Width, panel_smallwf_Height;
         public static int sendtone = 0;
-
+        public static int pttmode = 0;
 
         // Pluto frequency settings
-        public static UInt32 rxqrg;             // baseband QRG of lower beacon, RX tuner = this value - 30kHz
-        public static UInt32 txqrg;             // baseband QRG of lower beacon, TX tuner = this value - 30kHz
+        public static UInt32 rxqrg = 739750000; // baseband QRG of lower beacon, RX tuner = this value - 30kHz (default for 25MHz LNB)
+        public static UInt32 txqrg = 2400250000;// baseband QRG of lower beacon, TX tuner = this value - 30kHz
         public static int RXoffset = 280000;    // Tuner: 470 + Offset: 280 = 750kHz (mid Beacon)
         public static int TXoffset = 280000;    // Tuner: 470 + Offset: 280 = 750kHz (mid Beacon)
         public static int RXTXoffset = 0;       // offset between RX and TX

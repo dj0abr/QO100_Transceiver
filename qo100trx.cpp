@@ -439,7 +439,7 @@ int main ()
 		}
 
 		int nptt = test_ptt_gpio();
-		if(nptt == 3)
+		if(nptt == 2 || nptt == 3)
 		{
 			uint8_t ptta[2];
 			ptta[0] = 8;

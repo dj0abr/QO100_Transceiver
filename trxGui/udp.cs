@@ -188,7 +188,35 @@ namespace trxGui
                             v |= b[7];
                             statics.maxlevel = v * 55 / 50;
 
-                            //Console.WriteLine("noiselevel: " + statics.noiselevel);
+                            v = b[8];
+                            v <<= 8;
+                            v |= b[9];
+                            v <<= 8;
+                            v |= b[10];
+                            v <<= 8;
+                            v |= b[11];
+                            statics.qsolevel = v;
+
+                            v = b[12];
+                            v <<= 8;
+                            v |= b[13];
+                            v <<= 8;
+                            v |= b[14];
+                            v <<= 8;
+                            v |= b[15];
+                            statics.maxnoiselevel = v;
+
+                            v = b[16];
+                            v <<= 8;
+                            v |= b[17];
+                            v <<= 8;
+                            v |= b[18];
+                            v <<= 8;
+                            v |= b[19];
+                            statics.difflevel = v;
+
+                            //Console.WriteLine("noiselevel: " + statics.noiselevel + " maxnoiselevel: " + statics.maxnoiselevel + " difflevel: " + statics.difflevel);
+                            //Console.WriteLine(statics.noiselevel + "level: " + (statics.qsolevel - statics.noiselevel));
                         }
 
                         if (rxtype == 6)
@@ -368,6 +396,9 @@ namespace trxGui
             return qrg * 2;
         }
 
+        static Font dBfont = new Font("Verdana", 8.0f);
+        static Pen qsolevpen = new Pen(Brushes.White, 1);
+
         static void drawSmallSpec(int[] arr)
         {
             Pen dotpen = new Pen(Brushes.Yellow, 1);
@@ -391,6 +422,26 @@ namespace trxGui
                 gr.FillRectangle(Brushes.Black, 0, 0, bigSpecW, smallSpecH);
                 gr.FillPolygon(br_spedFill[statics.palette], poly);
                 gr.DrawPolygon(penline[statics.palette], poly);
+
+                // calculate level of the QSO over noise
+                int dB = 0;
+                int qlev = statics.difflevel; // qsolevel - statics.maxnoiselevel;
+                // ignore values below 400, these are too smal to evaluate
+                // 400 ... +6dB over noise
+                // above 400: 120/dB
+                if(qlev >= 400)
+                {
+                    qlev -= 400;
+                    dB = qlev / 120 + 6; // +6 because 400 is +6dB
+                    //Console.WriteLine("dB: " + dB);
+                    int rx = 40 + smallSpecW / 2;
+                    int ry = 1;
+                    int rw = 50;
+                    int rh = 16;
+                    gr.DrawRectangle(qsolevpen, rx, ry, rw, rh);
+                    String s = "+" + dB.ToString() + " dB";
+                    gr.DrawString(s, dBfont, Brushes.White, smallSpecW / 2 + 44, 2);
+                }
 
                 // tuning (middle) line
                 gr.DrawLine(dotpen, smallSpecW / 2, 0, smallSpecW / 2, smallSpecH);

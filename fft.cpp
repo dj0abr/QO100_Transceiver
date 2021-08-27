@@ -120,9 +120,13 @@ static int din_idx = 0;
 double real, imag;
 
     // values for small WF, calculate only once per loop
-    int span = FFT_RESOLUTION*1120;   // size of small waterfall in kHz (28kHz, +/-14kHz)
+    int span = FFT_RESOLUTION*1120;   // size of small waterfall in Hz (28000Hz, +/-14kHz)
     int start = FreqToBinIdx(RXoffsetfreq - span/2);
     int end = FreqToBinIdx(RXoffsetfreq + span/2);
+
+    // bin position of RX signal at 0.2-2.8kHz above RXoffsetfreq
+    int qsostart = FreqToBinIdx(RXoffsetfreq + 200);
+    int qsoend =   FreqToBinIdx(RXoffsetfreq + 2800);
 
     for(int i=0; i<len; i+=4)
     {
@@ -199,11 +203,18 @@ double real, imag;
             // ,475 is index 200 and ,490 is index 800
             // so we calc the mid value if this range
             float gval = 0;
+            float maxgval = 0;
             int gstart = FreqToBinIdx(485000 - 470000);
             int gend = FreqToBinIdx(495000 - 470000);
+
+            // mean noise level
             for(int g=gstart; g<gend; g++)
                 gval += bin[g];
             gval /= (gend-gstart);
+
+            // max noise level
+            for(int g=gstart; g<gend; g++)
+                if(bin[g] > maxgval) maxgval = bin[g];
 
             // bring down a little, looks nicer
             gval = gval * 100 / 99;
@@ -219,7 +230,7 @@ double real, imag;
                 gvalmid += gmid[g];
             gvalmid /= GMIDLEN;
             uint32_t gvalmid_u = (uint32_t)gvalmid;
-            //printf("noise level: %f\n",gvalmid);
+            uint32_t gvalmax_u = (uint32_t)maxgval;
 
             // ======== beacon level ==========
             // measure the max beacon level of BPSK beacon
@@ -241,9 +252,29 @@ double real, imag;
                 mvalmid += mmid[m];
             mvalmid /= MMIDLEN;
             uint32_t mvalmid_u = (uint32_t)mvalmid;
-            //printf("max level: %f %f\n",mval,mvalmid);
 
-            uint8_t levels[9];
+            // ======== QSO: measure max audio level 0-3kHz ==========
+            float qmval = 0;
+            for(int m=qsostart; m<qsoend; m++)
+                if(bin[m] > qmval) qmval = bin[m];
+
+            uint32_t qmvalmid_u = (uint32_t)qmval;  //qmvalmid;
+
+            // ======= QSO level above noise max level =======
+            float qdlev = qmval - maxgval;
+            // and make the mean value
+            #define DIFFMIDLEN 50
+            static float diffmid[DIFFMIDLEN];
+            static int diffmididx = 0;
+            diffmid[diffmididx] = qdlev;
+            if(++diffmididx >= DIFFMIDLEN) diffmididx = 0;
+            float diffvalmid = 0;
+            for(int m=0; m<DIFFMIDLEN; m++)
+                diffvalmid += diffmid[m];
+            diffvalmid /= DIFFMIDLEN;
+            uint32_t diffvalmid_u = (uint32_t)diffvalmid;
+
+            uint8_t levels[21];
             levels[0] = 5;
             levels[1] = gvalmid_u >> 24;
             levels[2] = gvalmid_u >> 16;
@@ -253,8 +284,20 @@ double real, imag;
             levels[6] = mvalmid_u >> 16;
             levels[7] = mvalmid_u >> 8;
             levels[8] = mvalmid_u & 0xff;
+            levels[9] = qmvalmid_u >> 24;
+            levels[10] = qmvalmid_u >> 16;
+            levels[11] = qmvalmid_u >> 8;
+            levels[12] = qmvalmid_u & 0xff;
+            levels[13] = gvalmax_u >> 24;
+            levels[14] = gvalmax_u >> 16;
+            levels[15] = gvalmax_u >> 8;
+            levels[16] = gvalmax_u & 0xff;
+            levels[17] = diffvalmid_u >> 24;
+            levels[18] = diffvalmid_u >> 16;
+            levels[19] = diffvalmid_u >> 8;
+            levels[20] = diffvalmid_u & 0xff;
             
-            sendUDP(gui_ip, GUI_UDPPORT, levels, 9);
+            sendUDP(gui_ip, GUI_UDPPORT, levels, 21);
 
             // ======== BIG Waterfall ========
             // the big waterfall has a screen resulution of 1120 pixel

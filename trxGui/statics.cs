@@ -25,7 +25,10 @@ namespace trxGui
         public static bool newaudiodevs = false;
         public static int ostype;
         public static int noiselevel = 1000;
+        public static int maxnoiselevel = 1000;
+        public static int difflevel = 0;
         public static int maxlevel = 32000;
+        public static int qsolevel = 1000;
         public static int plutousb = 1;
         public static String plutoaddress = "";
         public static int rxmouse = -1;

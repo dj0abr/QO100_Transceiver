@@ -16,7 +16,7 @@ namespace trxGui
         public static int UdpTXport = 40821;
         public static int UdpRXport = 40820;
         public static bool ptt = false;
-        public static bool pttkey = false;
+        public static bool hwptt = false;
         public static int GotAudioDevices = 0;
         public static String[] AudioPBdevs;
         public static String[] AudioCAPdevs;

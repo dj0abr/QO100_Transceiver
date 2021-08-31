@@ -199,6 +199,7 @@ void downmix(liquid_float_complex *samples, int len)
                 rxvolume = 1.0f / playvol;
                 vol = playvol * rxvolume;
             }
+
             kmaudio_playsamples(pbidx,&z,1,vol);
         }
     }

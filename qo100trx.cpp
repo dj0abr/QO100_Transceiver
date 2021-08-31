@@ -53,11 +53,15 @@ int audiohighpass = 0;
 int txpower = 0;
 int recpb = 0;	// 0=idle, 1=rec, 2=pb
 int sendtone = 0;
+int extpttinput_enabled = 0;
+int mute_enabled = 0;
+int pttmode = 0;
 
 // fifos to send/receive samples with pluto run thread
 int RXfifo;
 int TXfifo;
 int FFTfifo;
+int CWfifo;
 
 int pbidx = -1, capidx = -1;
 
@@ -250,6 +254,11 @@ void udprxfunc(uint8_t *pdata, int len, struct sockaddr_in* sender)
 		// send test tone
 		setSendtone(1-sendtone);
 	}
+
+	if(pdata[0] == 23)
+	{
+		pttmode = pdata[1];
+	}
 }
 
 void close_program()
@@ -297,6 +306,7 @@ int main ()
 	RXfifo = create_fifo(200, PLUTOBUFSIZE*4);
 	TXfifo = create_fifo(200, PLUTOBUFSIZE*4);
 	FFTfifo = create_fifo(200, PLUTOBUFSIZE*4);
+	CWfifo = create_fifo(10,48*4);
 
 	// start audio (soundcard) and get connected devices
 	if(kmaudio_init() == -1)
@@ -438,23 +448,52 @@ int main ()
 			// max volume is limited just before sending to sound driver
 		}
 
-		int nptt = test_ptt_gpio();
-		if(nptt == 2 || nptt == 3)
+		int nptt = getPort("p");
+		if(nptt == 1) extpttinput_enabled = 1;
+		if(extpttinput_enabled)
 		{
-			uint8_t ptta[2];
-			ptta[0] = 8;
-			ptta[1] = (uint8_t)nptt;
-			sendUDP(gui_ip, GUI_UDPPORT, ptta, 2);
+			nptt = test_ptt_gpio();
+			if(pttmode == 1)
+			{
+				if(nptt == 3) ptt = 1;
+				if(nptt == 2) ptt = 0;
+			}
+			else
+				if(nptt == 3) ptt = 1-ptt;
 		}
 
-		int nmute = test_mute_gpio();
-		if(nmute == 3)
+		int nmute = getPort("m");
+		if(nmute == 1) mute_enabled = 1;
+		if(mute_enabled)
 		{
-			if(mute) mute = 0;
-			else mute = 1;
+			nmute = test_mute_gpio();
+			if(nmute == 3)
+			{
+				if(mute) mute = 0;
+				else mute = 1;
+			}
 		}
 
-		usleep(1000);
+		// switch PTT output according to variable "ptt"
+		if(ptt != lastptt)
+		{
+			if(ptt)
+			{
+				// switch to TX mode
+				setSendtone(0);// never start with a test tone after pressing PTT
+				io_fifo_clear(capidx);
+				fifo_clear(TXfifo);
+				set_ptt();
+			}
+
+			if(!ptt) release_ptt();	// switch to RX mode
+
+			lastptt = ptt;
+		}
+
+		//printf("%d\n",getPort("c"));
+
+		usleep(1000);	// do NOT change, used for some simple timings
 	}
  
 	return 0;

@@ -261,7 +261,7 @@ double real, imag;
             uint32_t qmvalmid_u = (uint32_t)qmval;  //qmvalmid;
 
             // ======= QSO level above noise max level =======
-            float qdlev = qmval - maxgval;
+            float qdlev = qmval - (maxgval + gvalmid)/2;
             // and make the mean value
             #define DIFFMIDLEN 50
             static float diffmid[DIFFMIDLEN];
@@ -274,7 +274,7 @@ double real, imag;
             diffvalmid /= DIFFMIDLEN;
             uint32_t diffvalmid_u = (uint32_t)diffvalmid;
 
-            uint8_t levels[21];
+            uint8_t levels[22];
             levels[0] = 5;
             levels[1] = gvalmid_u >> 24;
             levels[2] = gvalmid_u >> 16;
@@ -296,8 +296,9 @@ double real, imag;
             levels[18] = diffvalmid_u >> 16;
             levels[19] = diffvalmid_u >> 8;
             levels[20] = diffvalmid_u & 0xff;
+            levels[21] = ptt;
             
-            sendUDP(gui_ip, GUI_UDPPORT, levels, 21);
+            sendUDP(gui_ip, GUI_UDPPORT, levels, 22);
 
             // ======== BIG Waterfall ========
             // the big waterfall has a screen resulution of 1120 pixel

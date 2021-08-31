@@ -90,7 +90,9 @@ void* tx_threadfunction(void* param)
                     #endif
                     // send to modulator
                     if(ptt)
+                    {
                         upmix(f,ret,TXoffsetfreq);
+                    }
                 }
             }
             else

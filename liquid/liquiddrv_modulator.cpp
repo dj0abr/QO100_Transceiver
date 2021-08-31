@@ -202,9 +202,11 @@ float fcompr;
         // insert a test tone
         if(sendtone)
         {
+            // generate a 800Hz tone and send to transmitter
             nco_crcf_step(tone_nco);
             fcompr = nco_crcf_sin(tone_nco);
             fcompr /= 10;
+
         }
 
         // modulator, at 48k audio sample rate
@@ -324,7 +326,7 @@ int txbufidx = 0;
     for(int i=0; i<PLUTOBUFSIZE; i++)
     {
         // convert complex to pluto format
-        xi[i] = (int32_t)(txarr[i].real * pmult);
+        xi[i] = (int32_t)(txarr[i].real * pmult); 
         xq[i] = (int32_t)(txarr[i].imag * pmult);
     }
 
@@ -339,6 +341,14 @@ int txbufidx = 0;
         txbuf[txbufidx++] = xi[i] >> 8;
         txbuf[txbufidx++] = xq[i] & 0xff;
         txbuf[txbufidx++] = xq[i] >> 8;
+    }
+
+    // wait for Space in TX fifo
+    while(keeprunning)
+    {
+        int s = fifo_usedspace(TXfifo);
+        if(s < 5) break;
+        usleep(100);
     }
 
     write_fifo(TXfifo,txbuf,PLUTOBUFSIZE*4);

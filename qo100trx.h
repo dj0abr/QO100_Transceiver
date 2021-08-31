@@ -43,6 +43,7 @@ void setSendtone(int onoff);
 extern int RXfifo;
 extern int TXfifo;
 extern int FFTfifo;
+extern int CWfifo;
 extern int pbidx, capidx;
 extern char gui_ip[20];
 extern int RXoffsetfreq;

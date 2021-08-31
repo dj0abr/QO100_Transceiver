@@ -14,6 +14,8 @@ namespace trxGui
         int button_size = 32;
         Font bigfnt;
         int lastsendtone = 0;
+        bool old_hwptt = false;
+        bool pttkey_pressed = false;
 
         String screensafertime = "";
 
@@ -338,8 +340,9 @@ namespace trxGui
                 if (Control.ModifierKeys == Keys.Shift && pttstat == false)
                 {
                     // PTT pressed (shift key)
-                    statics.pttkey = !statics.pttkey;
+                    statics.ptt = !statics.ptt;
                     panel1.Invalidate();
+                    setPTT(statics.ptt);
                     pttstat = true;
                 }
                 if (Control.ModifierKeys == Keys.None)
@@ -350,19 +353,30 @@ namespace trxGui
             if (statics.pttmode == 1)
             {
                 // Push to Talk
-                if (Control.ModifierKeys == Keys.Shift && !statics.pttkey)
+                if (Control.ModifierKeys == Keys.Shift && !statics.ptt)
                 {
                     // PTT pressed (shift key)
-                    statics.pttkey = true;
+                    statics.ptt = true;
+                    pttkey_pressed = true;
                     panel1.Invalidate();
+                    setPTT(statics.ptt);
                 }
-                if (Control.ModifierKeys == Keys.None && statics.pttkey)
+                if (Control.ModifierKeys == Keys.None && statics.ptt && pttkey_pressed)
                 {
                     // PTT released (shift key)
-                    statics.pttkey = false;
                     statics.ptt = false;
+                    pttkey_pressed = false;
                     panel1.Invalidate();
+                    setPTT(statics.ptt);
                 }
+            }
+
+            // change color of PTT button if ptt state changed in the driver
+            if(statics.hwptt != old_hwptt)
+            {
+                old_hwptt = statics.hwptt;
+                statics.ptt = statics.hwptt;
+                panel1.Invalidate();
             }
 
             if (statics.GotAudioDevices == 1)
@@ -424,6 +438,7 @@ namespace trxGui
                 statics.sendReferenceOffset(statics.rfoffset);
                 sendCpuSpeed();
                 sendTXpower();
+                sendPTTmode();
                 panel_txhighpass_Click(null, null);
                 this.Text += " GUI: " + formatSN(statics.gui_serno) + " Driver: " + formatSN(statics.driver_serno);
                 // check consistency
@@ -483,38 +498,7 @@ namespace trxGui
                     sendAndRefreshRXTXoffset();
             }
 
-            int pttreq = Udp.GetPTTrequest();
-            if (pttreq == 2 || pttreq == 3)
-            {
-                if (statics.pttmode == 0)
-                {
-                    // one press=on, next press=off
-                    if (pttreq == 3)
-                    {
-                        // PTT just pressed
-                        statics.ptt = !statics.ptt;
-                        panel1.Invalidate();
-                    }
-                }
-                if (statics.pttmode == 1)
-                {
-                    // press=TX, not pressed=RX
-                    if (pttreq == 3)
-                    {
-                        // PTT just pressed
-                        statics.ptt = true;
-                        panel1.Invalidate();
-                    }
-                    if (pttreq == 2)
-                    {
-                        // PTT just released
-                        statics.ptt = false;
-                        panel1.Invalidate();
-                    }
-                }
-            }
-
-                if (statics.corrfact != 0)
+            if (statics.corrfact != 0)
             {
                 if (statics.corractive > 0)
                 {
@@ -522,6 +506,7 @@ namespace trxGui
                     {
                         Console.WriteLine("correct by corrfact: " + statics.corrfact);
                         statics.RXoffset -= statics.corrfact;
+                        statics.TXoffset -= statics.corrfact;
                         sendAndRefreshRXTXoffset();
                     }
                     statics.corractive--;
@@ -1080,7 +1065,7 @@ namespace trxGui
         {
             using (Graphics gr = e.Graphics)
             {
-                if (statics.ptt || statics.pttkey)
+                if (statics.ptt)
                 {
                     gr.FillRectangle(Brushes.Red, 0, 0, panel1.Width, panel1.Height);
                     using (Bitmap bm = new Bitmap(Properties.Resources.ptt_tx))
@@ -1093,7 +1078,6 @@ namespace trxGui
                         drawBitmap(gr, bm, panel1.Width / 2 - bm.Width / 2, 0, button_size * 2);
                 }
             }
-            setPTT(statics.ptt | statics.pttkey);
         }
 
         private void panel1_MouseClick(object sender, MouseEventArgs e)
@@ -1102,24 +1086,27 @@ namespace trxGui
             {
                 if (statics.ptt) statics.ptt = false;
                 else statics.ptt = true;
+                setPTT(statics.ptt);
                 panel1.Invalidate();
             }
         }
 
         private void panel1_MouseDown(object sender, MouseEventArgs e)
         {
-            if (statics.pttmode == 1)
+            if (statics.pttmode == 1 && !statics.ptt)
             {
                 statics.ptt = true;
+                setPTT(statics.ptt);
                 panel1.Invalidate();
             }
         }
 
         private void panel1_MouseUp(object sender, MouseEventArgs e)
         {
-            if (statics.pttmode == 1)
+            if (statics.pttmode == 1 && statics.ptt)
             {
                 statics.ptt = false;
+                setPTT(statics.ptt);
                 panel1.Invalidate();
             }
         }
@@ -1140,6 +1127,7 @@ namespace trxGui
                 statics.sendReferenceOffset(statics.rfoffset);
                 sendCpuSpeed();
                 sendTXpower();
+                sendPTTmode();
 
                 if (oldpluto != statics.plutousb || oldpladr != statics.plutoaddress)
                 {
@@ -1412,6 +1400,7 @@ namespace trxGui
         private void panel_copyRtoT_Click(object sender, EventArgs e)
         {
             statics.TXoffset = statics.RXoffset;
+            statics.RXTXoffset = 0;
             sendAndRefreshRXTXoffset();
             panel_copyRtoT.Invalidate();
         }
@@ -1435,6 +1424,14 @@ namespace trxGui
             Byte[] txb = new Byte[2];
             txb[0] = 17;
             txb[1] = (Byte)statics.cpuspeed;
+            Udp.UdpSendData(txb);
+        }
+
+        void sendPTTmode()
+        {
+            Byte[] txb = new Byte[2];
+            txb[0] = 23;
+            txb[1] = (Byte)statics.pttmode;
             Udp.UdpSendData(txb);
         }
 
@@ -1488,6 +1485,7 @@ namespace trxGui
         private void panel_copyTtoR_Click(object sender, EventArgs e)
         {
             statics.RXoffset = statics.TXoffset;
+            statics.RXTXoffset = 0;
             sendAndRefreshRXTXoffset();
             panel_copyTtoR.Invalidate();
         }

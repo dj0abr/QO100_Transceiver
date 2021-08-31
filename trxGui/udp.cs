@@ -18,7 +18,6 @@ namespace trxGui
         static public UdpQueue smallWFQ = new UdpQueue();
         static public UdpQueue uq_tx = new UdpQueue();
         static public UdpQueue uq_rotary = new UdpQueue();
-        static public UdpQueue uq_ptt = new UdpQueue();
 
         static Bitmap bmBigWF, bmSmallWF;
 
@@ -106,7 +105,7 @@ namespace trxGui
                         Byte[] b = new byte[rxarr.Length - 1];
                         Array.Copy(rxarr, 1, b, 0, b.Length);
 
-                        //Console.WriteLine(rxtype);
+                        //Console.WriteLine(rxtype + " len " + b.Length);
 
                         // check bitmap queues to avoid unnecessary graphic operations
                         int q1 = bigspecQ.Count();
@@ -215,6 +214,8 @@ namespace trxGui
                             v |= b[19];
                             statics.difflevel = v;
 
+                            statics.hwptt = (b[20] == 1);
+
                             //Console.WriteLine("noiselevel: " + statics.noiselevel + " maxnoiselevel: " + statics.maxnoiselevel + " difflevel: " + statics.difflevel);
                             //Console.WriteLine(statics.noiselevel + "level: " + (statics.qsolevel - statics.noiselevel));
                         }
@@ -238,12 +239,6 @@ namespace trxGui
                             // number of rotary steps for frequency setting
                             int steps = (int)b[0] - 128;
                             uq_rotary.Add(steps);
-                        }
-
-                        if (rxtype == 8)
-                        {
-                            // driver wants to change PTT status
-                            uq_ptt.Add((int)b[0]);
                         }
 
                         if (rxtype == 9)
@@ -396,8 +391,8 @@ namespace trxGui
             return qrg * 2;
         }
 
-        static Font dBfont = new Font("Verdana", 8.0f);
-        static Pen qsolevpen = new Pen(Brushes.White, 1);
+        static Font dBfont = new Font("Arial Black", 9.0f);
+        static Brush br = new SolidBrush(Color.FromArgb(30,30,20));
 
         static void drawSmallSpec(int[] arr)
         {
@@ -420,6 +415,8 @@ namespace trxGui
                 }
 
                 gr.FillRectangle(Brushes.Black, 0, 0, bigSpecW, smallSpecH);
+               
+                gr.FillRectangle(br, 14150 * bigSpecW / 28000, 0, 2750 * bigSpecW / 28000, smallSpecH);
                 gr.FillPolygon(br_spedFill[statics.palette], poly);
                 gr.DrawPolygon(penline[statics.palette], poly);
 
@@ -433,14 +430,8 @@ namespace trxGui
                 {
                     qlev -= 400;
                     dB = qlev / 120 + 6; // +6 because 400 is +6dB
-                    //Console.WriteLine("dB: " + dB);
-                    int rx = 40 + smallSpecW / 2;
-                    int ry = 1;
-                    int rw = 50;
-                    int rh = 16;
-                    gr.DrawRectangle(qsolevpen, rx, ry, rw, rh);
                     String s = "+" + dB.ToString() + " dB";
-                    gr.DrawString(s, dBfont, Brushes.White, smallSpecW / 2 + 44, 2);
+                    gr.DrawString(s, dBfont, Brushes.Yellow, smallSpecW / 2 + 4, 0);
                 }
 
                 // tuning (middle) line
@@ -620,12 +611,6 @@ namespace trxGui
         {
             if (uq_rotary.Count() == 0) return 0;
             return uq_rotary.Getint();
-        }
-
-        public static int GetPTTrequest()
-        {
-            if (uq_ptt.Count() == 0) return 0;
-            return uq_ptt.Getint();
         }
     }
 

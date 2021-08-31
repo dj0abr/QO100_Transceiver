@@ -24,3 +24,4 @@ E:\funk\sat\QO100_Transceiver_500\trxGui\obj\Debug\trxGui.csproj.CoreCompileInpu
 E:\funk\sat\QO100_Transceiver_500\trxGui\obj\Debug\qo100trx.exe
 E:\funk\sat\QO100_Transceiver_500\trxGui\obj\Debug\qo100trx.pdb
 E:\funk\sat\QO100_Transceiver\trxGui\obj\Debug\trxGui.Form_reference.resources
+E:\funk\sat\QO100_Transceiver\trxGui\obj\Debug\trxGui.Form_screen.resources

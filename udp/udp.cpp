@@ -116,20 +116,19 @@ void* threadfunction(void* param)
 void sendUDP(char *destIP, int destPort, uint8_t *pdata, int len)
 {
     int sockfd; 
-    struct sockaddr_in     servaddr; 
-  
+    struct sockaddr_in servaddr; 
+
+    memset(&servaddr, 0, sizeof(servaddr)); 
+    servaddr.sin_family = AF_INET; 
+    servaddr.sin_port = htons(destPort); 
+    servaddr.sin_addr.s_addr=inet_addr(destIP);
+
     // Creating socket file descriptor 
     if ( (sockfd = socket(AF_INET, SOCK_DGRAM, 0)) < 0 ) { 
         printf("sendUDP: socket creation failed\n"); 
         exit(0); 
     } 
 
-    memset(&servaddr, 0, sizeof(servaddr)); 
-    // Filling server information 
-    servaddr.sin_family = AF_INET; 
-    servaddr.sin_port = htons(destPort); 
-    //printf("Send to <%s><%d> Len:%d\n",destIP,destPort,len);
-    servaddr.sin_addr.s_addr=inet_addr(destIP);
     ssize_t sent = sendto(sockfd, (char *)pdata, len, 0, (const struct sockaddr *) &servaddr, sizeof(servaddr)); 
     if((int)sent != len)
     {

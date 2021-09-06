@@ -423,10 +423,10 @@ namespace trxGui
                 // calculate level of the QSO over noise
                 int dB = 0;
                 int qlev = statics.difflevel; // qsolevel - statics.maxnoiselevel;
-                // ignore values below 400, these are too smal to evaluate
-                // 400 ... +6dB over noise
+                // ignore values below 800, these are too small to evaluate
                 // above 400: 120/dB
-                if(qlev >= 400)
+                //Console.WriteLine("qlev: " + qlev + " nl " + statics.noiselevel + " mnl" + statics.maxnoiselevel);
+                if(qlev >= 800)
                 {
                     qlev -= 400;
                     dB = qlev / 120 + 6; // +6 because 400 is +6dB

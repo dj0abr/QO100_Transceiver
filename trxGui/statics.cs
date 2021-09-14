@@ -9,7 +9,7 @@ namespace trxGui
 {
     public static class statics
     {
-        public static UInt16 gui_serno = 170;   // 123 means: V1.23
+        public static UInt16 gui_serno = 171;   // 123 means: V1.23
         public static UInt16 driver_serno = 0;
         public static bool running = true;
         public static String ModemIP;

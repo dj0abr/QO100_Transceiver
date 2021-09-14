@@ -166,6 +166,7 @@ static int lastoffset = -1;
 liquid_float_complex txarr[PLUTOBUFSIZE];
 int txarridx = 0;
 
+
 void upmix(float *f, int len, int offsetfreq)
 {
 float fcompr;
@@ -187,7 +188,9 @@ float fcompr;
     // loop through all samples
     for(int i=0; i<len; i++)
     {
-        fcompr = f[i] * 3.0f;
+        fcompr = f[i] ;//* 3.0f;
+
+        
 
         // audio compression
         if(compressor > 0)
@@ -207,11 +210,16 @@ float fcompr;
             fcompr = nco_crcf_sin(tone_nco);
             fcompr /= 10;
 
-        }
+        } 
+
+    
 
         // modulator, at 48k audio sample rate
         liquid_float_complex ybase;
         ampmodem_modulate(mod, fcompr, &ybase);
+
+        ybase.real /=2;
+        ybase.imag /=2;
 
         // up mix from baseband to 3000 Hz
         // this eliminates a couple of problems happening at baseband
@@ -219,9 +227,13 @@ float fcompr;
         nco_crcf_step(upssb);
         nco_crcf_mix_up(upssb,ybase,&y);
 
+        
+
         // filter SSB bandwidth at 3kHz
         liquid_float_complex cfilt;
         iirfilt_crcf_execute(tx_lp_q, y, &cfilt);
+
+        
 
         // audio high pass filter
         liquid_float_complex aufiltout;
@@ -232,7 +244,11 @@ float fcompr;
             aufiltout.imag *= 2;
         }
         else
+        {
             aufiltout = cfilt;
+        }
+
+            
 
         // resample from AUDIOSAMPRATE (48000S/s) to pluto rate
         liquid_float_complex out[(int)interp_r+2];
@@ -251,6 +267,7 @@ float fcompr;
         // num_written is the number of samples for Pluto
         for(unsigned int samp=0; samp<num_written; samp++)
         {
+            
             // up mix to SSB channel into baseband
             nco_crcf_step(upnco);
             nco_crcf_mix_up(upnco,out[samp],&(txarr[txarridx]));
@@ -328,7 +345,11 @@ int txbufidx = 0;
         // convert complex to pluto format
         xi[i] = (int32_t)(txarr[i].real * pmult); 
         xq[i] = (int32_t)(txarr[i].imag * pmult);
+
+        
     }
+
+    
 
     if(audioagc > 0 && sendtone == 0)
     {
@@ -337,6 +358,8 @@ int txbufidx = 0;
 
     for(int i=0; i<PLUTOBUFSIZE; i++)
     {
+        //measure_maxval(xi[i], 480000);
+
         txbuf[txbufidx++] = xi[i] & 0xff;
         txbuf[txbufidx++] = xi[i] >> 8;
         txbuf[txbufidx++] = xq[i] & 0xff;

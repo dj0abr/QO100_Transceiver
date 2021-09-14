@@ -1239,14 +1239,13 @@ namespace trxGui
                 {
                     statics.AudioPBdev = ReadString(sr);
                     statics.AudioCAPdev = ReadString(sr);
-                    statics.RXTXoffset = ReadInt(sr);
-                    statics.TXoffset -= statics.RXTXoffset;
+                    statics.RXTXoffset = ReadInt(sr); statics.TXoffset -= statics.RXTXoffset;
                     String dummy3 = ReadString(sr);
                     statics.plutousb = ReadInt(sr);
                     statics.plutoaddress = ReadString(sr);
                     String dummy1 = ReadString(sr);
                     statics.audioagc = ReadString(sr) == "1";
-                    statics.compressor = ReadString(sr) == "1"; 
+                    statics.compressor = ReadString(sr) == "1";
                     statics.rxfilter = ReadInt(sr);
                     statics.txfilter = ReadInt(sr);
                     statics.rxmute = ReadString(sr) == "1";
@@ -1477,8 +1476,8 @@ namespace trxGui
 
         private void panel_comp_Paint(object sender, PaintEventArgs e)
         {
-            using (Bitmap bm = new Bitmap(Properties.Resources.comp_off))
-                using (Bitmap bminact = new Bitmap(Properties.Resources.comp_on))
+            using (Bitmap bm = new Bitmap(Properties.Resources.comp_on))
+                using (Bitmap bminact = new Bitmap(Properties.Resources.comp_off))
                     drawButtonPanel(e.Graphics, statics.compressor, bm, bminact);
         }
 
@@ -1602,6 +1601,7 @@ namespace trxGui
 
             statics.ptt = statics.rfloop;
             panel1.Invalidate();
+            setPTT(statics.ptt);
 
             Byte[] txb = new Byte[2];
             txb[0] = 5;

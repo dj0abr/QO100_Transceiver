@@ -172,7 +172,10 @@ void udprxfunc(uint8_t *pdata, int len, struct sockaddr_in* sender)
 	}
 
 	if(pdata[0] == 9)
+	{
 		compressor = pdata[1];
+		printf("compressor: %d\n",compressor);
+	}
 
 	if(pdata[0] == 10)
 	{
@@ -194,7 +197,10 @@ void udprxfunc(uint8_t *pdata, int len, struct sockaddr_in* sender)
 	}
 
 	if(pdata[0] == 11)
+	{
 		audioagc = pdata[1];
+		printf("audioagc: %d\n",audioagc);
+	}
 
 	if(pdata[0] == 12)
 		rxfilter = pdata[1];

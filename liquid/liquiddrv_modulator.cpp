@@ -346,7 +346,7 @@ int txbufidx = 0;
         xi[i] = (int32_t)(txarr[i].real * pmult); 
         xq[i] = (int32_t)(txarr[i].imag * pmult);
 
-        
+        //measure_maxval(xi[i], 480000);
     }
 
     
@@ -358,7 +358,7 @@ int txbufidx = 0;
 
     for(int i=0; i<PLUTOBUFSIZE; i++)
     {
-        //measure_maxval(xi[i], 480000);
+        measure_maxval(xi[i], 480000);
 
         txbuf[txbufidx++] = xi[i] & 0xff;
         txbuf[txbufidx++] = xi[i] >> 8;

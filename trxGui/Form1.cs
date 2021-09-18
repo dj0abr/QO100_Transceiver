@@ -1272,7 +1272,6 @@ namespace trxGui
                     statics.autosync = ReadString(sr) == "1";
                     statics.pttmode = ReadInt(sr);
                     statics.micboost = ReadInt(sr);
-                    statics.agcvalue = ReadInt(sr);
                 }
             }
             catch
@@ -1316,7 +1315,6 @@ namespace trxGui
                     sw.WriteLine(statics.autosync ? "1" : "0");
                     sw.WriteLine(statics.pttmode.ToString());
                     sw.WriteLine(statics.micboost.ToString());
-                    sw.WriteLine(statics.agcvalue.ToString());
                 }
             }
             catch { }
@@ -1464,12 +1462,10 @@ namespace trxGui
             else
             {
                 // init after program start
-                Byte[] txb = new Byte[5];
+                Byte[] txb = new Byte[3];
                 txb[0] = 11;
                 txb[1] = (Byte)(statics.audioHighpass ? 1 : 0);
                 txb[2] = (Byte)statics.micboost;
-                txb[3] = (Byte)(statics.agcvalue >> 8);
-                txb[4] = (Byte)(statics.agcvalue & 0xff);
                 Udp.UdpSendData(txb);
             }
         }

@@ -40,12 +40,10 @@ namespace trxGui
 
         void sendVals()
         {
-            Byte[] txb = new Byte[5];
+            Byte[] txb = new Byte[3];
             txb[0] = 11;
             txb[1] = (Byte)(statics.audioHighpass ? 1 : 0);
             txb[2] = (Byte)statics.micboost;
-            txb[3] = (Byte)(statics.agcvalue >> 8);
-            txb[4] = (Byte)(statics.agcvalue & 0xff);
             valq.Add(txb);
         }
 

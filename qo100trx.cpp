@@ -201,10 +201,7 @@ void udprxfunc(uint8_t *pdata, int len, struct sockaddr_in* sender)
 	{
 		audiohighpass = pdata[1];
 		micboost = pdata[2];
-		agcvalue = pdata[3];
-		agcvalue <<= 8;
-		agcvalue += pdata[4];
-		//showbytestring("cmd11:",pdata,5,5);
+		//showbytestring("cmd11:",pdata,3,3);
 	}
 
 	if(pdata[0] == 12)

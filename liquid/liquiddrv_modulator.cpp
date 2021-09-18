@@ -361,7 +361,7 @@ int txbufidx = 0;
         txbuf[txbufidx++] = xq[i] >> 8;
     }
 
-    // wait for Space in TX fifo
+    // wait for free space in TX fifo
     while(keeprunning)
     {
         int s = fifo_usedspace(TXfifo);

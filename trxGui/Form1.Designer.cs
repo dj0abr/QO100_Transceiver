@@ -50,7 +50,6 @@ namespace trxGui
             this.panel_pavucontrol = new System.Windows.Forms.Panel();
             this.panel_info = new System.Windows.Forms.Panel();
             this.panel_setup = new System.Windows.Forms.Panel();
-            this.panel_txhighpass = new System.Windows.Forms.Panel();
             this.panel_switchbandplan = new System.Windows.Forms.Panel();
             this.panel_screen = new System.Windows.Forms.Panel();
             this.panel_recall = new System.Windows.Forms.Panel();
@@ -267,17 +266,6 @@ namespace trxGui
             this.panel_setup.TabIndex = 14;
             this.panel_setup.Click += new System.EventHandler(this.butto_setup_click);
             // 
-            // panel_txhighpass
-            // 
-            this.panel_txhighpass.BackColor = System.Drawing.Color.White;
-            this.panel_txhighpass.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.panel_txhighpass.Location = new System.Drawing.Point(500, 709);
-            this.panel_txhighpass.Name = "panel_txhighpass";
-            this.panel_txhighpass.Size = new System.Drawing.Size(48, 48);
-            this.panel_txhighpass.TabIndex = 20;
-            this.panel_txhighpass.Click += new System.EventHandler(this.panel_txhighpass_Click);
-            this.panel_txhighpass.Paint += new System.Windows.Forms.PaintEventHandler(this.panel_txhighpass_Paint);
-            // 
             // panel_switchbandplan
             // 
             this.panel_switchbandplan.BackColor = System.Drawing.Color.White;
@@ -424,7 +412,6 @@ namespace trxGui
             this.Controls.Add(this.panel_recall);
             this.Controls.Add(this.panel_screen);
             this.Controls.Add(this.panel_switchbandplan);
-            this.Controls.Add(this.panel_txhighpass);
             this.Controls.Add(this.panel_beaconlock);
             this.Controls.Add(this.panel_sync);
             this.Controls.Add(this.panel_rxline);
@@ -489,7 +476,6 @@ namespace trxGui
         private DoubleBufferedPanel panel_rxline;
         private System.Windows.Forms.Panel panel_sync;
         private System.Windows.Forms.Panel panel_beaconlock;
-        private System.Windows.Forms.Panel panel_txhighpass;
         private System.Windows.Forms.Panel panel_switchbandplan;
         private System.Windows.Forms.Panel panel_screen;
         private System.Windows.Forms.Panel panel_recall;

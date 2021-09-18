@@ -40,7 +40,6 @@ char pbdevname[101] = {0};
 char capdevname[101] = {0};
 int newaudiodevs = 0;
 int compressor = 0;
-int audioagc = 0;
 int gotPlutoID = 0;
 int rxfilter = 3;
 int txfilter = 3;
@@ -50,6 +49,8 @@ int resetqrgs = 0;
 int beaconlock = 0;
 int fftspeed = 0;
 int audiohighpass = 0;
+int micboost = 1;		// Multiplikator for TX audio
+int agcvalue = 32000;	// should never exeed 16bit-signed (32768), buts need some reserve
 int txpower = 0;
 int recpb = 0;	// 0=idle, 1=rec, 2=pb
 int sendtone = 0;
@@ -198,8 +199,12 @@ void udprxfunc(uint8_t *pdata, int len, struct sockaddr_in* sender)
 
 	if(pdata[0] == 11)
 	{
-		audioagc = pdata[1];
-		printf("audioagc: %d\n",audioagc);
+		audiohighpass = pdata[1];
+		micboost = pdata[2];
+		agcvalue = pdata[3];
+		agcvalue <<= 8;
+		agcvalue += pdata[4];
+		//showbytestring("cmd11:",pdata,5,5);
 	}
 
 	if(pdata[0] == 12)
@@ -234,9 +239,6 @@ void udprxfunc(uint8_t *pdata, int len, struct sockaddr_in* sender)
 
 	if(pdata[0] == 17)
 		fftspeed = pdata[1];
-
-	if(pdata[0] == 18)
-		audiohighpass = pdata[1];
 
 	if(pdata[0] == 19)
 	{

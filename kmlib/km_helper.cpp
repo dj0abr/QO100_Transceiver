@@ -405,7 +405,7 @@ static int first=1;
     return sr;
 }
 
-void measure_maxval(double v, int anz)
+int measure_maxval(double v, int anz)
 {
 static double max = - 99999999;  
 static int cnt = 0;  
@@ -422,5 +422,7 @@ static int cnt = 0;
         printf("maxval: %f\n",max);
         max = - 99999999; 
         cnt = 0; 
+        return 1;
     }
+    return 0;
 }

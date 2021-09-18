@@ -188,9 +188,7 @@ float fcompr;
     // loop through all samples
     for(int i=0; i<len; i++)
     {
-        fcompr = f[i] ;//* 3.0f;
-
-        
+        fcompr = f[i];
 
         // audio compression
         if(compressor > 0)
@@ -202,6 +200,8 @@ float fcompr;
             if(fcompr <= -1) fcompr = -0.99;
         }
 
+        fcompr *= micboost;
+
         // insert a test tone
         if(sendtone)
         {
@@ -209,10 +209,7 @@ float fcompr;
             nco_crcf_step(tone_nco);
             fcompr = nco_crcf_sin(tone_nco);
             fcompr /= 10;
-
         } 
-
-    
 
         // modulator, at 48k audio sample rate
         liquid_float_complex ybase;
@@ -227,13 +224,9 @@ float fcompr;
         nco_crcf_step(upssb);
         nco_crcf_mix_up(upssb,ybase,&y);
 
-        
-
         // filter SSB bandwidth at 3kHz
         liquid_float_complex cfilt;
         iirfilt_crcf_execute(tx_lp_q, y, &cfilt);
-
-        
 
         // audio high pass filter
         liquid_float_complex aufiltout;
@@ -247,8 +240,6 @@ float fcompr;
         {
             aufiltout = cfilt;
         }
-
-            
 
         // resample from AUDIOSAMPRATE (48000S/s) to pluto rate
         liquid_float_complex out[(int)interp_r+2];
@@ -278,17 +269,18 @@ float fcompr;
                 sendToPluto();
                 txarridx = 0;
             }
-            
         }
-
     }
 }
 
-void agc(int32_t *fi, int32_t *fq, int len)
-{
-static float smult = 0;
-static float maxvol = 30000.0f;
+/*
+this agc measures the value of the IQ samples
+and then slowly ampifies/attenuates them to get a peak of "maxvol"
+*/
 
+float smult = 0;
+void agc(int32_t *fi, int32_t *fq, int len, float maxvol)
+{
     // measure peak value of these samples
     int32_t p = 0;
     for(int i=0; i<len; i++)
@@ -302,15 +294,19 @@ static float maxvol = 30000.0f;
 
     // required multiplicator to bring peak to maxvol
     float mult = maxvol / (float)p;
-    if(mult > 40.0f) mult = 40.0f;
+    if(mult > 80.0f) mult = 80.0f;  // limit max. amplification, so that background noise does not get too loud
 
     // slowly adapt smult to mult
     if(mult < smult)
+    {
+        // fast attack if signal is loud
         smult = mult;
+    }
     else
     {
+        // slow decay for weak signals
         float diff = mult - smult;
-        smult += diff/10.0f;
+        smult += diff/25.0f;            // x.0f = decay rate
     }
 
     // do agc
@@ -320,6 +316,7 @@ static float maxvol = 30000.0f;
         fq[i] *= smult;
     }
 
+    /*
     // measure peak and mid value of these samples
     int32_t pki = 0, pkq = 0;
     for(int i=0; i<len; i++)
@@ -327,11 +324,11 @@ static float maxvol = 30000.0f;
         if(fi[i] > pki) pki = fi[i];
         if(fq[i] > pkq) pkq = fq[i];
     }
-
-    //printf("peak:%d smult:%f newpeak:%d %d\n",p,smult,pki,pkq);
+    printf("peak:%d smult:%f newpeak:%d %d\n",p,smult,pki,pkq);
+    */
 }
 
-float pmult = 32767.0f;  // adjust to get maximum values
+float pmult = 32767.0f;  // adjust to get maximum 16bit values
 
 void sendToPluto()
 {
@@ -342,23 +339,21 @@ int txbufidx = 0;
 
     for(int i=0; i<PLUTOBUFSIZE; i++)
     {
-        // convert complex to pluto format
+        // convert complex float to pluto 16-bit format
         xi[i] = (int32_t)(txarr[i].real * pmult); 
         xq[i] = (int32_t)(txarr[i].imag * pmult);
 
         //measure_maxval(xi[i], 480000);
     }
 
-    
-
-    if(audioagc > 0 && sendtone == 0)
+    if(sendtone == 0)
     {
-        agc(xi, xq, PLUTOBUFSIZE);
+        agc(xi, xq, PLUTOBUFSIZE, (float)agcvalue);    // AGC to maximum 16 bit value
     }
 
     for(int i=0; i<PLUTOBUFSIZE; i++)
     {
-        measure_maxval(xi[i], 480000);
+        //if(measure_maxval(xi[i], 480000)) printf("smult: %f\n", smult);
 
         txbuf[txbufidx++] = xi[i] & 0xff;
         txbuf[txbufidx++] = xi[i] >> 8;

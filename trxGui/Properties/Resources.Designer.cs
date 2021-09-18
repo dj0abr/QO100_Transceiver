@@ -283,6 +283,16 @@ namespace trxGui.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap microphone {
+            get {
+                object obj = ResourceManager.GetObject("microphone", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap mixer {
             get {
                 object obj = ResourceManager.GetObject("mixer", resourceCulture);
@@ -316,6 +326,16 @@ namespace trxGui.Properties {
         internal static System.Drawing.Bitmap mute_inact {
             get {
                 object obj = ResourceManager.GetObject("mute_inact", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap note {
+            get {
+                object obj = ResourceManager.GetObject("note", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -576,6 +596,16 @@ namespace trxGui.Properties {
         internal static System.Drawing.Bitmap tx_filter_27 {
             get {
                 object obj = ResourceManager.GetObject("tx_filter_27", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap txaudio_button {
+            get {
+                object obj = ResourceManager.GetObject("txaudio_button", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

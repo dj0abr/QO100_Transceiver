@@ -33,6 +33,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ColorSlider">
+      <HintPath>..\ColorSlider\bin\Release\ColorSlider.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -52,6 +55,12 @@
     </Compile>
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form2_agc.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form2_agc.Designer.cs">
+      <DependentUpon>Form2_agc.cs</DependentUpon>
     </Compile>
     <Compile Include="Form_info.cs">
       <SubType>Form</SubType>
@@ -84,6 +93,9 @@
     <Compile Include="udp.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form2_agc.resx">
+      <DependentUpon>Form2_agc.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form_info.resx">
       <DependentUpon>Form_info.cs</DependentUpon>
@@ -320,6 +332,15 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\waveactive.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\txaudio_button.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\microphone.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\note.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

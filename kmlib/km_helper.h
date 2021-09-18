@@ -21,7 +21,7 @@ void getConfigElement_double(char *elemname, double *pv, double multiplier);
 void getConfigElement_longlong(char *elemname, long long *pv, double multiplier);
 void getConfigElement_int(char *elemname, int *pv, double multiplier);
 float measure_samplerate(int id, int samp, int prt);
-void measure_maxval(double v, int anz);
+int measure_maxval(double v, int anz);
 char *runProgram(char *parameter, int maxlen);
 
 extern int keeprunning;

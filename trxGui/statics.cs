@@ -35,7 +35,8 @@ namespace trxGui
         public static bool rxmute = false;
         public static bool rit = true;
         public static bool xit = false;
-        public static bool audioagc = false;
+        public static int micboost = 1;
+        public static int agcvalue = 32000;
         public static bool compressor = false;
         public static int rxfilter = 3;
         public static int txfilter = 3;

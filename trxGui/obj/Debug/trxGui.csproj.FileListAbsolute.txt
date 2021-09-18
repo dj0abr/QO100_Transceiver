@@ -25,3 +25,7 @@ E:\funk\sat\QO100_Transceiver_500\trxGui\obj\Debug\qo100trx.exe
 E:\funk\sat\QO100_Transceiver_500\trxGui\obj\Debug\qo100trx.pdb
 E:\funk\sat\QO100_Transceiver\trxGui\obj\Debug\trxGui.Form_reference.resources
 E:\funk\sat\QO100_Transceiver\trxGui\obj\Debug\trxGui.Form_screen.resources
+E:\funk\sat\QO100_Transceiver\trxGui\bin\Debug\ColorSlider.dll
+E:\funk\sat\QO100_Transceiver\trxGui\bin\Debug\ColorSlider.pdb
+E:\funk\sat\QO100_Transceiver\trxGui\obj\Debug\trxGui.Form2_agc.resources
+E:\funk\sat\QO100_Transceiver\trxGui\obj\Debug\trxGui.csproj.CopyComplete

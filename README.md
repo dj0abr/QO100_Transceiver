@@ -19,7 +19,8 @@ V1.67 .. July,19 2021 ... Install files updated\
 V1.68 .. July,26 2021 ... PTT control implemented, needs F5OEO firmware 2021 or later (version from 2019 does not work ! Pluto Rev.C needs also a patch)\
 V1.69 ...August, 9 2021 ... rotary enocder for raspberry (frequency and RX volume), details see documentation\
 V1.70 ...August, 23 2021 ... new screen size 1600x1050, 800Hz Test Tone (see left buttons), PTT output (and input), Mute input on Raspi GPIO, changes in installation scripts\
-V1.71 ...September, 14 2021 ... HF-Loop corrected, Level (dB) display, Auto-QSO-Sync (see Setup), Microphone TX levels modified to avoid splatter
+V1.71 ...September, 14 2021 ... HF-Loop corrected, Level (dB) display, Auto-QSO-Sync (see Setup), Microphone TX levels modified to avoid splatter\
+V1.72 ...September, 18 2021 ... new AUDIO menu, new AGC, allows full output even with weak microphones
 
 ![alt text](https://github.com/dj0abr/QO100_Transceiver/blob/main/trxGui/Properties/sampleGUI.png)
 

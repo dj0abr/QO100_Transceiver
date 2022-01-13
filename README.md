@@ -22,6 +22,8 @@ V1.70 ...August, 23 2021 ... new screen size 1600x1050, 800Hz Test Tone (see lef
 V1.71 ...September, 14 2021 ... HF-Loop corrected, Level (dB) display, Auto-QSO-Sync (see Setup), Microphone TX levels modified to avoid splatter\
 V1.72 ...September, 18 2021 ... new AUDIO menu, new AGC, allows full output even with weak microphones
 
+Update (Jan 13, 2022) ... modified installation procedure to get it running on raspberry OS "bullseye"
+
 ![alt text](https://github.com/dj0abr/QO100_Transceiver/blob/main/trxGui/Properties/sampleGUI.png)
 
 ## Hardware requirements

@@ -20,10 +20,10 @@ V1.68 .. July,26 2021 ... PTT control implemented, needs F5OEO firmware 2021 or 
 V1.69 ...August, 9 2021 ... rotary enocder for raspberry (frequency and RX volume), details see documentation\
 V1.70 ...August, 23 2021 ... new screen size 1600x1050, 800Hz Test Tone (see left buttons), PTT output (and input), Mute input on Raspi GPIO, changes in installation scripts\
 V1.71 ...September, 14 2021 ... HF-Loop corrected, Level (dB) display, Auto-QSO-Sync (see Setup), Microphone TX levels modified to avoid splatter\
-V1.72 ...September, 18 2021 ... new AUDIO menu, new AGC, allows full output even with weak microphones
-         January 13, 2022 ... modified installation procedure to get it running on raspberry OS "bullseye"
-V1.73 ...April, 2 2022 ... when restarting: uses last RX/TX qrg. This makes it easier to continue a QSO if the software was stopped or crashed.
-V1.73a...November, 16 2022 ... extended the install script for the ubuntu version vanessa. The TRX is the same as 1.73, just the installation has been extended.
+V1.72 ...September, 18 2021 ... new AUDIO menu, new AGC, allows full output even with weak microphones\
+         January 13, 2022 ... modified installation procedure to get it running on raspberry OS "bullseye"\
+V1.73 ...April, 2 2022 ... when restarting: uses last RX/TX qrg. This makes it easier to continue a QSO if the software was stopped or crashed.\
+V1.73a...November, 16 2022 ... extended the install script for the ubuntu version vanessa. The TRX is the same as 1.73, just the installation has been extended.\
 
 
 ![alt text](https://github.com/dj0abr/QO100_Transceiver/blob/main/trxGui/Properties/sampleGUI.png)

@@ -1,4 +1,4 @@
-VERSION := 172
+VERSION := 173
 CXXFLAGS = -Wall -O3 -std=c++0x -Wno-write-strings -Wno-narrowing -DDRIVER_SERIAL=$(VERSION) $(RASPI)
 LDFLAGS = -lpthread -lrt -lm -liio -lliquid -lad9361 -lfftw3 -lfftw3_threads -lsndfile -lasound -lsoundio -lgpiod
 OBJ = qo100trx.o rx.o tx.o fft.o\

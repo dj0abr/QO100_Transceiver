@@ -1134,6 +1134,8 @@ namespace trxGui
                 sendTXpower();
                 sendPTTmode();
 
+                save_Setup();
+
                 if (oldpluto != statics.plutousb || oldpladr != statics.plutoaddress)
                 {
                     // pluto setting has been changed, restart required

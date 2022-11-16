@@ -133,7 +133,7 @@ static void write_callback(struct SoundIoOutStream* outstream, int frame_count_m
 void underflow_callback(struct SoundIoOutStream* outstream)
 {
     static int count = 0;
-    printf("underflow %d\n", count++);
+    printf("audio output underflow %d\n", count++);
 }
 
 void close_playback_stream(int idx)

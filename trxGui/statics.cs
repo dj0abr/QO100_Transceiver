@@ -9,7 +9,7 @@ namespace trxGui
 {
     public static class statics
     {
-        public static UInt16 gui_serno = 172;   // 123 means: V1.23
+        public static UInt16 gui_serno = 173;   // 123 means: V1.23
         public static UInt16 driver_serno = 0;
         public static bool running = true;
         public static String ModemIP;
@@ -101,6 +101,17 @@ namespace trxGui
                     }
                 }
                 catch { return false; }
+
+                // and load last QRGs from gile
+                try
+                {
+                    using (BinaryReader sw = new BinaryReader(new FileStream(statics.getHomePath("", "qrg.lst"), FileMode.Open)))
+                    {
+                        RXoffset = sw.ReadInt32();
+                        TXoffset = sw.ReadInt32();
+                    }
+                }
+                catch { }
             }
             return true;
         }
@@ -301,6 +312,17 @@ namespace trxGui
             txb[8] = (Byte)(TXoffset & 0xff);
 
             Udp.UdpSendData(txb);
+
+            // and save into a file
+            try
+            {
+                using (BinaryWriter sw = new BinaryWriter(new FileStream(statics.getHomePath("", "qrg.lst"),FileMode.Create)))
+                {
+                    sw.Write(RXoffset);
+                    sw.Write(TXoffset);
+                }
+            }
+            catch { }
         }
 
         static public void OpenUrl(string url)

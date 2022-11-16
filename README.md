@@ -23,6 +23,7 @@ V1.71 ...September, 14 2021 ... HF-Loop corrected, Level (dB) display, Auto-QSO-
 V1.72 ...September, 18 2021 ... new AUDIO menu, new AGC, allows full output even with weak microphones
          January 13, 2022 ... modified installation procedure to get it running on raspberry OS "bullseye"
 V1.73 ...April, 2 2022 ... when restarting: uses last RX/TX qrg. This makes it easier to continue a QSO if the software was stopped or crashed.
+V1.73a...November, 16 2022 ... extended the install script for the ubuntu version vanessa. The TRX is the same as 1.73, just the installation has been extended.
 
 
 ![alt text](https://github.com/dj0abr/QO100_Transceiver/blob/main/trxGui/Properties/sampleGUI.png)

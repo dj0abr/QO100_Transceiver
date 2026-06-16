@@ -120,9 +120,10 @@
   <data name="textBox1.Text" xml:space="preserve">
     <value>AMSAT-DL QO-100 DSP Transceiver for
 Adalm-Pluto and Linux
-by DJ0ABR
+by DJ0ABR 
+(and minor modifications by OH1VX)
 
-Open Source: https://github.com/dj0abr/QO100_Transceiver
+Open Source: https://github.com/OH1VX/QO100_Transceiver
 
 Manual (English / German):
 https://wiki.amsat-dl.org/doku.php?id=en:plutotrx:overview</value>

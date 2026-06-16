@@ -364,7 +364,8 @@ namespace trxGui
             "blue / blau",
             "red / rot",
             "green / grün",
-            "white / weiß"});
+            "white / weiß",
+            "cold->hot"});
             this.comboBox_color.Location = new System.Drawing.Point(154, 258);
             this.comboBox_color.Name = "comboBox_color";
             this.comboBox_color.Size = new System.Drawing.Size(137, 21);

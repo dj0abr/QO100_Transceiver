@@ -7,18 +7,18 @@ echo "update system by running apt-get update"
 sudo apt-get update
 echo "install git"
 sudo apt-get install git -y
-if [ ! -d "QO100_Transceiver" ] ; then
-        git clone https://github.com/dj0abr/QO100_Transceiver
-        cd QO100_Transceiver
+if [ ! -d "QO100_Transceiver_OH1VX" ] ; then
+        git clone https://github.com/OH1VX/QO100_Transceiver QO100_Transceiver_OH1VX
+        cd QO100_Transceiver_OH1VX
     else
-        cd QO100_Transceiver
-        git pull https://github.com/dj0abr/QO100_Transceiver
+        cd QO100_Transceiver_OH1VX
+        git pull https://github.com/OH1VX/QO100_Transceiver QO100_Transceiver_OH1VX
     fi
-cd ~/QO100_Transceiver/scripts
+cd ~/QO100_Transceiver_OH1VX/scripts
 ./prepare_ubuntu_pluto
-cd ~/QO100_Transceiver/scripts
+cd ~/QO100_Transceiver_OH1VX/scripts
 ./makeall
 echo "==== Installation: OK ===="
-cd ~/QO100_Transceiver/Release
-echo "==== Start the Transceiver in the folder QO100_Transceiver/Release ===="
+cd ~/QO100_Transceiver_OH1VX/Release
+echo "==== Start the Transceiver in the folder QO100_Transceiver_OH1VX/Release ===="
 echo "==== by entering ./startQO100trx                                   ===="

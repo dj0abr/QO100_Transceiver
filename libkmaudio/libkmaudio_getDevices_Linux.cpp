@@ -176,8 +176,8 @@ int scan_devices()
         struct SoundIoDevice *device = soundio_get_input_device(soundio, i);
         if (device == NULL)
             continue;
-        if (strstr(device->name, "onitor"))
-            continue;
+//        if (strstr(device->name, "onitor"))
+//            continue;
         if (device->probe_error)
             continue;
 

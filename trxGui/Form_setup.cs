@@ -11,7 +11,7 @@ namespace trxGui
             InitializeComponent();
 
             Width = 800;
-            Height = 416;
+            Height = 516;
             int yb = Height - 70;
             button1.Location = new Point(Width - button1.Width - 20, yb);
             button2.Location = new Point(button1.Location.X - button2.Width - 10, yb);

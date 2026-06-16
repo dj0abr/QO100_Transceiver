@@ -102,6 +102,16 @@ namespace trxGui
 
             if (statics.windowsize == wsize++)
             {
+                // sizes for screens 1800x400 pixel
+                window_width = 1880;
+                window_height = 400;
+                button_size = 32;
+                bigfnt = new Font("Verdana", 24.0f);
+            }
+
+
+            if (statics.windowsize == wsize++)
+            {
                 // sizes for screens 1600x1050 pixel
                 window_width = 1600;
                 window_height = 1050;
@@ -333,6 +343,27 @@ namespace trxGui
             {
                 panel_smallwf.Invalidate();
             }
+            
+            if (statics.hamlib_ptt_received == true)
+            {
+				statics.hamlib_ptt_received = false;
+				Console.WriteLine("rigctl ptt received to Form1: "+statics.hamlib_ptt_value);
+				statics.pttmode = 0; //need to change the mode to keep ptt on until disabled
+				if (statics.hamlib_ptt_value > 0) statics.ptt = true;
+				else statics.ptt = false;
+				panel1.Invalidate();
+                setPTT(statics.ptt);
+                pttstat = statics.ptt;
+			}
+
+            if(statics.hamlib_freq_received == true)
+            {
+                statics.hamlib_freq_received = false;
+                Console.WriteLine("rigctl freq received to Form1: "+statics.hamlib_freq_value);
+                statics.TXoffset = (int)(statics.hamlib_freq_value-2399970000);
+                statics.RXoffset = (int)(statics.hamlib_freq_value-2399970000);
+                statics.sendRXTXoffset();
+            }
 
             if (statics.pttmode == 0)
             {
@@ -439,11 +470,11 @@ namespace trxGui
                 sendCpuSpeed();
                 sendTXpower();
                 sendPTTmode();
-                this.Text += " GUI: " + formatSN(statics.gui_serno) + " Driver: " + formatSN(statics.driver_serno);
+                this.Text += " GUI: " + formatSN(statics.gui_serno) + "+" + statics.GuiFork + "-r" + statics.gui_rev.ToString() + " Driver: " + formatSN(statics.driver_serno) + "+" + statics.GuiFork + "-r" + statics.driver_rev.ToString();
                 // check consistency
-                if(statics.gui_serno != statics.driver_serno)
+                if((statics.gui_serno != statics.driver_serno) || (statics.gui_rev != statics.driver_rev))
                 {
-                    MessageBox.Show("Warning!\nGUI and Driver have different serial numbers. Please re-install this software", "Version Number Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Warning!\nGUI and Driver have different serial or revision numbers. Please re-install this software", "Version Number Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 // check for updates
                 try
@@ -451,10 +482,12 @@ namespace trxGui
                     using (StreamReader sr = new StreamReader("version.txt"))
                     {
                         int actver = ReadInt(sr);
+                        string actfork = ReadString(sr);
+                        int actrev = ReadInt(sr);
                         Console.WriteLine("act version:" + actver);
-                        if(actver > statics.gui_serno)
+                        if(actver > statics.gui_serno || (actver == statics.gui_serno && actrev > statics.gui_rev))
                         {
-                            //MessageBox.Show("a new Version is avialable at Github:" + actver.ToString(), "NEW VERSION", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            MessageBox.Show("a new Version is available at " + actfork + "\'s Github:" + actver.ToString(), "NEW VERSION", MessageBoxButtons.OK, MessageBoxIcon.Information);
                             String nv = " (new:V" + ((double)actver / 100).ToString() + ")";
                             this.Text += nv.Replace(',', '.');
                         }
@@ -466,9 +499,14 @@ namespace trxGui
                 panel_beaconlock.Invalidate();
             }
 
-            if(statics.beaconoffset != oldbcnoffset)
+            if(statics.beaconoffset_updated)
             {
-                oldbcnoffset = statics.beaconoffset;
+                statics.beaconoffset_updated = false;
+
+                if(statics.beaconoffset != 0) {
+                    statics.lnboffset += statics.beaconoffset/2;
+                }
+                statics.sendBaseQRG();
                 panel_qrg.Invalidate();
             }
 
@@ -538,8 +576,6 @@ namespace trxGui
 
             return s;
         }
-
-        int oldbcnoffset = -1;
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {

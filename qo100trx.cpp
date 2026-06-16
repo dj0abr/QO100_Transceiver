@@ -66,6 +66,66 @@ int CWfifo;
 
 int pbidx = -1, capidx = -1;
 
+// Hook implementations declared in rigctld_server.cpp
+uint64_t rigctl_get_current_frequency_hz() {
+  // Replace with thread-safe read of current tuned frequency in your codebase
+  //extern uint64_t get_current_frequency_hz(); // ensure defined elsewhere
+  return 0;//get_current_frequency_hz();
+}
+
+bool rigctl_get_current_ptt() {
+  printf("*** rigctl_get_current_ptt:%d ***\n",ptt);
+  return ptt;
+}
+
+ // In main processing loop, poll and handle rigctl commands:
+ void process_main_loop_tasks() {
+  uint8_t send_ptt[2];
+  uint8_t send_freq[5];
+  RigctlCommand cmd;
+  while (getRigctlQueue().pop(cmd)) {
+    printf("*** rigctl_Queue command received ***\n");
+    if (cmd.type == RigctlCommand::SET_FREQ) {
+      printf("*** rigctl_Queue set freq:%ld ***\n",cmd.freqHz);
+      send_freq[0] = 12; //ID for freq
+      send_freq[1] = (uint8_t)(cmd.freqHz >> 24);
+      send_freq[2] = (uint8_t)(cmd.freqHz >> 16);
+      send_freq[3] = (uint8_t)(cmd.freqHz >> 8);
+      send_freq[4] = (uint8_t)(cmd.freqHz & 0xff);
+      sendUDP(gui_ip, GUI_UDPPORT, send_freq, 5);
+    } else if (cmd.type == RigctlCommand::SET_PTT) {
+      printf("*** rigctl_Queue set ptt:%d ***\n",cmd.ptt);
+      ptt = cmd.ptt ? 1 : 0;
+      if(cmd.ptt == 1){
+        if(ptt && lastptt == 0)
+        {
+          // switch to TX mode
+          setSendtone(0);// never start with a test tone after pressing PTT
+          io_fifo_clear(capidx);
+          fifo_clear(TXfifo);
+          // Send to GUI
+          set_ptt();
+          send_ptt[0] = 11; //PTT id
+          send_ptt[1] = (uint8_t)cmd.ptt;
+          sendUDP(gui_ip, GUI_UDPPORT, send_ptt, 2);
+        }
+      }
+      else {
+        if(ptt==0 && lastptt)
+        {
+          // switch to RX mode
+          release_ptt();
+          // Send to GUI
+          send_ptt[0] = 11; //PTT id
+          send_ptt[1] = (uint8_t)cmd.ptt;
+           sendUDP(gui_ip, GUI_UDPPORT, send_ptt, 2);
+         }
+      }
+      lastptt = ptt;
+    }
+  }
+}
+
 void udprxfunc(uint8_t *pdata, int len, struct sockaddr_in* sender)
 {
 	//printf("UDP command from GUI: %d: %d\n",pdata[0],pdata[1]);
@@ -135,6 +195,8 @@ void udprxfunc(uint8_t *pdata, int len, struct sockaddr_in* sender)
 			setRXfrequency((long long)RX_FREQ);
 		}
 	}
+
+	// 6 is for beaconoffset
 
 	if(pdata[0] == 7)
 	{
@@ -297,7 +359,7 @@ int main ()
 	if(strstr(pr,"default via"))
 	{
 		// we are on a router, check github for updates
-		sprintf(url,"wget --no-check-certificate --no-cache --no-cookies --no-http-keep-alive -O version.txt https://raw.githubusercontent.com/dj0abr/QO100_Transceiver/main/version.txt?cachekiller=%d",rand());
+		sprintf(url,"curl -o version.txt https://raw.githubusercontent.com/OH1VX/QO100_Transceiver/main/version.txt?cachekiller=%d",rand());
 		int sres = system(url);
 		if(sres < 0)
 		{
@@ -324,15 +386,21 @@ int main ()
 	// UDP receiver for commands from GUI
 	UdpRxInit(&udprxsock, 40821, udprxfunc , &keeprunning);
 
+	//rigctrld
+	rigctld_start(RIGCTLD_PORT); 
+
 	// send audio devices to GUI
 	int len;
 	uint8_t *s = io_getAudioDevicelist(&len);
-	uint8_t ub[len+1+2];
+	uint8_t ub[len+1+2+2];
 	ub[0] = 4; // ID for sound device string
 	ub[1] = ((uint16_t)DRIVER_SERIAL) >> 8;		// driver serial number
 	ub[2] = ((uint16_t)DRIVER_SERIAL) & 0xff;
-	memcpy(ub+3,s,len);
-	sendUDP(gui_ip, GUI_UDPPORT, ub, len+1+2);
+	ub[3] = ((uint16_t)DRIVER_REVISION) >> 8;		// driver revision number
+	ub[4] = ((uint16_t)DRIVER_REVISION) & 0xff;
+	//printf("DRIVER_REVISION: %d\n",DRIVER_REVISION);
+	memcpy(ub+3+2,s,len);
+	sendUDP(gui_ip, GUI_UDPPORT, ub, len+1+2+2);
 
 	// wait for initial configuration from GUI
 	// the GUI sends now:
@@ -395,6 +463,7 @@ int main ()
 	{
 		// main loop
 		// time-uncritical jobs are done here
+		process_main_loop_tasks();
 		
 		if(newaudiodevs)
 		{

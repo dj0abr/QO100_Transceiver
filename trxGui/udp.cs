@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Drawing;
 using System.Net;
@@ -157,8 +157,15 @@ namespace trxGui
                             UInt16 driversn = b[0];
                             driversn <<= 8;
                             driversn += b[1];
-                            //Console.WriteLine("Driver SN:" + driversn);
+                            Console.WriteLine("Driver SN:" + driversn);
                             statics.driver_serno = driversn;
+
+                            UInt16 driverrev = b[2];
+                            Console.WriteLine("Driver REV1:" + driverrev);
+                            driverrev <<= 8;
+                            driverrev += b[3];
+                            Console.WriteLine("Driver REV:" + driverrev);
+                            statics.driver_rev = driverrev;
                             String s = statics.ByteArrayToStringUtf8(b, 6);
                             //Console.WriteLine("Audio Devices:" + s);
                             String[] sa1 = s.Split(new char[] { '^' });
@@ -231,6 +238,7 @@ namespace trxGui
                             v |= b[3];
 
                             statics.beaconoffset = v;
+                            statics.beaconoffset_updated = true;
                             //Console.WriteLine("beaconoffset: " + statics.beaconoffset);
                         }
 
@@ -257,6 +265,24 @@ namespace trxGui
                         if (rxtype == 10)
                         {
                             statics.sendtone = b[0];
+                        }
+                        
+                        if (rxtype == 11) //PTT
+                        {
+                            statics.hamlib_ptt_value    = b[0];
+                            statics.hamlib_ptt_received = true;
+                        }
+                        if (rxtype == 12) //FREQ
+                        {
+                            UInt32 v = b[0];
+                            v <<= 8;
+                            v |= b[1];
+                            v <<= 8;
+                            v |= b[2];
+                            v <<= 8;
+                            v |= b[3];
+                            statics.hamlib_freq_value    = v;
+                            statics.hamlib_freq_received = true;
                         }
                     }
                 }
@@ -303,11 +329,11 @@ namespace trxGui
         static private Bandplan bp = new Bandplan();
 
         // palette
-        static Color[] col_specfill = { Color.Blue, Color.FromArgb(255, 80, 80), Color.Green, Color.LightGray };
-        static Color[] col_specline = { Color.LightGreen, Color.Yellow, Color.Cyan, Color.White };
+        static Color[] col_specfill = { Color.Blue, Color.FromArgb(255, 80, 80), Color.Green, Color.LightGray, Color.Blue };
+        static Color[] col_specline = { Color.LightGreen, Color.Yellow, Color.Cyan, Color.White, Color.Red };
 
-        static SolidBrush[] br_spedFill = { new SolidBrush(col_specfill[0]), new SolidBrush(col_specfill[1]), new SolidBrush(col_specfill[2]), new SolidBrush(col_specfill[3]) };
-        static Pen[] penline = { new Pen(col_specline[0], 1), new Pen(col_specline[1], 1), new Pen(col_specline[2], 1), new Pen(col_specline[3], 1) };
+        static SolidBrush[] br_spedFill = { new SolidBrush(col_specfill[0]), new SolidBrush(col_specfill[1]), new SolidBrush(col_specfill[2]), new SolidBrush(col_specfill[3]), new SolidBrush(col_specfill[4]) };
+        static Pen[] penline = { new Pen(col_specline[0], 1), new Pen(col_specline[1], 1), new Pen(col_specline[2], 1), new Pen(col_specline[3], 1), new Pen(col_specline[4], 1) };
 
         static void drawBigSpec(int[] arr)
         {

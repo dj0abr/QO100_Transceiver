@@ -1,3 +1,12 @@
+# This is a fork of dj0abr's repository
+
+# Notes from OH1VX
+This is proof-of-concept to improve RX frequency stability and enable this software to be used with VarAC. 
+
+There are still room for improvement in many things, so changes are likely. Bug reports and pull requests are welcome!
+
+I think at RX the frequency drift compensation should have been made in different manner, but hey, this quick and dirty way works too. The inaccuracy is rarely over 6Hz with my setup.
+
 # QO100_Transceiver
 QO-100 Software Transceiver using an Adalm-Pluto and an SBC (Raspberry, Odroid ...), also works on Linux-Desktop PCs 
 
@@ -24,9 +33,11 @@ V1.72 ...September, 18 2021 ... new AUDIO menu, new AGC, allows full output even
          January 13, 2022 ... modified installation procedure to get it running on raspberry OS "bullseye"\
 V1.73 ...April, 2 2022 ... when restarting: uses last RX/TX qrg. This makes it easier to continue a QSO if the software was stopped or crashed.\
 V1.73a...November, 16 2022 ... extended the install script for the ubuntu version vanessa. The TRX is the same as 1.73, just the installation has been extended.\
+V1.73a+OH1VX-r1 ... May, 19 2026 ... GUI compilation, new resolution, setup window size changed. Allow monitor devices to be used as audio input on Linux. Change the operation of QO-100 Low beacon tracker, automatic re-calibration when frequency drift happens. Support for minimal set of hamlib compatible commands (default port 10010). \
+V1.73a+OH1VX-r2 ... May, 25 2026 ... BUGGY. Don't use! Bandplan updated to show emergency frequency, broadcast frequency, digital mode bandwidths. More robust beacon lock. Added a new color palette for waterfall (cold->hot). Automatic search, if beacon locking is lost. \
+V1.73a+OH1VX-r3 ... May, 26 2026 ... Major bug fixed: Frequency update flag change was missing from r2 commits. Beacon locker's tuning was not working properly. Revision bump to r3. Fixed minor PTT related issue.
 
-
-![alt text](https://github.com/dj0abr/QO100_Transceiver/blob/main/trxGui/Properties/sampleGUI.png)
+![alt text](https://github.com/OH1VX/QO100_Transceiver/blob/main/trxGui/Properties/sampleGUI.png)
 
 ## Hardware requirements
 
@@ -43,14 +54,14 @@ http://wiki.amsat-dl.org/doku.php?id=en:plutotrx:overview
 ## Installation
 
 The complete installation (and upgrading) is done by one single install file:
-https://raw.githubusercontent.com/dj0abr/QO100_Transceiver/main/install
+https://raw.githubusercontent.com/OH1VX/QO100_Transceiver/main/install
 
 (no need to clone this github project, all is done automatically by this install file)
 
 open a terminal and run these commands:
 
 ```
-wget https://raw.githubusercontent.com/dj0abr/QO100_Transceiver/main/install
+curl -O https://raw.githubusercontent.com/OH1VX/QO100_Transceiver/main/install
 chmod 755 install
 ./install
 ```
@@ -60,7 +71,7 @@ that's all. There is nothing more to do than to run this install file.
 The install script was made for debian/ubuntu based Linux systems. If you are using another system then please do these steps manually:
 
 * clone this project
-* in the script QO100_Transceiver/sctipts/prepare_ubuntu_pluto look for the installation of several libraries and install them for your OS.
+* in the script QO100_Transceiver_OH1VX/scripts/prepare_ubuntu_pluto look for the installation of several libraries and install them for your OS.
 * Install the latest version of the mono project (see prepare_mono as an example)
 * make clean and make the transceiver software
 
@@ -72,7 +83,7 @@ trxdriver .... this is the part doing all the work, without the GUI\
 trxGui.exe ... the user interface
 
 After installation both files are located in the folder\
-.../QO100_Transceiver/Release
+.../QO100_Transceiver_OH1VX/Release
 
 Additionally a start script was created
 

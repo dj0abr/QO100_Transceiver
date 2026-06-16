@@ -25,12 +25,17 @@
 #include "liquid/liquiddrv.h"
 #include "pluto/pluto.h"
 #include "libkmaudio/libkmaudio.h"
+#include "trxdriver/rigctld_server.h"
+#include "trxdriver/rigctl_commands.h"
+
 
 // is defined in the makefile !
 // don't define it here
 // #define DRIVER_SERIAL  161   // V1.61
 
 #define GUI_UDPPORT 40820
+
+#define RIGCTLD_PORT 10010
 
 #define AUDIOSAMPRATE 48000   // internal audio rate (not the soundcard rate)
 
@@ -39,6 +44,8 @@ void init_tx();
 void init_fft();
 void close_fft();
 void setSendtone(int onoff);
+void process_main_loop_tasks();
+
 
 extern int RXfifo;
 extern int TXfifo;

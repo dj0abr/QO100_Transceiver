@@ -313,9 +313,15 @@ namespace trxGui
                 b = (int)(coltab[val, 4] * 255);
                 r = (int)(coltab[val, 5] * 255);
             }
-            else
+            else if (statics.palette == 3)
             {
                 r = g = b = (int)((coltab[val, 3] + coltab[val, 4] + coltab[val, 5]) / 3 * 255);
+            }
+            else
+            {
+                g = (int)(coltab[val, 5] * 255);
+                b = (int)(coltab[val, 3] * 255);
+                r = (int)(coltab[val, 4] * 255);
             }
             return Color.FromArgb(r, g, b);
         }

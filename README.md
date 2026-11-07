@@ -1,3 +1,5 @@
+**New and enhanced QO100 transceiver available here:** [QO100_TRX2](https://github.com/dj0abr/QO100_TRX2)
+
 # QO100_Transceiver
 QO-100 Software Transceiver using an Adalm-Pluto and an SBC (Raspberry, Odroid ...), also works on Linux-Desktop PCs 
 
